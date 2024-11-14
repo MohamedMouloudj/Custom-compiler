@@ -1,0 +1,2 @@
+antlr4 -visitor src/main/java/com/customCompiler/MinINGParser.g4 -o src/main/java/com/customCompiler/visitorClasses // warning: grammar MinINGParser has no rules
+antlr4-parse Expr.g4 prog -gui test1.txt //TODO create test files

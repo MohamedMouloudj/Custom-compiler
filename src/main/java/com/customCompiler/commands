@@ -1,3 +1,0 @@
-antlr4 MinINGLexer.g4
- antlr4 MinINGParser.g4
-  javac MinINGLexer*.java MinINGParser*.java
