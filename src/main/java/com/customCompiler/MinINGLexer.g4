@@ -34,6 +34,8 @@ LPAREN: '(';
 RPAREN: ')';
 LBRACE: '{';
 RBRACE: '}';
+LBRACKET: '[';//for the array declaration
+RBRACKET: ']';//for the array declaration
 SEMI: ';';
 COMMA: ',';
 
@@ -41,3 +43,6 @@ COMMA: ',';
 COMMENT: '%%' ~[\r\n]* -> skip;
 NEWLINE: [\n\r]+ -> skip;
 SPACE: [ \t]+ -> skip;
+
+//I dont know where i put it 
+RECEIVE: '=';
