@@ -1,13 +1,16 @@
-//lexical analysis (token definition)
-
 lexer grammar MinINGLexer;
+
+@header{
+    package com.customCompiler.generated;
+}
 
 VAR_GLOBAL: 'VAR_GLOBAL';
 DECLARATION: 'DECLARATION';
 INSTRUCTION: 'INSTRUCTION';
 CONST: 'CONST';
 TYPE: 'INTEGER'|'FLOAT'|'CHAR';
-IDF: [A-Z][a-z0-9]*{0,7};//to revise later for the lenght
+// IDF: [A-Z][a-z0-9]{0,7}; This does not work on ANTLR , quantifiers are not supported
+IDF: [A-Z] [a-z0-9]* [a-z0-9]? [a-z0-9]? [a-z0-9]? [a-z0-9]? [a-z0-9]? [a-z0-9]?;
 INT:[0-9]+ | '('[+-][0-9]+')'; //TODO: check the MAX and MIN value
 FLOAT: [0-9]+'.'[0-9]+ | '('[+-][0-9]+'.'[0-9]+')';
 CHAR : '\'' (~[\u0027\r\n]) '\'' ; //\u0027 matches the unicode for a single quote [ ' ]
@@ -24,8 +27,8 @@ NOT:'!';
 //comarison
 GREATER : '>';
 GREATEREQUAL: '>=';
-LESSER: '<';
-LESSEREQUAL: '<=';
+LESS: '<';
+LESSEQUAL: '<=';
 EQUAL:'==';
 NOTEQUAL:'!=';
 

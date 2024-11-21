@@ -1,2 +1,6 @@
-antlr4 -visitor src/main/java/com/customCompiler/MinINGParser.g4 -o src/main/java/com/customCompiler/visitorClasses // warning: grammar MinINGParser has no rules
-antlr4-parse Expr.g4 prog -gui test1.txt //TODO create test files
+//.g4 files and generated files are in the same package level because of .tokens file
+antlr4 -visitor src/main/java/com/customCompiler/MinINGLexer.g4 -o src/main/java/com/customCompiler/
+antlr4 -visitor src/main/java/com/customCompiler/MinINGParser.g4 -o src/main/java/com/customCompiler/
+
+antlr4-parse MinINGParser.g4 prog -gui test1.txt //TODO create test files, to be modified
+antlr4-parse MinINGParser.g4 expression -gui test1.txt //TODO create test files, to be modified

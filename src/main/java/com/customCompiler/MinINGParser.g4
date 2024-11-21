@@ -1,27 +1,28 @@
 parser grammar MinINGParser;
 
+@header{
+    package com.customCompiler.generated;
+}
+
 options {tokenVocab=MinINGLexer;}
 
 // logic and arithmetic 
 expression: expression (MUL|DIV) expression
           | expression (ADD|SUB) expression
-          |expression OR expression
-          |expression AND expression
+          | expression OR expression
+          | expression AND expression
           | NOT expression
-          |'(' expression ')'
+          | LPAREN expression RPAREN
           ;
 
 // comparison
-comparison: expression ('>'|'>='|'<'|'<='|'=='|'!=') expression;
+comparison: expression (GREATER|GREATEREQUAL|LESS|LESSEQUAL|EQUAL|NOTEQUAL) expression;
 
 
 //declaration variable 
-declaration : TYPE (',' IDF)* SEMI
-            | CONST TYPE IDF RECEIVE (INT|FLOAT|CHAR) SEMI;
+decl :  TYPE IDF (COMMA IDF)* SEMI
+     | CONST TYPE IDF RECEIVE (INT|FLOAT|CHAR) SEMI
+     ;
 
 
-
-table_declaration : TYPE IDF LBRACKET INT RBRACKET SEMI;
-
-
-
+table_decl : TYPE IDF LBRACKET INT RBRACKET SEMI;
