@@ -1,4 +1,4 @@
-// Generated from src/main/java/com/customCompiler/MinINGLexer.g4 by ANTLR 4.13.2
+// Generated from D:/University/2024-09_Semester-5/Random-projects/Compilator-project/CustomCompiler/src/main/java/com/customCompiler/MinINGLexer.g4 by ANTLR 4.13.2
 
     package com.customCompiler;
 
