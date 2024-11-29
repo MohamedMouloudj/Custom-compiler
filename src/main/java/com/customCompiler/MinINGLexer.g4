@@ -1,8 +1,30 @@
 lexer grammar MinINGLexer;
 
-//@header {
-//    package com.customCompiler;
-//}
+@header {    // add by brahim
+    package com.customCompiler;
+
+    import java.util.HashMap;
+    import java.util.Map;
+}
+
+@members {      // add by brahim
+    private Map<String, String> symbolTable = new HashMap<>();
+
+    public void addSymbol(String name, String type) {
+        if (symbolTable.containsKey(name)) {
+            System.err.println("Error: Symbol " + name + " is already declared.");
+        } else {
+            symbolTable.put(name, type);
+        }
+    }
+
+    public void printSymbolTable() {
+        System.out.println("Symbol Table (from Lexer):");
+        symbolTable.forEach((key, value) ->
+            System.out.println("Name: " + key + ", Type: " + value));
+    }
+}
+
 
 VAR_GLOBAL: 'VAR_GLOBAL';
 DECLARATION: 'DECLARATION';
