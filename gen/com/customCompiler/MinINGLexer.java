@@ -1,8 +1,5 @@
 // Generated from D:/University/2024-09_Semester-5/Random-projects/Compilator-project/CustomCompiler/src/main/java/com/customCompiler/MinINGLexer.g4 by ANTLR 4.13.2
 package com.customCompiler;
-
-    package com.customCompiler;
-
 import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.Token;

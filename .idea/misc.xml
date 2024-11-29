@@ -1,5 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="ANTLRGenerationPreferences">
+    <option name="perGrammarGenerationSettings">
+      <list>
+        <PerGrammarGenerationSettings>
+          <option name="fileName" value="$PROJECT_DIR$/src/main/java/com/customCompiler/MinINGLexer.g4" />
+          <option name="autoGen" value="true" />
+          <option name="outputDir" value="D:\University\2024-09_Semester-5\Random-projects\Compilator-project\CustomCompiler\gen" />
+          <option name="libDir" value="D:\University\2024-09_Semester-5\Random-projects\Compilator-project\CustomCompiler\src\main\java\com\customCompiler" />
+          <option name="encoding" value="" />
+          <option name="pkg" value="com.customCompiler" />
+          <option name="language" value="Java" />
+          <option name="generateVisitor" value="true" />
+        </PerGrammarGenerationSettings>
+        <PerGrammarGenerationSettings>
+          <option name="fileName" value="$PROJECT_DIR$/src/main/java/com/customCompiler/MinINGParser.g4" />
+          <option name="autoGen" value="true" />
+          <option name="outputDir" value="D:\University\2024-09_Semester-5\Random-projects\Compilator-project\CustomCompiler\gen" />
+          <option name="libDir" value="D:\University\2024-09_Semester-5\Random-projects\Compilator-project\CustomCompiler\src\main\java\com\customCompiler" />
+          <option name="encoding" value="" />
+          <option name="pkg" value="com.customCompiler" />
+          <option name="language" value="Java" />
+          <option name="generateVisitor" value="true" />
+        </PerGrammarGenerationSettings>
+      </list>
+    </option>
+  </component>
   <component name="ExternalStorageConfigurationManager" enabled="true" />
   <component name="MavenProjectsManager">
     <option name="originalFiles">

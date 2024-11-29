@@ -1,8 +1,8 @@
 lexer grammar MinINGLexer;
 
-@header {
-    package com.customCompiler;
-}
+//@header {
+//    package com.customCompiler;
+//}
 
 VAR_GLOBAL: 'VAR_GLOBAL';
 DECLARATION: 'DECLARATION';
