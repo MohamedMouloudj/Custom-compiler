@@ -2,21 +2,6 @@ package com.customCompiler;
 
 import com.customCompiler.expressions.Expression;
 
-//TODO: Ibrahim
-public class SymbolTable {
-    // Hado ghir des methodes temporaires bech khdemt na, 3awdhom
-    public Object getValue(String name) {
-        return 0;
-    }
-    public String getType(String identifier) {
-        return Expression.ExpressionType.INTEGER.toString();
-    }
-}
-
-
-
-
-
 /* package com.customCompiler.gen;
 
 import java.util.HashMap;
@@ -50,8 +35,19 @@ public class SymbolTable {
         sb.append("Symbol Table:\n");
         for (Symbol symbol : symbols.values()) {
             sb.append(symbol.toString()).append("\n");
-        }
+        }  
         return sb.toString();
     }
 }
 */
+
+//TODO: Ibrahim
+public class SymbolTable {
+    // Hado ghir des methodes temporaires bech khdemt na, 3awdhom
+    public Object getValue(String name) {
+        return 0;
+    }
+    public String getType(String identifier) {
+        return Expression.ExpressionType.INTEGER.toString();
+    }
+}
