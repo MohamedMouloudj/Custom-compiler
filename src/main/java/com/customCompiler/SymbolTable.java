@@ -44,10 +44,14 @@ public class SymbolTable {
 //TODO: Ibrahim
 public class SymbolTable {
     // Hado ghir des methodes temporaires bech khdemt na, 3awdhom
+    public Object addVariable(String name, Object value) {return 0;}
+    public Object setValue(String name, Object value) {return 0;}
     public Object getValue(String name) {
         return 0;
     }
     public String getType(String identifier) {
         return Expression.ExpressionType.INTEGER.toString();
     }
+
+
 }

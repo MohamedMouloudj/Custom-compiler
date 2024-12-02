@@ -29,6 +29,7 @@ public abstract class Expression {
         CHARACTER,
         VARIABLE,
         ARITHMETIC,
+        BOOLEAN,
         PARENTHESIZED
     }
 }

@@ -1,4 +1,4 @@
-package com.customCompiler.gen;
+package com.customCompiler.expressions;
 
 // class symbol of table added by brahim
 

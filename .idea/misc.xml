@@ -6,8 +6,8 @@
         <PerGrammarGenerationSettings>
           <option name="fileName" value="$PROJECT_DIR$/src/main/java/com/customCompiler/MinINGLexer.g4" />
           <option name="autoGen" value="true" />
-          <option name="outputDir" value="D:\University\2024-09_Semester-5\Random-projects\Compilator-project\CustomCompiler\gen" />
-          <option name="libDir" value="D:\University\2024-09_Semester-5\Random-projects\Compilator-project\CustomCompiler\src\main\java\com\customCompiler" />
+          <option name="outputDir" value="C:\Users\Ramzi\Desktop\ProjetCompile\Custom-compiler\gen" />
+          <option name="libDir" value="C:\Users\Ramzi\Desktop\ProjetCompile\Custom-compiler\src\main\java\com\customCompiler" />
           <option name="encoding" value="" />
           <option name="pkg" value="com.customCompiler" />
           <option name="language" value="Java" />
@@ -16,8 +16,8 @@
         <PerGrammarGenerationSettings>
           <option name="fileName" value="$PROJECT_DIR$/src/main/java/com/customCompiler/MinINGParser.g4" />
           <option name="autoGen" value="true" />
-          <option name="outputDir" value="D:\University\2024-09_Semester-5\Random-projects\Compilator-project\CustomCompiler\gen" />
-          <option name="libDir" value="D:\University\2024-09_Semester-5\Random-projects\Compilator-project\CustomCompiler\src\main\java\com\customCompiler" />
+          <option name="outputDir" value="C:\Users\Ramzi\Desktop\ProjetCompile\Custom-compiler\gen" />
+          <option name="libDir" value="C:\Users\Ramzi\Desktop\ProjetCompile\Custom-compiler\src\main\java\com\customCompiler" />
           <option name="encoding" value="" />
           <option name="pkg" value="com.customCompiler" />
           <option name="language" value="Java" />
@@ -34,7 +34,7 @@
       </list>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_22" default="true" project-jdk-name="20" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_21" default="true" project-jdk-name="20" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>
 </project>

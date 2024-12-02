@@ -1,10 +1,9 @@
 package com.customCompiler.expressions;
 
-import com.customCompiler.MinINGParser;
-import com.customCompiler.MinINGParserBaseVisitor;
-
 import java.util.ArrayList;
 import java.util.List;
+import com.customCompiler.MinINGParserBaseVisitor;
+import com.customCompiler.MinINGParser;
 
 public class AntlrToProgram extends MinINGParserBaseVisitor<Program> {
     // store all semantic errors in the program
