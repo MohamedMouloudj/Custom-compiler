@@ -35,7 +35,7 @@ public class SymbolTable {
         sb.append("Symbol Table:\n");
         for (Symbol symbol : symbols.values()) {
             sb.append(symbol.toString()).append("\n");
-        }  
+        }
         return sb.toString();
     }
 }
