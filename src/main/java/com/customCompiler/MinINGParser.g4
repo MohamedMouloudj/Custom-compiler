@@ -1,13 +1,9 @@
 parser grammar MinINGParser;
 
-//@header{
-//    package com.customCompiler.;
-//}
-
 options {tokenVocab=MinINGLexer;}
 
-//prog: (decl | expression)+ EOF      # Program ;
-// Entry point
+
+// Axiom
 prog
     : varGlobal declaration instruction EOF  #Program;
 
@@ -20,14 +16,20 @@ declaration: DECLARATION LBRACE varDeclaration* RBRACE  #DeclarationSegment;
 // INSTRUCTION block
 instruction: INSTRUCTION LBRACE statement* RBRACE   #InstructionSegment;
 
-//decl :  TYPE IDF (COMMA IDF)* SEMI
-//     | CONST TYPE IDF RECEIVE (INT|FLOAT|CHAR) SEMI
-//     ;
+
 // Variable declaration
 varDeclaration
-    : TYPE IDF (COMMA IDF)* SEMI            #VariableDeclaration    // Simple variable declaration
-    | TYPE IDF LBRACKET INT RBRACKET SEMI           #ArrayDeclaration   // Array declaration
+    : TYPE IDF (COMMA IDF)* SEMI            #VariableDeclaration    // Simple variable(s) declaration
+    | TYPE arrayList SEMI                   #ArrayDeclaration   // Array(s) declaration
     | CONST TYPE IDF RECEIVE (INT|FLOAT|CHAR) SEMI          #ConstDeclaration  // Constant declaration
+    ;
+
+arrayList
+    : arrayDecl (COMMA arrayDecl)*            // List of arrays
+    ;
+
+arrayDecl
+    : IDF LBRACKET INT RBRACKET               // Single array declaration
     ;
 
 // Statements

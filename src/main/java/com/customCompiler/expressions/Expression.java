@@ -20,15 +20,16 @@ public abstract class Expression {
      * Gets the type of the expression
      * @return The type of the expression (INTEGER, FLOAT, CHAR)
      */
-    public abstract String getType();
+    public abstract ExpressionType getType();
 
     // Enum to represent different expression types
     public enum ExpressionType {
         INTEGER,
         FLOAT,
-        CHARACTER,
+        CHAR,
         VARIABLE,
         ARITHMETIC,
+        BOOLEAN,
         PARENTHESIZED
     }
 }

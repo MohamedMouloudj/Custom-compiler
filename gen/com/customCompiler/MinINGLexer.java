@@ -1,7 +1,5 @@
 // Generated from D:/University/2024-09_Semester-5/Random-projects/Compilator-project/CustomCompiler/src/main/java/com/customCompiler/MinINGLexer.g4 by ANTLR 4.13.2
 package com.customCompiler;
-    // add by brahim
-
 
     import java.util.HashMap;
     import java.util.Map;
@@ -103,23 +101,6 @@ public class MinINGLexer extends Lexer {
 	public Vocabulary getVocabulary() {
 		return VOCABULARY;
 	}
-
-	      // add by brahim
-	    private Map<String, String> symbolTable = new HashMap<>();
-
-	    public void addSymbol(String name, String type) {
-	        if (symbolTable.containsKey(name)) {
-	            System.err.println("Error: Symbol " + name + " is already declared.");
-	        } else {
-	            symbolTable.put(name, type);
-	        }
-	    }
-
-	    public void printSymbolTable() {
-	        System.out.println("Symbol Table (from Lexer):");
-	        symbolTable.forEach((key, value) ->
-	            System.out.println("Name: " + key + ", Type: " + value));
-	    }
 
 
 	public MinINGLexer(CharStream input) {

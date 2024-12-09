@@ -22,8 +22,8 @@ public class VariableDeclarationExpression extends Expression {
     }
 
     @Override
-    public String getType() {
-        return type.toString();
+    public ExpressionType getType() {
+        return type;
     }
 
     @Override

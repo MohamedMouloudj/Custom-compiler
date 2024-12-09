@@ -60,6 +60,18 @@ public interface MinINGParserVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitConstDeclaration(MinINGParser.ConstDeclarationContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link MinINGParser#arrayList}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitArrayList(MinINGParser.ArrayListContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MinINGParser#arrayDecl}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitArrayDecl(MinINGParser.ArrayDeclContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code AssignmentStatement}
 	 * labeled alternative in {@link MinINGParser#statement}.
 	 * @param ctx the parse tree

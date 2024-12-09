@@ -92,6 +92,26 @@ public interface MinINGParserListener extends ParseTreeListener {
 	 */
 	void exitConstDeclaration(MinINGParser.ConstDeclarationContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link MinINGParser#arrayList}.
+	 * @param ctx the parse tree
+	 */
+	void enterArrayList(MinINGParser.ArrayListContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MinINGParser#arrayList}.
+	 * @param ctx the parse tree
+	 */
+	void exitArrayList(MinINGParser.ArrayListContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MinINGParser#arrayDecl}.
+	 * @param ctx the parse tree
+	 */
+	void enterArrayDecl(MinINGParser.ArrayDeclContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MinINGParser#arrayDecl}.
+	 * @param ctx the parse tree
+	 */
+	void exitArrayDecl(MinINGParser.ArrayDeclContext ctx);
+	/**
 	 * Enter a parse tree produced by the {@code AssignmentStatement}
 	 * labeled alternative in {@link MinINGParser#statement}.
 	 * @param ctx the parse tree

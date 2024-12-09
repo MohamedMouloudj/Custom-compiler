@@ -1,18 +1,18 @@
-package com.customCompiler.gen;
+package com.customCompiler;
 
 // class symbol of table added by brahim
 
+import com.customCompiler.expressions.Expression;
+
 public class Symbol {
-    private String name;
-    private String type;
-    private String value;
+    private Expression.ExpressionType type;
+    private Object value;
     private String scope;
     private boolean isConstant;
     private String memoryAddress;
     private String dimension;
 
-    public Symbol(String name, String type, String value, String scope, boolean isConstant, String memoryAddress, String dimension) {
-        this.name = name;
+    public Symbol(Expression.ExpressionType type, Object value, String scope, boolean isConstant, String memoryAddress, String dimension) {
         this.type = type;
         this.value = value;
         this.scope = scope;
@@ -21,15 +21,12 @@ public class Symbol {
         this.dimension = dimension;
     }
 
-    public String getName() {
-        return name;
-    }
 
-    public String getType() {
+    public Expression.ExpressionType getType() {
         return type;
     }
 
-    public String getValue() {
+    public Object getValue() {
         return value;
     }
 
@@ -52,8 +49,7 @@ public class Symbol {
     @Override
     public String toString() {
         return "Symbol{" +
-                "name='" + name + '\'' +
-                ", type='" + type + '\'' +
+                ", type='" + type.toString() + '\'' +
                 ", value='" + value + '\'' +
                 ", scope='" + scope + '\'' +
                 ", isConstant=" + isConstant +

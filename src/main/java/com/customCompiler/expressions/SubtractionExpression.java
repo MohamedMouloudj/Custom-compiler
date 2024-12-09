@@ -23,12 +23,12 @@ public class SubtractionExpression extends BinaryExpression {
     }
 
     @Override
-    public String getType() {
+    public ExpressionType getType() {
         // Determine type based on operands
         if (left.getType().equals(ExpressionType.FLOAT.toString()) || right.getType().equals(ExpressionType.FLOAT.toString())) {
-            return ExpressionType.FLOAT.toString();
+            return ExpressionType.FLOAT;
         }
-        return ExpressionType.INTEGER.toString();
+        return ExpressionType.INTEGER;
     }
 
     @Override

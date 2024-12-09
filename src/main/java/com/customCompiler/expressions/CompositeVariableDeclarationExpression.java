@@ -23,9 +23,9 @@ public class CompositeVariableDeclarationExpression extends Expression {
 
 
     @Override
-    public String getType() {
+    public ExpressionType getType() {
         // All declarations are of the same type, return that type
-        return declarations.isEmpty() ? null : declarations.get(0).getType();
+        return declarations.isEmpty() ? null : declarations.getFirst().getType();
     }
 
     @Override

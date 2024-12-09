@@ -2,7 +2,6 @@ package com.customCompiler;
 
 import com.customCompiler.expressions.Expression;
 
-/* package com.customCompiler.gen;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -39,15 +38,18 @@ public class SymbolTable {
         return sb.toString();
     }
 }
-*/
 
-//TODO: Ibrahim
-public class SymbolTable {
-    // Hado ghir des methodes temporaires bech khdemt na, 3awdhom
-    public Object getValue(String name) {
-        return 0;
-    }
-    public String getType(String identifier) {
-        return Expression.ExpressionType.INTEGER.toString();
-    }
-}
+////TODO: Ibrahim
+//public class SymbolTable {
+//    // Hado ghir des methodes temporaires bech khdemt na, 3awdhom
+//    public Object addVariable(String name, Object value) {return 0;}
+//    public Object setValue(String name, Object value) {return 0;}
+//    public Object getValue(String name) {
+//        return 0;
+//    }
+//    public String getType(String identifier) {
+//        return Expression.ExpressionType.INTEGER.toString();
+//    }
+//
+//
+//}

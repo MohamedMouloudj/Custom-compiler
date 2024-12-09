@@ -16,12 +16,12 @@ public class VariableExpression extends Expression {
 
     @Override
     public Object evaluate(SymbolTable symbolTable) {
-        return symbolTable.getValue(identifier);
+        return symbolTable.getSymbol(identifier);
     }
 
     @Override
-    public String getType() {
-        return symbolTable.getType(identifier);
+    public ExpressionType getType() {
+        return symbolTable.getSymbol(identifier).getType();
     }
 
     public String getIdentifier() {
