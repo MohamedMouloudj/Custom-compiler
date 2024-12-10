@@ -9,12 +9,13 @@ import java.util.*;
 
 
 public class AntlrToExpression extends MinINGParserBaseVisitor<Expression> {
+    private ArrayList<> variables;
     private  SymbolTable symbolTable; // store all the variables declared in the program
     private final List<String> semanticErrors;
 
 
     public AntlrToExpression(List<String> semanticErrors) {
-        ArrayList variables = new ArrayList<>();
+        this.variables = new ArrayList<>();
         this.semanticErrors = semanticErrors;
     }
 
@@ -177,7 +178,7 @@ public class AntlrToExpression extends MinINGParserBaseVisitor<Expression> {
         for(MinINGParser.StatementContext statement : ctx.statement()){
             statements.add(visit(statement));
         }
-        return new LoopExpression(initialization,rangeEnd,loopVariable,statements,1);
+        return new LoopExpression(initialization,rangeEnd,loopVariable,statements);
     }
 
     @Override
