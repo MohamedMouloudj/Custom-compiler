@@ -17,14 +17,8 @@ public class AssignmentExpression extends Expression {
         return value;
     }
 
-    @@Override
+    @Override
     public String getType(){
-        if (value instanceof VariableDeclarationExpression) {
             return ((VariableDeclarationExpression) value).getType();
-        } else if (value instanceof ConstantExpression) {
-            return ((ConstantExpression) value).getType(); // If constants are handled in a separate class
-        }else{
-            return null;
-        }
     }
 }

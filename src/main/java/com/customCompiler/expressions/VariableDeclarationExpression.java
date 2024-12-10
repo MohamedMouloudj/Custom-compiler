@@ -44,4 +44,5 @@ public class VariableDeclarationExpression extends Expression {
         return identifier.hashCode() + type.hashCode();
     }
 
+
 }
