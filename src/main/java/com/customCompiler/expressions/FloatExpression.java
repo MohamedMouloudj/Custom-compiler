@@ -18,8 +18,8 @@ public class FloatExpression extends Expression {
     }
 
     @Override
-    public String getType() {
-        return ExpressionType.FLOAT.toString();
+    public ExpressionType getType() {
+        return ExpressionType.FLOAT;
     }
 
     @Override

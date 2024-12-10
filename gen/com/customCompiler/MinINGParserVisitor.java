@@ -79,6 +79,13 @@ public interface MinINGParserVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitAssignmentStatement(MinINGParser.AssignmentStatementContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code ExpressionStatement}
+	 * labeled alternative in {@link MinINGParser#statement}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitExpressionStatement(MinINGParser.ExpressionStatementContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code ConditionStatement}
 	 * labeled alternative in {@link MinINGParser#statement}.
 	 * @param ctx the parse tree
@@ -107,6 +114,13 @@ public interface MinINGParserVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitAssignmentExpression(MinINGParser.AssignmentExpressionContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code ArrayElementAssignment}
+	 * labeled alternative in {@link MinINGParser#assignment}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitArrayElementAssignment(MinINGParser.ArrayElementAssignmentContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code ConditionalStatement}
 	 * labeled alternative in {@link MinINGParser#condition}.
 	 * @param ctx the parse tree
@@ -121,12 +135,25 @@ public interface MinINGParserVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitLoopDefinition(MinINGParser.LoopDefinitionContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link MinINGParser#loopAssignment}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitLoopAssignment(MinINGParser.LoopAssignmentContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code ReadOperation}
 	 * labeled alternative in {@link MinINGParser#ioOperation}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitReadOperation(MinINGParser.ReadOperationContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code ReadArrayOperation}
+	 * labeled alternative in {@link MinINGParser#ioOperation}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitReadArrayOperation(MinINGParser.ReadArrayOperationContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code WriteOperation}
 	 * labeled alternative in {@link MinINGParser#ioOperation}.
@@ -198,12 +225,40 @@ public interface MinINGParserVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitVariable(MinINGParser.VariableContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code ParenthesisCondition}
+	 * labeled alternative in {@link MinINGParser#conditionExpr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitParenthesisCondition(MinINGParser.ParenthesisConditionContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code Negation}
+	 * labeled alternative in {@link MinINGParser#conditionExpr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitNegation(MinINGParser.NegationContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code Comparison}
 	 * labeled alternative in {@link MinINGParser#conditionExpr}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitComparison(MinINGParser.ComparisonContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code OrCondition}
+	 * labeled alternative in {@link MinINGParser#conditionExpr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitOrCondition(MinINGParser.OrConditionContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code AndCondition}
+	 * labeled alternative in {@link MinINGParser#conditionExpr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAndCondition(MinINGParser.AndConditionContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link MinINGParser#comparisonOp}.
 	 * @param ctx the parse tree

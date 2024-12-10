@@ -7,6 +7,7 @@ import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import com.customCompiler.MinINGParser;
 import com.customCompiler.MinINGLexer;
+import org.antlr.v4.runtime.tree.ParseTree;
 
 import java.io.IOException;
 
@@ -20,19 +21,15 @@ public class Main {
             System.out.println("Parsing: " + fileName);
             MinINGParser parser = getParser(fileName);
             // To tell ANTLR to build a parse tree. It parses from the start symbol "prog" (Axiom)
-            MinINGParser.ProgContext antlrAST=parser.prog();
+            ParseTree antlrAST=parser.prog();
+            AntlrToProgram programVisitor=new AntlrToProgram();
+            Program program=programVisitor.visit(antlrAST);
 
-            AntlrToProgram progVisitor=new AntlrToProgram();
-            Program prog=progVisitor.visit(antlrAST);
-
-
-            if (progVisitor.semanticErrors.isEmpty()) {
-                ExpressionProcessor processor = new ExpressionProcessor(prog.expressions);
-                for (String evaluation : processor.getEvaluationResult()) {
-                    System.out.println(evaluation);
-                }
+            if (programVisitor.semanticErrors.isEmpty()) {
+                ExpressionProcessor.evaluate(program.expressions, program.symbolTable);
             } else {
-                for (String error : progVisitor.semanticErrors) {
+                System.out.println("********** Errors **********");
+                for (String error : programVisitor.semanticErrors) {
                     System.err.println(error);
                 }
             }

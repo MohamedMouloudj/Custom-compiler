@@ -124,6 +124,18 @@ public interface MinINGParserListener extends ParseTreeListener {
 	 */
 	void exitAssignmentStatement(MinINGParser.AssignmentStatementContext ctx);
 	/**
+	 * Enter a parse tree produced by the {@code ExpressionStatement}
+	 * labeled alternative in {@link MinINGParser#statement}.
+	 * @param ctx the parse tree
+	 */
+	void enterExpressionStatement(MinINGParser.ExpressionStatementContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code ExpressionStatement}
+	 * labeled alternative in {@link MinINGParser#statement}.
+	 * @param ctx the parse tree
+	 */
+	void exitExpressionStatement(MinINGParser.ExpressionStatementContext ctx);
+	/**
 	 * Enter a parse tree produced by the {@code ConditionStatement}
 	 * labeled alternative in {@link MinINGParser#statement}.
 	 * @param ctx the parse tree
@@ -172,6 +184,18 @@ public interface MinINGParserListener extends ParseTreeListener {
 	 */
 	void exitAssignmentExpression(MinINGParser.AssignmentExpressionContext ctx);
 	/**
+	 * Enter a parse tree produced by the {@code ArrayElementAssignment}
+	 * labeled alternative in {@link MinINGParser#assignment}.
+	 * @param ctx the parse tree
+	 */
+	void enterArrayElementAssignment(MinINGParser.ArrayElementAssignmentContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code ArrayElementAssignment}
+	 * labeled alternative in {@link MinINGParser#assignment}.
+	 * @param ctx the parse tree
+	 */
+	void exitArrayElementAssignment(MinINGParser.ArrayElementAssignmentContext ctx);
+	/**
 	 * Enter a parse tree produced by the {@code ConditionalStatement}
 	 * labeled alternative in {@link MinINGParser#condition}.
 	 * @param ctx the parse tree
@@ -196,6 +220,16 @@ public interface MinINGParserListener extends ParseTreeListener {
 	 */
 	void exitLoopDefinition(MinINGParser.LoopDefinitionContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link MinINGParser#loopAssignment}.
+	 * @param ctx the parse tree
+	 */
+	void enterLoopAssignment(MinINGParser.LoopAssignmentContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MinINGParser#loopAssignment}.
+	 * @param ctx the parse tree
+	 */
+	void exitLoopAssignment(MinINGParser.LoopAssignmentContext ctx);
+	/**
 	 * Enter a parse tree produced by the {@code ReadOperation}
 	 * labeled alternative in {@link MinINGParser#ioOperation}.
 	 * @param ctx the parse tree
@@ -207,6 +241,18 @@ public interface MinINGParserListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitReadOperation(MinINGParser.ReadOperationContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code ReadArrayOperation}
+	 * labeled alternative in {@link MinINGParser#ioOperation}.
+	 * @param ctx the parse tree
+	 */
+	void enterReadArrayOperation(MinINGParser.ReadArrayOperationContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code ReadArrayOperation}
+	 * labeled alternative in {@link MinINGParser#ioOperation}.
+	 * @param ctx the parse tree
+	 */
+	void exitReadArrayOperation(MinINGParser.ReadArrayOperationContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code WriteOperation}
 	 * labeled alternative in {@link MinINGParser#ioOperation}.
@@ -328,6 +374,30 @@ public interface MinINGParserListener extends ParseTreeListener {
 	 */
 	void exitVariable(MinINGParser.VariableContext ctx);
 	/**
+	 * Enter a parse tree produced by the {@code ParenthesisCondition}
+	 * labeled alternative in {@link MinINGParser#conditionExpr}.
+	 * @param ctx the parse tree
+	 */
+	void enterParenthesisCondition(MinINGParser.ParenthesisConditionContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code ParenthesisCondition}
+	 * labeled alternative in {@link MinINGParser#conditionExpr}.
+	 * @param ctx the parse tree
+	 */
+	void exitParenthesisCondition(MinINGParser.ParenthesisConditionContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code Negation}
+	 * labeled alternative in {@link MinINGParser#conditionExpr}.
+	 * @param ctx the parse tree
+	 */
+	void enterNegation(MinINGParser.NegationContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code Negation}
+	 * labeled alternative in {@link MinINGParser#conditionExpr}.
+	 * @param ctx the parse tree
+	 */
+	void exitNegation(MinINGParser.NegationContext ctx);
+	/**
 	 * Enter a parse tree produced by the {@code Comparison}
 	 * labeled alternative in {@link MinINGParser#conditionExpr}.
 	 * @param ctx the parse tree
@@ -339,6 +409,30 @@ public interface MinINGParserListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitComparison(MinINGParser.ComparisonContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code OrCondition}
+	 * labeled alternative in {@link MinINGParser#conditionExpr}.
+	 * @param ctx the parse tree
+	 */
+	void enterOrCondition(MinINGParser.OrConditionContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code OrCondition}
+	 * labeled alternative in {@link MinINGParser#conditionExpr}.
+	 * @param ctx the parse tree
+	 */
+	void exitOrCondition(MinINGParser.OrConditionContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code AndCondition}
+	 * labeled alternative in {@link MinINGParser#conditionExpr}.
+	 * @param ctx the parse tree
+	 */
+	void enterAndCondition(MinINGParser.AndConditionContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code AndCondition}
+	 * labeled alternative in {@link MinINGParser#conditionExpr}.
+	 * @param ctx the parse tree
+	 */
+	void exitAndCondition(MinINGParser.AndConditionContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link MinINGParser#comparisonOp}.
 	 * @param ctx the parse tree

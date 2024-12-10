@@ -18,8 +18,8 @@ public class IntegerExpression extends Expression {
     }
 
     @Override
-    public String getType() {
-        return ExpressionType.INTEGER.toString();
+    public ExpressionType getType() {
+        return ExpressionType.INTEGER;
     }
 
     @Override

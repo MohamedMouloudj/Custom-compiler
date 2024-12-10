@@ -18,8 +18,8 @@ public class CharExpression extends Expression {
     }
 
     @Override
-    public String getType() {
-        return ExpressionType.CHARACTER.toString();
+    public ExpressionType getType() {
+        return ExpressionType.CHAR;
     }
 
     @Override

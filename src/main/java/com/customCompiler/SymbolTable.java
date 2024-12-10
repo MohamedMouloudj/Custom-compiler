@@ -14,9 +14,6 @@ public class SymbolTable {
     }
 
     public void addSymbol(String name, Symbol symbol) {
-        if (symbols.containsKey(name)) {
-            throw new RuntimeException("Symbol " + name + " is already declared.");
-        }
         symbols.put(name, symbol);
     }
 

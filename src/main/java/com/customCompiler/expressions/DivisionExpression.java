@@ -1,5 +1,6 @@
 package com.customCompiler.expressions;
 
+import com.customCompiler.Symbol;
 import com.customCompiler.SymbolTable; /**
  * Division expression
  */
@@ -10,8 +11,8 @@ public class DivisionExpression extends BinaryExpression {
 
     @Override
     public Object evaluate(SymbolTable symbolTable) {
-        Object leftVal = left.evaluate(symbolTable);
-        Object rightVal = right.evaluate(symbolTable);
+        Object leftVal = ((Symbol)left.evaluate(symbolTable)).getValue();
+        Object rightVal = ((Symbol)right.evaluate(symbolTable)).getValue();
 
         if (rightVal instanceof Number && ((Number) rightVal).doubleValue() == 0) {
             throw new ArithmeticException("Division by zero");
@@ -28,9 +29,9 @@ public class DivisionExpression extends BinaryExpression {
     }
 
     @Override
-    public String getType() {
+    public ExpressionType getType() {
         // Division always results in a float
-        return ExpressionType.FLOAT.toString();
+        return ExpressionType.FLOAT;
     }
 
     @Override

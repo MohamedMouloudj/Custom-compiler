@@ -14,12 +14,21 @@ public class ReadExpression extends Expression {
     public Object evaluate(SymbolTable symbolTable) {
 
         java.util.Scanner scanner = new java.util.Scanner(System.in);
-        int value = scanner.nextInt();
-        Symbol readSymbol = new Symbol(ExpressionType.INTEGER, value, "GLOBAL", false, "0", "0");
+        Symbol readSymbol = symbolTable.getSymbol(varName);
 
-        symbolTable.addSymbol(varName,readSymbol);
-
-        return value;
+//        if (readSymbol.getType().equals(ExpressionType.INTEGER)) {
+//            int value = scanner.nextInt();
+//            readSymbol.setValue(value);
+//        } else if (readSymbol.getType().equals(ExpressionType.FLOAT)) {
+//            float value = scanner.nextFloat();
+//            readSymbol.setValue(value);
+//        } else if (readSymbol.getType().equals(ExpressionType.CHAR)) {
+//            char value = scanner.next().charAt(0);
+//            readSymbol.setValue(value);
+//        } else {
+//            throw new RuntimeException("Invalid type for read operation");
+//        }
+        return null;
     }
 
     @Override
@@ -28,7 +37,7 @@ public class ReadExpression extends Expression {
     }
 
     @Override
-    public String getType() {
-        return "void";
+    public ExpressionType getType() {
+        return null;
     }
 }

@@ -23,16 +23,17 @@ public class WriteExpression extends Expression {
 
 
     @Override
-    public String getType() {
-        return "void";  // No return value for WRITE
+    public ExpressionType getType() {
+        return ExpressionType.;  // No return value for WRITE
     }
 
     @Override
     public String toString() {
-        String s = "WRITE ";
+        StringBuilder s = new StringBuilder("WRITE ");
+        s.append(" ");
         for (Expression expr : expressions) {
-            s += " " + expr.toString();
+            s.append(expr).append(" ");
         };
-        return s;
+        return s.toString();
     }
 }

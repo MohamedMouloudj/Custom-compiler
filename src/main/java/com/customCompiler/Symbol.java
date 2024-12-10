@@ -7,18 +7,17 @@ import com.customCompiler.expressions.Expression;
 public class Symbol {
     private Expression.ExpressionType type;
     private Object value;
-    private String scope;
+    private String scope="";
     private boolean isConstant;
     private String memoryAddress;
-    private String dimension;
+    private int size;
 
-    public Symbol(Expression.ExpressionType type, Object value, String scope, boolean isConstant, String memoryAddress, String dimension) {
+    public Symbol(Expression.ExpressionType type, Object value, boolean isConstant, String memoryAddress, int size) {
         this.type = type;
         this.value = value;
-        this.scope = scope;
         this.isConstant = isConstant;
         this.memoryAddress = memoryAddress;
-        this.dimension = dimension;
+        this.size = size;
     }
 
 
@@ -42,8 +41,8 @@ public class Symbol {
         return memoryAddress;
     }
 
-    public String getDimension() {
-        return dimension;
+    public int getSize() {
+        return size;
     }
 
     @Override
@@ -54,7 +53,7 @@ public class Symbol {
                 ", scope='" + scope + '\'' +
                 ", isConstant=" + isConstant +
                 ", memoryAddress='" + memoryAddress + '\'' +
-                ", dimension='" + dimension + '\'' +
+                ", dimension='" + size + '\'' +
                 '}';
     }
 }

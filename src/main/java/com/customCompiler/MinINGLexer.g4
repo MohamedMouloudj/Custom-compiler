@@ -1,11 +1,5 @@
 lexer grammar MinINGLexer;
 
-@header {    // add by brahim
-    package com.customCompiler;
-
-    import java.util.HashMap;
-    import java.util.Map;
-}
 
 
 VAR_GLOBAL: 'VAR_GLOBAL';

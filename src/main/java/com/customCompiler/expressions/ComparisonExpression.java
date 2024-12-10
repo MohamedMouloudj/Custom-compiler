@@ -41,8 +41,8 @@ public class ComparisonExpression extends Expression {
     }
 
     @Override
-    public String getType() {
-        return ExpressionType.BOOLEAN.toString(); // Comparison results in a boolean type
+    public ExpressionType getType() {
+        return ExpressionType.BOOLEAN; // Comparison results in a boolean type
     }
 
     @Override

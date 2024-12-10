@@ -137,6 +137,18 @@ public class MinINGParserBaseListener implements MinINGParserListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterExpressionStatement(MinINGParser.ExpressionStatementContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitExpressionStatement(MinINGParser.ExpressionStatementContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterConditionStatement(MinINGParser.ConditionStatementContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -185,6 +197,18 @@ public class MinINGParserBaseListener implements MinINGParserListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterArrayElementAssignment(MinINGParser.ArrayElementAssignmentContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitArrayElementAssignment(MinINGParser.ArrayElementAssignmentContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterConditionalStatement(MinINGParser.ConditionalStatementContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -209,6 +233,18 @@ public class MinINGParserBaseListener implements MinINGParserListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterLoopAssignment(MinINGParser.LoopAssignmentContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitLoopAssignment(MinINGParser.LoopAssignmentContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterReadOperation(MinINGParser.ReadOperationContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -216,6 +252,18 @@ public class MinINGParserBaseListener implements MinINGParserListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitReadOperation(MinINGParser.ReadOperationContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterReadArrayOperation(MinINGParser.ReadArrayOperationContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitReadArrayOperation(MinINGParser.ReadArrayOperationContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -341,6 +389,30 @@ public class MinINGParserBaseListener implements MinINGParserListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterParenthesisCondition(MinINGParser.ParenthesisConditionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitParenthesisCondition(MinINGParser.ParenthesisConditionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterNegation(MinINGParser.NegationContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitNegation(MinINGParser.NegationContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterComparison(MinINGParser.ComparisonContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -348,6 +420,30 @@ public class MinINGParserBaseListener implements MinINGParserListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitComparison(MinINGParser.ComparisonContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterOrCondition(MinINGParser.OrConditionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitOrCondition(MinINGParser.OrConditionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterAndCondition(MinINGParser.AndConditionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitAndCondition(MinINGParser.AndConditionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

@@ -1,18 +1,14 @@
 package com.customCompiler.expressions;
 
-import com.customCompiler.MinINGParser;
-import com.customCompiler.MinINGParserBaseVisitor;
 import com.customCompiler.SymbolTable;
+import com.customCompiler.*;
 import org.antlr.v4.runtime.tree.TerminalNode;
-
-import java.util.ArrayList;
-import java.util.List;
-
+import java.util.*;
 
 
 public class AntlrToExpression extends MinINGParserBaseVisitor<Expression> {
 
-    private final SymbolTable symbolTable; // store all the variables declared in the program
+    private SymbolTable symbolTable; // store all the variables declared in the program
     private final List<String> semanticErrors;
 
 
@@ -20,58 +16,38 @@ public class AntlrToExpression extends MinINGParserBaseVisitor<Expression> {
         this.symbolTable = symbolTable;
         this.semanticErrors = semanticErrors;
     }
-
-    @Override
-    public Expression visitVariableGlobalSegment(MinINGParser.VariableGlobalSegmentContext ctx) {
-        return super.visitVariableGlobalSegment(ctx);
-    }
-
-    @Override
-    public Expression visitDeclarationSegment(MinINGParser.DeclarationSegmentContext ctx) {
-        return super.visitDeclarationSegment(ctx);
-    }
-
-    @Override
-    public Expression visitInstructionSegment(MinINGParser.InstructionSegmentContext ctx) {
-        return super.visitInstructionSegment(ctx);
-    }
-
+////////// Declarations //////////
     @Override
     public Expression visitVariableDeclaration(MinINGParser.VariableDeclarationContext ctx) {
-        String type = ctx.TYPE().getText();
-        int line = ctx.getStart().getLine();
-        int column = ctx.getStart().getCharPositionInLine() + 1;
+        String type = ctx.TYPE().getText(); // Variable type
+        int line = ctx.getStart().getLine(); // Line number
+        int column = ctx.getStart().getCharPositionInLine() + 1; // Column number
 
-        List<TerminalNode> idfList = ctx.IDF();
-
-        // List to store all variables declaration expressions
+        // List of identifiers
+        List<TerminalNode> idfs = ctx.IDF();
+        // List to store all variable declaration expressions
         List<VariableDeclarationExpression> variableDeclarations = new ArrayList<>();
 
-        // Check and process each identifier
-        for (TerminalNode idf : idfList) {
+        for (TerminalNode idf : idfs) {
             String varName = idf.getText();
 
             // Check for duplicate variables
             if (symbolTable.containsSymbol(varName)) {
                 semanticErrors.add("Error: Duplicate variable declaration " + varName + " at " + line + ":" + column);
             } else {
-                symbolTable.addSymbol(varName, type);
-
+//                symbolTable.addSymbol(varName, type);
                 // Create a variable declaration expression for each variable
                 VariableDeclarationExpression varDecl = new VariableDeclarationExpression(type, varName);
                 variableDeclarations.add(varDecl);
             }
         }
-
         if (variableDeclarations.isEmpty()) {
             return null;
         }
-
         // If only one variable, return that single declaration
         if (variableDeclarations.size() == 1) {
             return variableDeclarations.getFirst();
         }
-
         // If multiple variables, I should create a composite expression
         return new CompositeVariableDeclarationExpression(variableDeclarations);
     }
@@ -81,89 +57,198 @@ public class AntlrToExpression extends MinINGParserBaseVisitor<Expression> {
         String type = ctx.TYPE().getText();
         int line = ctx.getStart().getLine();
         int column = ctx.getStart().getCharPositionInLine() + 1;
+        List<ArrayDeclarationExpression> arrayDeclarations = new ArrayList<>();
         for (MinINGParser.ArrayDeclContext idf : ctx.arrayList().arrayDecl()) {
             String varName = idf.getText();
             if (symbolTable.containsSymbol(varName)) {
-                semanticErrors.add("Error: Duplicate variable declaration " + varName + " at " + line + ":" + column);
+                semanticErrors.add("Error: Duplicate array declaration " + varName + " at " + line + ":" + column);
             } else {
-                symbolTable.addSymbol(varName, type);
+//                symbolTable.addSymbol(varName, type);
+                int size = Integer.parseInt(idf.INT().getText());
+                if (size <= 0) {
+                    semanticErrors.add("Error: Array size must be greater than 0 at " + line + ":" + column);
+                } else {
+                    ArrayDeclarationExpression arrayDecl = new ArrayDeclarationExpression(type, varName, size);
+                    arrayDeclarations.add(arrayDecl);
+                }
             }
         }
-
+        if (arrayDeclarations.isEmpty()) {
+            return null;
+        }
+        if (arrayDeclarations.size() == 1) {
+            return arrayDeclarations.getFirst();
+        }
+        return new CompositeArrayDeclarationExpression(arrayDeclarations);
     }
 
     @Override
     public Expression visitConstDeclaration(MinINGParser.ConstDeclarationContext ctx) {
-        String type = ctx.TYPE().getText();
+        Expression.ExpressionType type = Expression.ExpressionType.valueOf(ctx.TYPE().getText());
         String constantName = ctx.IDF().getText();
-        Expression value = null;
+        Expression value;
+        if (type == Expression.ExpressionType.INTEGER) {
+            value = new IntegerExpression(Integer.parseInt(ctx.INT().getText()));
+        } else if (type == Expression.ExpressionType.FLOAT) {
+            value = new FloatExpression(Float.parseFloat(ctx.FLOAT().getText()));
+        } else if (type == Expression.ExpressionType.CHAR) {
+            value = new CharExpression(ctx.CHAR().getText().charAt(0));
+        } else {
+            throw new RuntimeException("Invalid constant type");
+        }
+//        symbolTable.addSymbol(constantName, new Symbol(type, value.evaluate(symbolTable)));
+        return new ConstantExpression(constantName,type,value);
+    }
 
-        if(type.equals(Expression.ExpressionType.INTEGER.toString())){
-            int valueInt = Integer.parseInt(ctx.INT().getText());
-            value = new IntegerExpression(valueInt);
-        } else if (type.equals(Expression.ExpressionType.FLOAT.toString())) {
-            float valueFloat = Float.parseFloat(ctx.FLOAT().getText());
-            value = new FloatExpression(valueFloat);
-        } else if (type.equals(Expression.ExpressionType.CHAR.toString())) {
-            char valueChar = ctx.CHAR().getText().charAt(0);
-            value = new CharExpression(valueChar);
+////////// Statements //////////
+    /**
+     * For explicit array element assignment
+     * */
+    @Override
+    public Expression visitArrayElementAssignment(MinINGParser.ArrayElementAssignmentContext ctx) {
+        String arrayName = ctx.IDF().getText();
+        Object index = visit(ctx.expression(0)); // Get the index expression
+        Expression value = visit(ctx.expression(1)); // Get the value expression
+        int line = ctx.getStart().getLine();
+        int column = ctx.getStart().getCharPositionInLine() + 1;
+
+        // Check if the array exists and get its type and size
+        if (symbolTable.containsSymbol(arrayName)) {
+            Symbol arraySymbol = symbolTable.getSymbol(arrayName);
+            int arraySize = arraySymbol.getSize();
+            if (arraySize>0) {
+                int indexValue = (int)((IntegerExpression) index).evaluate(symbolTable);
+
+                // Check if the index is within bounds
+                if (indexValue < arraySize) {
+                    // Check if the type of the value matches the array type
+                    if (arraySymbol.getType().equals(value.getType())) {
+                        // Perform the assignment
+//                        arraySymbol.setValue(indexValue, value);
+                    } else {
+                        throw new RuntimeException("Type mismatch in array assignment " + line + ":" + column);
+                    }
+                } else {
+                    throw new RuntimeException("Array index out of bounds " + line + ":" + column);
+                }
+            } else {
+                throw new RuntimeException(arrayName + " is not an array");
+            }
+        } else {
+            throw new RuntimeException("Array not declared at " + line + ":" + column);
         }
 
-        symbolTable.setValue(constantName, value);
-        return value;
+        return null;
+    }
+
+    /**
+     * For array element Read operation
+     * */
+    @Override
+    public Expression visitReadArrayOperation(MinINGParser.ReadArrayOperationContext ctx) {
+        String arrayName = ctx.IDF().getText();
+        Object index = visit(ctx.expression()); // Get the index expression
+        int line = ctx.getStart().getLine();
+        int column = ctx.getStart().getCharPositionInLine() + 1;
+
+        if (symbolTable.containsSymbol(arrayName)) {
+            Symbol arraySymbol = symbolTable.getSymbol(arrayName);
+            int arraySize = arraySymbol.getSize();
+            if (arraySize>0) {
+                int indexValue = (int)((IntegerExpression) index).evaluate(symbolTable);
+
+                if (indexValue < arraySize) {
+                    Object inputValue = readInput(); //TODO: This method should read input from the user
+
+                    // Check if the type of the input matches the array type
+                    if (arraySymbol.getType().equals(Expression.ExpressionType.INTEGER)) {
+//                        arraySymbol.setValue(indexValue, inputValue);
+                    } else {
+                        semanticErrors.add("Error: Type mismatch in array assignment " + line + ":" + column);
+                    }
+                } else {
+                    semanticErrors.add("Error: Array index out of bounds " + line + ":" + column);
+                }
+            } else {
+                semanticErrors.add("Error: " + arrayName + " is not an array");
+            }
+        } else {
+            semanticErrors.add("Error: Array not declared at " + line + ":" + column);
+        }
+
+        return null;
     }
 
     @Override
     public Expression visitAssignmentStatement(MinINGParser.AssignmentStatementContext ctx) {
-        return super.visitAssignmentStatement(ctx);
+        return visit(ctx.assignment());
     }
 
     @Override
     public Expression visitConditionStatement(MinINGParser.ConditionStatementContext ctx) {
-
-        return super.visitConditionStatement(ctx);
+        return visit(ctx.condition());
     }
 
     @Override
     public Expression visitLoopStatement(MinINGParser.LoopStatementContext ctx) {
-//        visit(ctx.assignment());
-//        String varName = ctx.assignement().IDF().getText();
-//
-//        int endVal = Integer.parseInt(ctx.INT().getText());
-//        String stepVar = ctx.IDF().getText();
-//        while(symboleTable.get(varName)<endVal){
-//            for(MinINGParser.StatementContext statement : ctx.statement){
-//                visit(statement);
-//            }
-//
-//            symbolTable.put(varName,symbolTable.get(varName)+1);
-//        }
-        return super.visitLoopStatement(ctx);
+        return visit(ctx.loop());
     }
 
     @Override
     public Expression visitIOStatement(MinINGParser.IOStatementContext ctx) {
-        return super.visitIOStatement(ctx);
+        return visit(ctx.ioOperation());
     }
 
     @Override
     public Expression visitAssignmentExpression(MinINGParser.AssignmentExpressionContext ctx) {
         String variableName = ctx.IDF().getText();
         Expression expressionValue = visit(ctx.expression());
-        //TODO : check if we calculate the expression or not
-        return super.visitAssignmentExpression(ctx);
+        return new AssignmentExpression(variableName,expressionValue);
     }
 
     @Override
     public Expression visitConditionalStatement(MinINGParser.ConditionalStatementContext ctx) {
-
-        return null;
-
+        Expression condition = visit(ctx.conditionExpr());
+        List<Expression> ifStatements = new ArrayList<>();
+        for(MinINGParser.StatementContext statement : ctx.statement()){
+            ifStatements.add(visit(statement));
+        }
+        List<Expression> elseStatements = new ArrayList<>();
+        if (ctx.ELSE() != null) {
+            for (MinINGParser.StatementContext statement : ctx.statement()) {
+                elseStatements.add(visit(statement));
+            }
+        }
+        return new ConditionExpression(condition,ifStatements,elseStatements);
+//TODO : check how to select statement of if block and else block
     }
+
 
     @Override
     public Expression visitLoopDefinition(MinINGParser.LoopDefinitionContext ctx) {
-        return super.visitLoopDefinition(ctx);
+
+        int line = ctx.getStart().getLine();
+        int column = ctx.getStart().getCharPositionInLine() + 1;
+
+        Expression initialization = visit(ctx.loopAssignment().expression());
+        String loopVariable = ctx.loopAssignment().IDF().getText();
+        if (!initialization.getType().equals(Expression.ExpressionType.INTEGER)||initialization.getType().equals(Expression.ExpressionType.FLOAT)) {
+            semanticErrors.add("Error: Loop initialization must be an integer or float at " + line + ":" + column);
+        }
+        Expression step=visit(ctx.expression(1));
+        if (!step.getType().equals(initialization.getType())) {
+            semanticErrors.add("Error: Loop step must be of the same type as the initialization at " + line + ":" + column);
+        }
+        Expression rangeEnd = visit(ctx.expression().getLast());
+        if (!rangeEnd.getType().equals(initialization.getType())) {
+            semanticErrors.add("Error: Loop range end must be of the same type as the initialization at " + line + ":" + column);
+        }
+
+        List<Expression> statements = new ArrayList<>();
+        for(MinINGParser.StatementContext statement : ctx.statement()){
+            statements.add(visit(statement)); //TODO: store like this or evaluate immediately?
+        }
+        return new LoopExpression(initialization,step,rangeEnd,loopVariable,statements);
     }
 
     @Override
@@ -179,9 +264,12 @@ public class AntlrToExpression extends MinINGParserBaseVisitor<Expression> {
         //DEPEND ON WHAT U WANT : The difference is that calling evaluate() immediately triggers the input operation and stores the value right away, while deferring evaluation allows you to construct the AST first and evaluate it later, providing more control over when side effects (like user input) occur.
 
         String variableName = ctx.IDF().getText();
-        Expression r = new ReadExpression(variableName);
-        r.evaluate(symbolTable);
-        return r;
+        if (!symbolTable.containsSymbol(variableName)) {
+            semanticErrors.add("Error: Variable " + variableName + " not declared");
+        }
+        Expression readExpression = new ReadExpression(variableName);
+        readExpression.evaluate(symbolTable);
+        return readExpression;
     }
 
     private Object parseInput(String input) {
@@ -254,8 +342,8 @@ public class AntlrToExpression extends MinINGParserBaseVisitor<Expression> {
 
     @Override
     public Expression visitInteger(MinINGParser.IntegerContext ctx) {
-        Integer value = Integer.parseInt(ctx.INT().getText());
-        return super.visitInteger(ctx);
+        int value = Integer.parseInt(ctx.INT().getText());
+        return new IntegerExpression(value);
     }
 
     @Override
@@ -281,7 +369,6 @@ public class AntlrToExpression extends MinINGParserBaseVisitor<Expression> {
         // Evaluate the left and right expressions
         Expression left = visit(ctx.expression(0));
         Expression right = visit(ctx.expression(1));
-
         // Retrieve the comparison operator
         String op = ctx.comparisonOp().getText();
 
@@ -291,18 +378,18 @@ public class AntlrToExpression extends MinINGParserBaseVisitor<Expression> {
 
     @Override
     public Expression visitComparisonOp(MinINGParser.ComparisonOpContext ctx) {
-
         return super.visitComparisonOp(ctx);
     }
 
     @Override
     public Expression visitStringLiteral(MinINGParser.StringLiteralContext ctx) {
-
-        return super.visitStringLiteral(ctx);
+        String value = ctx.STRING_LITERAL().getText();
+        value = value.substring(1, value.length()-1);
+        return new StringExpression(value);
     }
 
     @Override
     public Expression visitExpressionInWrite(MinINGParser.ExpressionInWriteContext ctx) {
-        return super.visitExpressionInWrite(ctx);
+        return visit(ctx.expression());
     }
 }

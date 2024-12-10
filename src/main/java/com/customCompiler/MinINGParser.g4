@@ -35,13 +35,16 @@ arrayDecl
 // Statements
 statement
     : assignment                               #AssignmentStatement    // Assignment statement
+    | expression    SEMI                       #ExpressionStatement    // Expression
     | condition                                #ConditionStatement // IF statement
     | loop                                     #LoopStatement   // FOR loop
     | ioOperation                              #IOStatement // Input/Output operation
     ;
 
 // Assignment
-assignment: IDF RECEIVE expression SEMI     #AssignmentExpression
+assignment
+    : IDF RECEIVE expression SEMI     #AssignmentExpression
+    | IDF LBRACKET expression RBRACKET RECEIVE expression SEMI   #ArrayElementAssignment
     ;
 
 // IF statement
@@ -51,12 +54,16 @@ condition
 
 // FOR loop
 loop
-    : FOR LPAREN assignment COLON INT COLON IDF RPAREN LBRACE statement* RBRACE #LoopDefinition
-    ;// TODO: check the assignment problem
+    : FOR LPAREN loopAssignment COLON expression COLON expression RPAREN LBRACE statement* RBRACE #LoopDefinition
+    ;
+loopAssignment
+    : IDF RECEIVE expression
+    ;
 
 // Input/Output operations
 ioOperation
     : READ LPAREN IDF RPAREN SEMI   #ReadOperation
+    | READ LPAREN IDF LBRACKET expression RBRACKET RPAREN SEMI   #ReadArrayOperation
     | WRITE LPAREN (stringOrExpression (COMMA stringOrExpression)*)? RPAREN SEMI    #WriteOperation
     ;
 
@@ -83,6 +90,10 @@ factor
 // Condition expression
 conditionExpr
     : expression comparisonOp expression    #Comparison
+    | NOT conditionExpr                     #Negation
+    | conditionExpr OR conditionExpr           #OrCondition
+    | conditionExpr AND conditionExpr          #AndCondition
+    | LPAREN conditionExpr RPAREN           #ParenthesisCondition
     ;
 
 comparisonOp

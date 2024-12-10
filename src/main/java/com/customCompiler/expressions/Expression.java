@@ -3,8 +3,6 @@ package com.customCompiler.expressions;
 
 import com.customCompiler.SymbolTable;
 
-import java.util.Objects;
-
 /**
  * Abstract base class for all expressions in the MinING language
  */
@@ -18,6 +16,7 @@ public abstract class Expression {
 
     /**
      * Gets the type of the expression
+     *
      * @return The type of the expression (INTEGER, FLOAT, CHAR)
      */
     public abstract ExpressionType getType();
@@ -27,10 +26,8 @@ public abstract class Expression {
         INTEGER,
         FLOAT,
         CHAR,
-        VARIABLE,
         ARITHMETIC,
         BOOLEAN,
-        PARENTHESIZED
     }
 }
 

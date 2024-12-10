@@ -14,29 +14,23 @@ import java.util.List;
 public class AntlrToProgram extends MinINGParserBaseVisitor<Program> {
     // store all semantic errors in the program
     public List<String> semanticErrors;
-    public SymbolTable symbolTable;
-
 
     @Override
     public Program visitProgram(MinINGParser.ProgramContext ctx) {
-        Program program=new Program();
         semanticErrors=new ArrayList<>();
-        symbolTable=new SymbolTable();
-         AntlrToExpression expressionVisitor=new AntlrToExpression(semanticErrors, symbolTable);
+        Program program=new Program();
+        AntlrToExpression expressionVisitor=new AntlrToExpression(semanticErrors, program.symbolTable);
 
-        if (ctx.varGlobal() != null) {
-            program.addExpression(expressionVisitor.visit(ctx.varGlobal()));
-        }
+         program.addExpression(expressionVisitor.visit(ctx.varGlobal()));
+         program.addExpression(expressionVisitor.visit(ctx.declaration()));
+         program.addExpression(expressionVisitor.visit(ctx.instruction()));
 
-        // Visit declaration block
-        if (ctx.declaration() != null) {
-            program.addExpression(expressionVisitor.visit(ctx.declaration()));
-        }
+//        if (ctx.varGlobal() != null) {
+//            for (int i = 0; i < ctx.varGlobal().getChildCount(); i++) {
+//                program.addExpression(expressionVisitor.visit(ctx.varGlobal().getChild(i)));
+//            }
+//        }
 
-        // Visit instruction block
-        if (ctx.instruction() != null) {
-            program.addExpression(expressionVisitor.visit(ctx.instruction()));
-        }
 /*
         for (int i=0;i<ctx.getChildCount();i++) {
             // EOF (last child of prog rule), we don't need to visit it, we attempt to convert it to an Expression object
