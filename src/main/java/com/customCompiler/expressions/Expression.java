@@ -28,6 +28,7 @@ public abstract class Expression {
         CHAR,
         ARITHMETIC,
         BOOLEAN,
+        UNKNOWN,
     }
 }
 
