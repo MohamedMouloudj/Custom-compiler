@@ -63,7 +63,7 @@ public class AntlrToExpression extends MinINGParserBaseVisitor<Expression> {
             if (symbolTable.containsSymbol(varName)) {
                 semanticErrors.add("Error: Duplicate array declaration " + varName + " at " + line + ":" + column);
             } else {
-//                symbolTable.addSymbol(varName, type);
+                symbolTable.addSymbol(varName, new Symbol(Expression.ExpressionType.valueOf(type),null, Symbol.Scope.GLOBAL,false,0));
                 int size = Integer.parseInt(idf.INT().getText());
                 if (size <= 0) {
                     semanticErrors.add("Error: Array size must be greater than 0 at " + line + ":" + column);
@@ -126,16 +126,16 @@ public class AntlrToExpression extends MinINGParserBaseVisitor<Expression> {
                         // Perform the assignment
 //                        arraySymbol.setValue(indexValue, value);
                     } else {
-                        throw new RuntimeException("Type mismatch in array assignment " + line + ":" + column);
+                        semanticErrors.add("Error: Type mismatch in array assignment " + line + ":" + column);
                     }
                 } else {
-                    throw new RuntimeException("Array index out of bounds " + line + ":" + column);
+                    semanticErrors.add("Error: Array index out of bounds " + line + ":" + column);
                 }
             } else {
-                throw new RuntimeException(arrayName + " is not an array");
+                semanticErrors.add(arrayName + " is not an array");
             }
         } else {
-            throw new RuntimeException("Array not declared at " + line + ":" + column);
+            semanticErrors.add("Array not declared at " + line + ":" + column);
         }
 
         return null;

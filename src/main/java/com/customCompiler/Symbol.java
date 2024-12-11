@@ -1,29 +1,28 @@
 package com.customCompiler;
 
 import com.customCompiler.expressions.Expression;
-import org.stringtemplate.v4.ST;
 
 
 
 import java.io.Serializable;
 
+/**
+ * Represent a symbol in the symbol table.
+ * It implements Serializable just for encoding purpose
+ */
 public class Symbol implements Serializable {
     public enum Scope {
         GLOBAL
     }
 
-    private String name;
     private Expression.ExpressionType type;
     private Object value;
     private Scope scope;
     private boolean isConstant;
+    // if variable: size=0
     private int size;
 
-    public Symbol(String name, Expression.ExpressionType type, Object value, Scope scope, boolean isConstant, int size) {
-        if (name == null || name.isEmpty()) {
-            throw new IllegalArgumentException("Le nom du symbole ne peut pas être nul ou vide.");
-        }
-        this.name = name;
+    public Symbol(Expression.ExpressionType type, Object value, Scope scope, boolean isConstant, int size) {
         this.type = type;
         this.value = value;
         this.scope = scope;
@@ -31,9 +30,6 @@ public class Symbol implements Serializable {
         this.size = size;
     }
 
-    public String getName() {
-        return name;
-    }
 
     public Expression.ExpressionType getType() {
         return type;
@@ -62,7 +58,6 @@ public class Symbol implements Serializable {
     @Override
     public String toString() {
         return "Symbol{" +
-                "name='" + name + '\'' +
                 ", type=" + type +
                 ", value=" + value +
                 ", scope=" + scope +

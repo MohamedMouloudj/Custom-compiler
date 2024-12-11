@@ -2,7 +2,9 @@ package com.customCompiler.expressions;
 
 import com.customCompiler.SymbolTable;
 
-import java.util.Objects; /**
+import java.util.Objects;
+
+/**
  * Represents an integer expression
  */
 public class IntegerExpression extends Expression {

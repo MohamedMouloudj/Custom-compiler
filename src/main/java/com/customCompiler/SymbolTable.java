@@ -15,38 +15,6 @@ public class SymbolTable {
         symbols = new HashMap<>();
     }
 
-    // encode/decode des données pour structure de table symbol
-    private String encode(Symbol symbol) {
-        return symbol.getName() + "|" +
-                symbol.getType() + "|" +
-                symbol.getValue() + "|" +
-                symbol.getScope() + "|" +
-                symbol.isConstant() + "|" +
-                symbol.getSize();
-    }
-
-    private Symbol decode(String encoded) {
-        if (encoded == null || encoded.isEmpty()) {
-            throw new IllegalArgumentException("Données encodées invalides.");
-        }
-
-        String[] parts = encoded.split("\\|");
-
-        if (parts.length != 6) {
-            throw new RuntimeException("Le format des données encodées est incorrect.");
-        }
-
-        String name = parts[0];
-        Expression.ExpressionType type = Expression.ExpressionType.valueOf(parts[1]);
-        Object value = parseValue(parts[2], type);
-        Symbol.Scope scope = Symbol.Scope.valueOf(parts[3]);
-        boolean isConstant = Boolean.parseBoolean(parts[4]);
-        int size = Integer.parseInt(parts[5]);
-
-        return new Symbol(name, type, value, scope, isConstant, size);
-    }
-
-
     // Méthode utilitaire pour convertir la valeur en fonction de son type
     private Object parseValue(String value, Expression.ExpressionType type) {
         switch (type) {
@@ -159,7 +127,7 @@ public class SymbolTable {
             Symbol symbol = decodeSymbol(entry.getValue());
             String row = String.format(
                     "| %-15s | %-10s | %-10s | %-10s | %-10s | %-10d |",
-                    symbol.getName(),
+                    entry.getKey(),
                     symbol.getType(),
                     symbol.getValue() != null ? symbol.getValue().toString() : "null",
                     symbol.getScope(),
@@ -176,12 +144,11 @@ public class SymbolTable {
     public static void main(String[] args) {
         SymbolTable symbolTable = new SymbolTable();
 
-
         try{
             // Créer des symboles
-            symbolTable.addSymbol("x", new Symbol("x", Expression.ExpressionType.INTEGER, 42, Symbol.Scope.GLOBAL, true, 4));
-            symbolTable.addSymbol("y", new Symbol("y", Expression.ExpressionType.FLOAT, 3.14, Symbol.Scope.GLOBAL, false, 8));
-            symbolTable.addSymbol("z", new Symbol("z", Expression.ExpressionType.CHAR, 32, Symbol.Scope.GLOBAL, false, 1));
+            symbolTable.addSymbol("x", new Symbol(Expression.ExpressionType.INTEGER, 42, Symbol.Scope.GLOBAL, true, 4));
+            symbolTable.addSymbol("y", new Symbol(Expression.ExpressionType.FLOAT, 3.14, Symbol.Scope.GLOBAL, false, 8));
+            symbolTable.addSymbol("z", new Symbol(Expression.ExpressionType.CHAR, 32, Symbol.Scope.GLOBAL, false, 1));
 
 
 
