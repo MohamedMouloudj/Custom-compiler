@@ -39,25 +39,6 @@ public class Main {
         }
 
 
-        SymbolTable symbolTable = new SymbolTable();
-
-        // Ajouter des symboles avec le nom, le type, la valeur, le scope, etc.
-        symbolTable.addSymbol("x", new Symbol("x", Expression.ExpressionType.INTEGER, 42, Symbol.Scope.GLOBAL, false, 4));
-        symbolTable.addSymbol("y", new Symbol("y", Expression.ExpressionType.FLOAT, 3.14, Symbol.Scope.GLOBAL, false, 4));
-
-        // Modifier la valeur d'un symbole existant
-        symbolTable.setValue("x", 100);
-
-        // Afficher la valeur d'un symbole
-        System.out.println("Valeur de x : " + symbolTable.getValue("x"));
-        System.out.println("Valeur de y : " + symbolTable.getValue("y"));
-
-        // Afficher le type d'un symbole
-        System.out.println("Type de x : " + symbolTable.getType("x"));
-
-        // Afficher toute la table
-        symbolTable.displayTable();
-
     }
 
     /**

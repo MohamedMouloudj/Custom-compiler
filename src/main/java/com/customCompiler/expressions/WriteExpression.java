@@ -24,7 +24,7 @@ public class WriteExpression extends Expression {
 
     @Override
     public ExpressionType getType() {
-        return ExpressionType.;  // No return value for WRITE
+        return null;  // No return value for WRITE
     }
 
     @Override

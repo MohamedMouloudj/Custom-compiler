@@ -158,7 +158,7 @@ public class AntlrToExpression extends MinINGParserBaseVisitor<Expression> {
                 int indexValue = (int)((IntegerExpression) index).evaluate(symbolTable);
 
                 if (indexValue < arraySize) {
-                    Object inputValue = readInput(); //TODO: This method should read input from the user
+                    // bject inputValue = readInput(); //TODO: This method should read input from the user
 
                     // Check if the type of the input matches the array type
                     if (arraySymbol.getType().equals(Expression.ExpressionType.INTEGER)) {
@@ -219,8 +219,9 @@ public class AntlrToExpression extends MinINGParserBaseVisitor<Expression> {
                 elseStatements.add(visit(statement));
             }
         }
-        return new ConditionExpression(condition,ifStatements,elseStatements);
+        //return new ConditionExpression(condition,ifStatements,elseStatements);
 //TODO : check how to select statement of if block and else block
+        return null ;
     }
 
 

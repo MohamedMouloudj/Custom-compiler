@@ -13,7 +13,7 @@ public class AssignmentExpression extends Expression {
 
     @Override
     public Object evaluate(SymbolTable symbolTable) {
-        symbolTable.addVariable(variableName, value);
+        symbolTable.setValue(variableName, value);
         return value;
     }
 

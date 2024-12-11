@@ -62,25 +62,28 @@ public class Symbol {
 package com.customCompiler;
 
 import com.customCompiler.expressions.Expression;
-//import org.stringtemplate.v4.ST;
+import org.stringtemplate.v4.ST;
 
 
 
+import java.io.Serializable;
 
-public class Symbol {
+public class Symbol implements Serializable {
     public enum Scope {
         GLOBAL
     }
 
-    private String name; // Nom du symbole (ajouté)
+    private String name;
     private Expression.ExpressionType type;
     private Object value;
     private Scope scope;
     private boolean isConstant;
     private int size;
 
-    // Constructeur modifié pour inclure le nom
     public Symbol(String name, Expression.ExpressionType type, Object value, Scope scope, boolean isConstant, int size) {
+        if (name == null || name.isEmpty()) {
+            throw new IllegalArgumentException("Le nom du symbole ne peut pas être nul ou vide.");
+        }
         this.name = name;
         this.type = type;
         this.value = value;
@@ -89,8 +92,6 @@ public class Symbol {
         this.size = size;
     }
 
-
-    // Méthode pour récupérer le nom
     public String getName() {
         return name;
     }
@@ -122,7 +123,7 @@ public class Symbol {
     @Override
     public String toString() {
         return "Symbol{" +
-                "name='" + name +
+                "name='" + name + '\'' +
                 ", type=" + type +
                 ", value=" + value +
                 ", scope=" + scope +
