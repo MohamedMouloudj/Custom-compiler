@@ -20,7 +20,7 @@ public class AntlrToExpression extends MinINGParserBaseVisitor<Expression> {
 ////////// Declarations //////////
     @Override
     public Expression visitVariableDeclaration(MinINGParser.VariableDeclarationContext ctx) {
-        String type = ctx.TYPE().getText(); // Variable type
+        Expression.ExpressionType type = Expression.ExpressionType.valueOf(ctx.TYPE().getText());
         int line = ctx.getStart().getLine(); // Line number
         int column = ctx.getStart().getCharPositionInLine() + 1; // Column number
 
@@ -36,9 +36,9 @@ public class AntlrToExpression extends MinINGParserBaseVisitor<Expression> {
             if (symbolTable.containsSymbol(varName)) {
                 semanticErrors.add("Error: Duplicate variable declaration " + varName + " at " + line + ":" + column);
             } else {
-//                symbolTable.addSymbol(varName, type);
+                symbolTable.addSymbol(varName, new Symbol(type, null,Symbol.Scope.GLOBAL,false,0));
                 // Create a variable declaration expression for each variable
-                VariableDeclarationExpression varDecl = new VariableDeclarationExpression(type, varName);
+                VariableDeclarationExpression varDecl = new VariableDeclarationExpression(type.toString(), varName);
                 variableDeclarations.add(varDecl);
             }
         }
@@ -95,9 +95,10 @@ public class AntlrToExpression extends MinINGParserBaseVisitor<Expression> {
         } else if (type == Expression.ExpressionType.CHAR) {
             value = new CharExpression(ctx.CHAR().getText().charAt(0));
         } else {
-            throw new RuntimeException("Invalid constant type");
+            semanticErrors.add("Error :  Invalid constant type at line "+ ctx.getStart().getLine() + " column " + ctx.getStart().getCharPositionInLine() +1);
+            value = null;
         }
-//        symbolTable.addSymbol(constantName, new Symbol(type, value.evaluate(symbolTable)));
+        symbolTable.addSymbol(constantName, new Symbol(type,value,Symbol.Scope.GLOBAL,true,0));
         return new ConstantExpression(constantName,type,value);
     }
 
@@ -125,12 +126,13 @@ public class AntlrToExpression extends MinINGParserBaseVisitor<Expression> {
                     // Check if the type of the value matches the array type
                     if (arraySymbol.getType().equals(value.getType())) {
                         // Perform the assignment
+                     //TODO : check if we dont set value
 //                        arraySymbol.setValue(indexValue, value);
                     } else {
-                        semanticErrors.add("Error: Type mismatch in array assignment " + line + ":" + column);
+                        semanticErrors.add("Error: Type mismatch in array assignment at line " + line + " column" + column);
                     }
                 } else {
-                    semanticErrors.add("Error: Array index out of bounds " + line + ":" + column);
+                    semanticErrors.add("Error: Array index out of bounds at " + line + " column" + column);
                 }
             } else {
                 semanticErrors.add(arrayName + " is not an array");
@@ -204,7 +206,7 @@ public class AntlrToExpression extends MinINGParserBaseVisitor<Expression> {
     public Expression visitAssignmentExpression(MinINGParser.AssignmentExpressionContext ctx) {
         String variableName = ctx.IDF().getText();
         if(!symbolTable.containsSymbol(variableName)) {
-            semanticErrors.add("Error: Variable " + variableName + " is not defined at line " + ctx.getStart().getLine() + " column " + ctx.getStart().getCharPositionInLine());
+            semanticErrors.add("Error: Variable " + variableName + " is not defined at line " + ctx.getStart().getLine() + " column " + ctx.getStart().getCharPositionInLine() +1);
 
         }else{
             String variableType  = symbolTable.getType(variableName);
@@ -225,7 +227,7 @@ public class AntlrToExpression extends MinINGParserBaseVisitor<Expression> {
     public Expression visitConditionalStatement(MinINGParser.ConditionalStatementContext ctx) {
         Expression condition = visit(ctx.conditionExpr());
         if (!Objects.equals(condition.getType(), Expression.ExpressionType.BOOLEAN)) {
-            semanticErrors.add("Error: Conditional expression must be of type boolean at line " + ctx.getStart().getLine() + " column " + ctx.getStart().getCharPositionInLine());
+            semanticErrors.add("Error: Conditional expression must be of type boolean at line " + ctx.getStart().getLine() + " column " + ctx.getStart().getCharPositionInLine() +1);
         }
         List<Expression> ifStatements = new ArrayList<>();
         for(MinINGParser.StatementContext statement : ctx.statement()){
@@ -238,7 +240,7 @@ public class AntlrToExpression extends MinINGParserBaseVisitor<Expression> {
             }
         }
         return new ConditionExpression(condition,ifStatements,elseStatements);
-//TODO : check how to select statement of if block and else block DekuDz : nadohoum ga3 d
+//TODO : check how to select statement of if block and else block DekuDz : nadohoum ga3
         //return null ;
     }
 
@@ -317,8 +319,13 @@ public class AntlrToExpression extends MinINGParserBaseVisitor<Expression> {
     @Override
     public Expression visitAddition(MinINGParser.AdditionContext ctx) {
         Expression result = visit(ctx.term(0));
+
         for(int i = 1;i<ctx.term().size();i++){
             Expression right = visit(ctx.term(i));
+            isCompatibleForComparison c = new isCompatibleForComparison(right,result);
+            if(!c.checkCompatibilityArithmetic()){
+                semanticErrors.add("Error : Addition operation between incompatible types " + right.getType() + " and " + result.getType() + " at line " + ctx.getStart().getLine() + " column " + ctx.getStart().getCharPositionInLine() + 1);
+            }
             result = new AdditionExpression(result, right);
         }
         return result;
@@ -329,6 +336,10 @@ public class AntlrToExpression extends MinINGParserBaseVisitor<Expression> {
         Expression result = visit(ctx.term(0));
         for(int i = 1;i<ctx.term().size();i++){
             Expression right = visit(ctx.term(i));
+            isCompatibleForComparison c = new isCompatibleForComparison(right,result);
+            if(!c.checkCompatibilityArithmetic()){
+                semanticErrors.add("Error : Subtraction operation between incompatible types " + right.getType() + " and " + result.getType() + " at line " + ctx.getStart().getLine() + " column " + ctx.getStart().getCharPositionInLine() + 1);
+            }
             result = new SubtractionExpression(result, right);
         }
         return result;
@@ -339,6 +350,10 @@ public class AntlrToExpression extends MinINGParserBaseVisitor<Expression> {
         Expression result = visit(ctx.factor(0));
         for (int i = 1; i < ctx.factor().size(); i++) {
             Expression right = visit(ctx.factor(i));
+            isCompatibleForComparison c = new isCompatibleForComparison(right,result);
+            if(!c.checkCompatibilityArithmetic()){
+                semanticErrors.add("Error : Multiplication operation between incompatible types " + right.getType() + " and " + result.getType() + " at line " + ctx.getStart().getLine() + " column " + ctx.getStart().getCharPositionInLine() + 1);
+            }
             result = new MultiplicationExpression(result, right);
         }
         return result;
@@ -350,8 +365,11 @@ public class AntlrToExpression extends MinINGParserBaseVisitor<Expression> {
         List<MinINGParser.FactorContext> factors = ctx.factor(); //Car : (MUL factor)*
         Expression left = visit(factors.get(0));
         Expression right = visit(factors.get(1));
-
-
+        isCompatibleForComparison c = new isCompatibleForComparison(right,left);
+        if(!c.checkCompatibilityArithmetic()){
+            semanticErrors.add("Error : Division operation between incompatible types " + right.getType() + " and " + result.getType() + " at line " + ctx.getStart().getLine() + " column " + ctx.getStart().getCharPositionInLine() + 1);
+        }
+        //TODO : check if right != 0 and add semantic error but how can i get value , if any idea tag me on discord DekuDz
         return new DivisionExpression(left, right);
     }
 
@@ -361,7 +379,7 @@ public class AntlrToExpression extends MinINGParserBaseVisitor<Expression> {
             return visit(ctx.expression());
         }else{
             semanticErrors.add("Error: Missing or invalid expression inside parentheses at line "
-                    + ctx.getStart().getLine() + ", column " + ctx.getStart().getCharPositionInLine());
+                    + ctx.getStart().getLine() + ", column " + ctx.getStart().getCharPositionInLine()+1);
             return null;
         }
 
@@ -389,7 +407,7 @@ public class AntlrToExpression extends MinINGParserBaseVisitor<Expression> {
     public Expression visitVariable(MinINGParser.VariableContext ctx) {
         String variableName = ctx.IDF().getText();
         if(!symbolTable.containsSymbol(variableName)){
-            semanticErrors.add("Error: Variable " + variableName + " not declared at line " +  + ctx.getStart().getLine() + ", column " + ctx.getStart().getCharPositionInLine());
+            semanticErrors.add("Error: Variable " + variableName + " not declared at line " +  + ctx.getStart().getLine() + ", column " + ctx.getStart().getCharPositionInLine()+1);
         }else{
             return new VariableExpression(variableName,symbolTable);
         }
@@ -403,11 +421,11 @@ public class AntlrToExpression extends MinINGParserBaseVisitor<Expression> {
         Expression right = visit(ctx.expression(1));
         String op = ctx.comparisonOp().getText();
         isCompatibleForComparison c = new isCompatibleForComparison(left, right);
-        if(!c.checkCompatibility()){
+        if(!c.checkCompatibilityComparision()){
             semanticErrors.add("Error: Cannot apply operator '" + op + "' to types "
                     + left.getType() + " and " + right.getType()
                     + " at line " + ctx.getStart().getLine()
-                    + ", column " + ctx.getStart().getCharPositionInLine());        }
+                    + ", column " + ctx.getStart().getCharPositionInLine() +1);        }
 
         // Wrap the comparison logic into a ComparisonExpression object
         return new ComparisonExpression(left, right, op);
@@ -415,24 +433,7 @@ public class AntlrToExpression extends MinINGParserBaseVisitor<Expression> {
 
     @Override
     public Expression visitComparisonOp(MinINGParser.ComparisonOpContext ctx) {
-//        String op = null;
-//        if (ctx.GREATER() != null) {
-//            op = ">";
-//        } else if (ctx.GREATEREQUAL() != null) {
-//            op = ">=";
-//        } else if (ctx.LESS() != null) {
-//            op = "<";
-//        } else if (ctx.LESSEQUAL() != null) {
-//            op = "<=";
-//        } else if (ctx.EQUAL() != null) {
-//            op = "==";
-//        } else if (ctx.NOTEQUAL() != null) {
-//            op = "!=";
-//        }else{
-//            semanticErrors.add("Error : Unknown or unsupported operator at line " + ctx.getStart().getLine() + ", column " + ctx.getStart().getCharPositionInLine());
-//        }
-//        // I added the LiteralExpression class to store comparison operators as strings and use it in comparisonExpression
-//        return new LiteralExpression(op);
+
         return null;
     }
 

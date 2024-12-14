@@ -2,15 +2,11 @@ package com.customCompiler;
 
 
 import com.customCompiler.expressions.AntlrToProgram;
-import com.customCompiler.expressions.Expression;
 import com.customCompiler.expressions.Program;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
-import com.customCompiler.MinINGParser;
-import com.customCompiler.MinINGLexer;
 import org.antlr.v4.runtime.tree.ParseTree;
-import com.customCompiler.SymbolTable;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;

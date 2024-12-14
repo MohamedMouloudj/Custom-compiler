@@ -6,8 +6,8 @@
         <PerGrammarGenerationSettings>
           <option name="fileName" value="$PROJECT_DIR$/src/main/java/com/customCompiler/MinINGLexer.g4" />
           <option name="autoGen" value="true" />
-          <option name="outputDir" value="D:\University\2024-09_Semester-5\Random-projects\Compilator-project\CustomCompiler\gen" />
-          <option name="libDir" value="D:\University\2024-09_Semester-5\Random-projects\Compilator-project\CustomCompiler\src\main\java\com\customCompiler" />
+          <option name="outputDir" value="C:\Users\Ramzi\Desktop\ProjetCompile\Custom-compiler\gen" />
+          <option name="libDir" value="C:\Users\Ramzi\Desktop\ProjetCompile\Custom-compiler\src\main\java\com\customCompiler" />
           <option name="encoding" value="" />
           <option name="pkg" value="com.customCompiler" />
           <option name="language" value="Java" />
@@ -16,8 +16,8 @@
         <PerGrammarGenerationSettings>
           <option name="fileName" value="$PROJECT_DIR$/src/main/java/com/customCompiler/MinINGParser.g4" />
           <option name="autoGen" value="true" />
-          <option name="outputDir" value="D:\University\2024-09_Semester-5\Random-projects\Compilator-project\CustomCompiler\gen" />
-          <option name="libDir" value="D:\University\2024-09_Semester-5\Random-projects\Compilator-project\CustomCompiler\src\main\java\com\customCompiler" />
+          <option name="outputDir" value="C:\Users\Ramzi\Desktop\ProjetCompile\Custom-compiler\gen" />
+          <option name="libDir" value="C:\Users\Ramzi\Desktop\ProjetCompile\Custom-compiler\src\main\java\com\customCompiler" />
           <option name="encoding" value="" />
           <option name="pkg" value="com.customCompiler" />
           <option name="language" value="Java" />

@@ -1,4 +1,4 @@
-// Generated from D:/University/2024-09_Semester-5/Random-projects/Compilator-project/CustomCompiler/src/main/java/com/customCompiler/MinINGParser.g4 by ANTLR 4.13.2
+// Generated from C:/Users/Ramzi/Desktop/ProjetCompile/Custom-compiler/src/main/java/com/customCompiler/MinINGParser.g4 by ANTLR 4.13.2
 package com.customCompiler;
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
