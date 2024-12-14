@@ -401,7 +401,7 @@ public class AntlrToExpression extends MinINGParserBaseVisitor<Expression> {
         // Evaluate the left and right expressions
         Expression left = visit(ctx.expression(0));
         Expression right = visit(ctx.expression(1));
-        String op = visit(ctx.comparisonOp()).toString(); //can be .evaluate()
+        String op = ctx.comparisonOp().getText();
         isCompatibleForComparison c = new isCompatibleForComparison(left, right);
         if(!c.checkCompatibility()){
             semanticErrors.add("Error: Cannot apply operator '" + op + "' to types "
@@ -415,24 +415,25 @@ public class AntlrToExpression extends MinINGParserBaseVisitor<Expression> {
 
     @Override
     public Expression visitComparisonOp(MinINGParser.ComparisonOpContext ctx) {
-        String op = null;
-        if (ctx.GREATER() != null) {
-            op = ">";
-        } else if (ctx.GREATEREQUAL() != null) {
-            op = ">=";
-        } else if (ctx.LESS() != null) {
-            op = "<";
-        } else if (ctx.LESSEQUAL() != null) {
-            op = "<=";
-        } else if (ctx.EQUAL() != null) {
-            op = "==";
-        } else if (ctx.NOTEQUAL() != null) {
-            op = "!=";
-        }else{
-            semanticErrors.add("Error : Unknown or unsupported operator at line " + ctx.getStart().getLine() + ", column " + ctx.getStart().getCharPositionInLine());
-        }
-        // I added the LiteralExpression class to store comparison operators as strings and use it in comparisonExpression
-        return new LiteralExpression(op);
+//        String op = null;
+//        if (ctx.GREATER() != null) {
+//            op = ">";
+//        } else if (ctx.GREATEREQUAL() != null) {
+//            op = ">=";
+//        } else if (ctx.LESS() != null) {
+//            op = "<";
+//        } else if (ctx.LESSEQUAL() != null) {
+//            op = "<=";
+//        } else if (ctx.EQUAL() != null) {
+//            op = "==";
+//        } else if (ctx.NOTEQUAL() != null) {
+//            op = "!=";
+//        }else{
+//            semanticErrors.add("Error : Unknown or unsupported operator at line " + ctx.getStart().getLine() + ", column " + ctx.getStart().getCharPositionInLine());
+//        }
+//        // I added the LiteralExpression class to store comparison operators as strings and use it in comparisonExpression
+//        return new LiteralExpression(op);
+        return null;
     }
 
     @Override
