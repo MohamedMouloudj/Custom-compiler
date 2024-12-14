@@ -367,7 +367,7 @@ public class AntlrToExpression extends MinINGParserBaseVisitor<Expression> {
         Expression right = visit(factors.get(1));
         isCompatibleForComparison c = new isCompatibleForComparison(right,left);
         if(!c.checkCompatibilityArithmetic()){
-            semanticErrors.add("Error : Division operation between incompatible types " + right.getType() + " and " + result.getType() + " at line " + ctx.getStart().getLine() + " column " + ctx.getStart().getCharPositionInLine() + 1);
+            semanticErrors.add("Error : Division operation between incompatible types " + left.getType() + " and " + right.getType() + " at line " + ctx.getStart().getLine() + " column " + ctx.getStart().getCharPositionInLine() + 1);
         }
         //TODO : check if right != 0 and add semantic error but how can i get value , if any idea tag me on discord DekuDz
         return new DivisionExpression(left, right);
