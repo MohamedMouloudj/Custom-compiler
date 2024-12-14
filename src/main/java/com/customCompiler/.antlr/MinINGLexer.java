@@ -1,5 +1,10 @@
-// Generated from C:/Users/Ramzi/Desktop/ProjetCompile/Custom-compiler/src/main/java/com/customCompiler/MinINGLexer.g4 by ANTLR 4.13.2
-package com.customCompiler;
+// Generated from c:/Users/Ramzi/Desktop/ProjetCompile/Custom-compiler/src/main/java/com/customCompiler/MinINGLexer.g4 by ANTLR 4.13.1
+    // add by brahim
+    package com.customCompiler;
+
+    import java.util.HashMap;
+    import java.util.Map;
+
 import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.Token;
@@ -11,7 +16,7 @@ import org.antlr.v4.runtime.misc.*;
 
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast", "CheckReturnValue", "this-escape"})
 public class MinINGLexer extends Lexer {
-	static { RuntimeMetaData.checkVersion("4.13.2", RuntimeMetaData.VERSION); }
+	static { RuntimeMetaData.checkVersion("4.13.1", RuntimeMetaData.VERSION); }
 
 	protected static final DFA[] _decisionToDFA;
 	protected static final PredictionContextCache _sharedContextCache =
@@ -97,6 +102,23 @@ public class MinINGLexer extends Lexer {
 	public Vocabulary getVocabulary() {
 		return VOCABULARY;
 	}
+
+	      // add by brahim
+	    private Map<String, String> symbolTable = new HashMap<>();
+
+	    public void addSymbol(String name, String type) {
+	        if (symbolTable.containsKey(name)) {
+	            System.err.println("Error: Symbol " + name + " is already declared.");
+	        } else {
+	            symbolTable.put(name, type);
+	        }
+	    }
+
+	    public void printSymbolTable() {
+	        System.out.println("Symbol Table (from Lexer):");
+	        symbolTable.forEach((key, value) ->
+	            System.out.println("Name: " + key + ", Type: " + value));
+	    }
 
 
 	public MinINGLexer(CharStream input) {

@@ -1,4 +1,39 @@
 package com.customCompiler.expressions;
+import com.customCompiler.SymbolTable;
 
-public class ConditionExpression {
+import java.util.List;
+public class ConditionExpression extends Expression {
+    private final Expression condition;
+    private final List<Expression> ifStatements;
+    private final List<Expression> elseStatements;
+
+    public ConditionExpression(Expression condition, List<Expression> ifStatements, List<Expression> elseStatements) {
+        this.condition = condition;
+        this.ifStatements = ifStatements;
+        this.elseStatements = elseStatements;
+    }
+
+    @Override
+    public Object evaluate(SymbolTable symbolTable) {
+        return null;
+    }
+
+    @Override
+    public ExpressionType getType(){
+        return ExpressionType.UNKNOWN;
+    }
+
+
+    public Expression getCondition() {
+        return condition;
+    }
+
+    public List<Expression> getIfStatements() {
+        return ifStatements;
+    }
+
+    public List<Expression> getElseStatements() {
+        return elseStatements;
+    }
+
 }

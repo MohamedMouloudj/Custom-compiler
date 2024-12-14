@@ -1,5 +1,6 @@
 package com.customCompiler.expressions;
 
+import com.customCompiler.*;
 import com.customCompiler.SymbolTable;
 import com.customCompiler.*;
 import org.antlr.v4.runtime.tree.TerminalNode;
@@ -202,13 +203,30 @@ public class AntlrToExpression extends MinINGParserBaseVisitor<Expression> {
     @Override
     public Expression visitAssignmentExpression(MinINGParser.AssignmentExpressionContext ctx) {
         String variableName = ctx.IDF().getText();
-        Expression expressionValue = visit(ctx.expression());
-        return new AssignmentExpression(variableName,expressionValue);
+        if(!symbolTable.containsSymbol(variableName)) {
+            semanticErrors.add("Error: Variable " + variableName + " is not defined at line " + ctx.getStart().getLine() + " column " + ctx.getStart().getCharPositionInLine());
+
+        }else{
+            String variableType  = symbolTable.getType(variableName);
+
+            Expression expressionValue = visit(ctx.expression());
+            String expressionType = expressionValue.getType().toString();
+
+            if(!Objects.equals(variableType, expressionType)){
+                semanticErrors.add("Error : "+ variableName + " is type " + variableType + " not "+ expressionType + " at line " + ctx.getStart().getLine() + " column " + ctx.getStart().getCharPositionInLine() + 1);
+
+            }
+            return new AssignmentExpression(variableName,expressionValue);
+        }
+        return  null;
     }
 
     @Override
     public Expression visitConditionalStatement(MinINGParser.ConditionalStatementContext ctx) {
         Expression condition = visit(ctx.conditionExpr());
+        if (!Objects.equals(condition.getType(), Expression.ExpressionType.BOOLEAN)) {
+            semanticErrors.add("Error: Conditional expression must be of type boolean at line " + ctx.getStart().getLine() + " column " + ctx.getStart().getCharPositionInLine());
+        }
         List<Expression> ifStatements = new ArrayList<>();
         for(MinINGParser.StatementContext statement : ctx.statement()){
             ifStatements.add(visit(statement));
@@ -219,9 +237,9 @@ public class AntlrToExpression extends MinINGParserBaseVisitor<Expression> {
                 elseStatements.add(visit(statement));
             }
         }
-        //return new ConditionExpression(condition,ifStatements,elseStatements);
-//TODO : check how to select statement of if block and else block
-        return null ;
+        return new ConditionExpression(condition,ifStatements,elseStatements);
+//TODO : check how to select statement of if block and else block DekuDz : nadohoum ga3
+        //return null ;
     }
 
 
@@ -333,12 +351,20 @@ public class AntlrToExpression extends MinINGParserBaseVisitor<Expression> {
         Expression left = visit(factors.get(0));
         Expression right = visit(factors.get(1));
 
+
         return new DivisionExpression(left, right);
     }
 
     @Override
     public Expression visitParenthesis(MinINGParser.ParenthesisContext ctx) {
-        return visit(ctx.expression());
+        if(ctx.expression() != null) {
+            return visit(ctx.expression());
+        }else{
+            semanticErrors.add("Error: Missing or invalid expression inside parentheses at line "
+                    + ctx.getStart().getLine() + ", column " + ctx.getStart().getCharPositionInLine());
+            return null;
+        }
+
     }
 
     @Override
@@ -362,7 +388,12 @@ public class AntlrToExpression extends MinINGParserBaseVisitor<Expression> {
     @Override
     public Expression visitVariable(MinINGParser.VariableContext ctx) {
         String variableName = ctx.IDF().getText();
-        return new VariableExpression(variableName,symbolTable);
+        if(!symbolTable.containsSymbol(variableName)){
+            semanticErrors.add("Error: Variable " + variableName + " not declared at line " +  + ctx.getStart().getLine() + ", column " + ctx.getStart().getCharPositionInLine());
+        }else{
+            return new VariableExpression(variableName,symbolTable);
+        }
+        return null;
     }
 
     @Override
@@ -370,8 +401,13 @@ public class AntlrToExpression extends MinINGParserBaseVisitor<Expression> {
         // Evaluate the left and right expressions
         Expression left = visit(ctx.expression(0));
         Expression right = visit(ctx.expression(1));
-        // Retrieve the comparison operator
-        String op = ctx.comparisonOp().getText();
+        String op = visit(ctx.comparisonOp()).toString(); //can be .evaluate()
+        isCompatibleForComparison c = new isCompatibleForComparison(left, right);
+        if(!c.checkCompatibility()){
+            semanticErrors.add("Error: Cannot apply operator '" + op + "' to types "
+                    + left.getType() + " and " + right.getType()
+                    + " at line " + ctx.getStart().getLine()
+                    + ", column " + ctx.getStart().getCharPositionInLine());        }
 
         // Wrap the comparison logic into a ComparisonExpression object
         return new ComparisonExpression(left, right, op);
@@ -379,7 +415,24 @@ public class AntlrToExpression extends MinINGParserBaseVisitor<Expression> {
 
     @Override
     public Expression visitComparisonOp(MinINGParser.ComparisonOpContext ctx) {
-        return super.visitComparisonOp(ctx);
+        String op = null;
+        if (ctx.GREATER() != null) {
+            op = ">";
+        } else if (ctx.GREATEREQUAL() != null) {
+            op = ">=";
+        } else if (ctx.LESS() != null) {
+            op = "<";
+        } else if (ctx.LESSEQUAL() != null) {
+            op = "<=";
+        } else if (ctx.EQUAL() != null) {
+            op = "==";
+        } else if (ctx.NOTEQUAL() != null) {
+            op = "!=";
+        }else{
+            semanticErrors.add("Error : Unknown or unsupported operator at line " + ctx.getStart().getLine() + ", column " + ctx.getStart().getCharPositionInLine());
+        }
+        // I added the LiteralExpression class to store comparison operators as strings and use it in comparisonExpression
+        return new LiteralExpression(op);
     }
 
     @Override
