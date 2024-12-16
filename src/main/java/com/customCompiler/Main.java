@@ -38,8 +38,10 @@ public class Main {
             QuadrupleGenerator generator = new QuadrupleGenerator();
             generator.visit(antlrAST);
             System.out.println("Quadruples:");
+            int i=0;
             for (String quad : generator.getQuadruples()) {
-                System.out.println(quad);
+                System.out.println(i+"-"+quad);
+                i++;
             }
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);

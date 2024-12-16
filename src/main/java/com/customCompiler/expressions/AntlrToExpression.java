@@ -4,6 +4,7 @@ import com.customCompiler.SymbolTable;
 import com.customCompiler.*;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 public class AntlrToExpression extends MinINGParserBaseVisitor<Expression> {
@@ -57,6 +58,7 @@ public class AntlrToExpression extends MinINGParserBaseVisitor<Expression> {
         String type = ctx.TYPE().getText();
         int line = ctx.getStart().getLine();
         int column = ctx.getStart().getCharPositionInLine() + 1;
+        ctx.arrayList().arrayDecl().stream().map(arrayIdf->arrayIdf.accept(this)).collect(Collectors.toList());
         List<ArrayDeclarationExpression> arrayDeclarations = new ArrayList<>();
         for (MinINGParser.ArrayDeclContext idf : ctx.arrayList().arrayDecl()) {
             String varName = idf.getText();
