@@ -17,5 +17,7 @@ public class Program {
 
     public void addExpression(Expression e) {
         this.expressions.add(e);
+//        System.out.println(e);
+//        System.out.println("Adding exp");
     }
 }

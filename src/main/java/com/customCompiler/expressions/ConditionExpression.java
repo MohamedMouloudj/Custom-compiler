@@ -36,4 +36,12 @@ public class ConditionExpression extends Expression {
         return elseStatements;
     }
 
+    @Override
+    public String toString() {
+        return "ConditionExpression{" +
+                "condition=" + condition +
+                ", ifStatements=" + ifStatements +
+                ", elseStatements=" + elseStatements +
+                '}';
+    }
 }

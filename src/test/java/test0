@@ -1,16 +1,16 @@
 VAR_GLOBAL {
-
-}
-
-DECLARATION {
-
     INTEGER A,B,C;
     CHAR Z[5],R[1],D[10];
 }
 
+DECLARATION {
+    FLOAT X;
+    CONST INTEGER Y = 5;
+}
+
 INSTRUCTION {
-    A=3; B=1; C=3;
-    IF(A == 9 && B == 1 || C ==2){
+    A='c'; B=1; C=3;
+    IF(A == 'b' && B == 1 || C ==2){
         A=1;
     }
 }

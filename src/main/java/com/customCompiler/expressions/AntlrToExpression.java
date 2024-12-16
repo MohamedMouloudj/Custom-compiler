@@ -18,6 +18,25 @@ public class AntlrToExpression extends MinINGParserBaseVisitor<Expression> {
         this.semanticErrors = semanticErrors;
     }
 ////////// Declarations //////////
+
+    @Override
+    public Expression visitVariableGlobalSegment(MinINGParser.VariableGlobalSegmentContext ctx) {
+        List<Expression> declarations=new ArrayList<>();
+       for (int i=0;i<ctx.varDeclaration().size();i++) {
+           declarations.add(visit(ctx.varDeclaration(i)));
+        }
+        return new VariableGlobalExpression(declarations);
+    }
+
+    @Override
+    public Expression visitDeclarationSegment(MinINGParser.DeclarationSegmentContext ctx) {
+        List<Expression> declarations=new ArrayList<>();
+        for (int i=0;i<ctx.varDeclaration().size();i++) {
+            declarations.add(visit(ctx.varDeclaration(i)));
+        }
+        return new DeclarationExpression(declarations);
+    }
+
     @Override
     public Expression visitVariableDeclaration(MinINGParser.VariableDeclarationContext ctx) {
         Expression.ExpressionType type = Expression.ExpressionType.valueOf(ctx.TYPE().getText());
@@ -64,8 +83,8 @@ public class AntlrToExpression extends MinINGParserBaseVisitor<Expression> {
             if (symbolTable.containsSymbol(varName)) {
                 semanticErrors.add("Error: Duplicate array declaration " + varName + " at " + line + ":" + column);
             } else {
-                symbolTable.addSymbol(varName, new Symbol(Expression.ExpressionType.valueOf(type),null, Symbol.Scope.GLOBAL,false,0));
                 int size = Integer.parseInt(idf.INT().getText());
+                symbolTable.addSymbol(varName, new Symbol(Expression.ExpressionType.valueOf(type),null, Symbol.Scope.GLOBAL,false,size));
                 if (size <= 0) {
                     semanticErrors.add("Error: Array size must be greater than 0 at " + line + ":" + column);
                 } else {
@@ -98,11 +117,22 @@ public class AntlrToExpression extends MinINGParserBaseVisitor<Expression> {
             semanticErrors.add("Error :  Invalid constant type at line "+ ctx.getStart().getLine() + " column " + ctx.getStart().getCharPositionInLine() +1);
             value = null;
         }
-        symbolTable.addSymbol(constantName, new Symbol(type,value,Symbol.Scope.GLOBAL,true,0));
+        symbolTable.addSymbol(constantName, new Symbol(type,value!=null?value.evaluate(symbolTable):null,Symbol.Scope.GLOBAL,true,0));
         return new ConstantExpression(constantName,type,value);
     }
 
 ////////// Statements //////////
+
+
+    @Override
+    public Expression visitInstructionSegment(MinINGParser.InstructionSegmentContext ctx) {
+        List<Expression> instructions = new ArrayList<>();
+        for (int i=0;i<ctx.statement().size();i++){
+            instructions.add(visit(ctx.statement(i)));
+        }
+        return new InstructionExpression(instructions);
+    }
+
     /**
      * For explicit array element assignment
      * */

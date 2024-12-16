@@ -31,6 +31,8 @@ public class Main {
                     System.err.println(error);
                 }
             }
+            System.out.println(program.expressions);
+            program.symbolTable.displayTable();
             QuadrupleGenerator generator = new QuadrupleGenerator();
             generator.visit(antlrAST);
             System.out.println("Quadruples:");
