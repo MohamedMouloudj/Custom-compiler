@@ -16,7 +16,7 @@ import java.io.InputStream;
 public class Main {
     public static void main(String[] args) {
         try {
-            String inputFile="D:/University/2024-09_Semester-5/Compilator-project/CustomCompiler/src/test/java/test0";
+            String inputFile="C:/Users/Ramzi/Desktop/ProjetCompile/Custom-compiler/src/test/java/test0";
             FileInputStream fileInputStream = new FileInputStream(inputFile);
 
             MinINGParser parser = getParser(fileInputStream);
@@ -24,12 +24,14 @@ public class Main {
             ParseTree antlrAST = parser.prog();
             AntlrToProgram programVisitor = new AntlrToProgram();
             Program program = programVisitor.visit(antlrAST);
-
+            program.symbolTable.displayTable();
             if (!programVisitor.semanticErrors.isEmpty()) {
                 System.out.println("********** Errors **********");
                 for (String error : programVisitor.semanticErrors) {
                     System.err.println(error);
                 }
+            }else{
+                System.out.println("No error detected");
             }
             QuadrupleGenerator generator = new QuadrupleGenerator();
             generator.visit(antlrAST);

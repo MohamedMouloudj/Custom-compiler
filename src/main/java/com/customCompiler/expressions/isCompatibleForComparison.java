@@ -9,26 +9,31 @@ public class isCompatibleForComparison {
     }
 
     public boolean checkCompatibilityComparision(){
-        if (left.getType() == right.getType()) {
-            return true;
-        }
-        if (left.getType() == Expression.ExpressionType.INTEGER &&
-                right.getType() == Expression.ExpressionType.FLOAT) {
-            return true;
-        }
-        if (left.getType() == Expression.ExpressionType.FLOAT &&
-                right.getType() == Expression.ExpressionType.INTEGER) {
-            return true;
-        }
-       if (left.getType() == Expression.ExpressionType.BOOLEAN ||
-                right.getType() == Expression.ExpressionType.BOOLEAN) {
-            return false;
+        //TODO : i change this i add if verification left != null and right != null
+       if(this.left != null && this.right != null){
+           if (left.getType() == right.getType()) {
+               return true;
+           }
+           if (left.getType() == Expression.ExpressionType.INTEGER &&
+                   right.getType() == Expression.ExpressionType.FLOAT) {
+               return true;
+           }
+           if (left.getType() == Expression.ExpressionType.FLOAT &&
+                   right.getType() == Expression.ExpressionType.INTEGER) {
+               return true;
+           }
+           if (left.getType() == Expression.ExpressionType.BOOLEAN ||
+                   right.getType() == Expression.ExpressionType.BOOLEAN) {
+               return false;
+           }
+           if (left.getType() == Expression.ExpressionType.CHAR ||
+                   right.getType() == Expression.ExpressionType.CHAR) {
+               return false;
+           }
+           return false;
+       }else{
+           return false;
        }
-       if (left.getType() == Expression.ExpressionType.CHAR ||
-                right.getType() == Expression.ExpressionType.CHAR) {
-            return false;
-       }
-       return false;
     }
 
     public boolean checkCompatibilityArithmetic(){

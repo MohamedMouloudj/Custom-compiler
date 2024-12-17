@@ -1,16 +1,27 @@
 VAR_GLOBAL {
-
+    INTEGER X, Y, Z;
+    FLOAT  TEMPERATURE, HUMIDITY;
+    CHAR STATUS;
 }
 
 DECLARATION {
-
-    INTEGER A,B,C;
-    CHAR Z[5],R[1],D[10];
+    INTEGER A, B, C;
+    FLOAT Rate;
 }
 
 INSTRUCTION {
-    A=3; B=1; C=3;
-    IF(A == 9 && B == 1 || C ==2){
-        A=1;
+    X = 10;
+    Y = X + 5 * (2 - 3);
+
+    IF (X > 5) {
+        WRITE("x is greater than 5");
+    } ELSE {
+        WRITE("x is not greater than 5");
     }
+    FOR (I = 0: I < 10: I = 2) {
+        WRITE("Iteration: ", I);
+    }
+    STATUS = 'A';
+    Z = 2.5;
+
 }
