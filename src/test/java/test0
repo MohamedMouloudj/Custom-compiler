@@ -6,11 +6,13 @@ VAR_GLOBAL {
 DECLARATION {
     FLOAT X;
     CONST INTEGER Y = 5;
+    CONST CHAR G='d';
 }
 
 INSTRUCTION {
-    A='c'; B=1; C=3;
-    IF(A == 'b' && B == 1 || C ==2){
+    A='c'; B=1+A/2; C=(3+B)/A;
+    Z[0]='c';
+    IF((A == 'b' || (B <= 5 && B==3)) && B == 1 || (C ==2 || C>2)){
         A=1;
     }
 }

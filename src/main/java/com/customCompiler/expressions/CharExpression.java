@@ -6,9 +6,9 @@ import java.util.Objects; /**
  * Represents a character expression
  */
 public class CharExpression extends Expression {
-    private final char value;
+    private final String value;
 
-    public CharExpression(char value) {
+    public CharExpression(String value) {
         this.value = value;
     }
 

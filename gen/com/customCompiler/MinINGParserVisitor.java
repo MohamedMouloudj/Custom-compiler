@@ -1,4 +1,4 @@
-// Generated from C:/Users/Ramzi/Desktop/ProjetCompile/Custom-compiler/src/main/java/com/customCompiler/MinINGParser.g4 by ANTLR 4.13.2
+// Generated from D:/University/2024-09_Semester-5/Compilator-project/CustomCompiler/src/main/java/com/customCompiler/MinINGParser.g4 by ANTLR 4.13.2
 package com.customCompiler;
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
@@ -224,6 +224,13 @@ public interface MinINGParserVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitVariable(MinINGParser.VariableContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code ArrayElement}
+	 * labeled alternative in {@link MinINGParser#factor}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitArrayElement(MinINGParser.ArrayElementContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code ParenthesisCondition}
 	 * labeled alternative in {@link MinINGParser#conditionExpr}.

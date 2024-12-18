@@ -119,6 +119,7 @@ public class SymbolTable {
 
         String border = "+-----------------+------------+------------+------------+------------+------------+";
 
+        System.out.println("******** Symbols Table ********");
         System.out.println(border);
         System.out.println(header);
         System.out.println(border);

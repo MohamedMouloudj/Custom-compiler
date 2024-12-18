@@ -20,7 +20,7 @@ public class ConditionExpression extends Expression {
 
     @Override
     public ExpressionType getType(){
-        return ExpressionType.UNKNOWN;
+        return null;
     }
 
 

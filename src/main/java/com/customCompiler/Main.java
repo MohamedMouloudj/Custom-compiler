@@ -1,8 +1,8 @@
 package com.customCompiler;
 
 
-import com.customCompiler.expressions.AntlrToProgram;
-import com.customCompiler.expressions.Program;
+import com.customCompiler.expressions.core.AntlrToProgram;
+import com.customCompiler.expressions.core.Program;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -25,20 +25,20 @@ public class Main {
             AntlrToProgram programVisitor = new AntlrToProgram();
             Program program = programVisitor.visit(antlrAST);
 
+            program.symbolTable.displayTable();
             if (!programVisitor.semanticErrors.isEmpty()) {
                 System.out.println("********** Errors **********");
-                for (String error : programVisitor.semanticErrors) {
-                    System.err.println(error);
-                }
+                programVisitor.semanticErrors.forEach(System.err::println);
+//                return; TODO: last thing to do
             }
-            System.out.println(program.expressions);
-            program.symbolTable.displayTable();
+            /////////////////////////////////////////////////////////////////////
             QuadrupleGenerator generator = new QuadrupleGenerator();
             generator.visit(antlrAST);
-            System.out.println("Quadruples:");
+            System.out.println("********** Quadruples **********");
             for (String quad : generator.getQuadruples()) {
                 System.out.println(quad);
             }
+
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }

@@ -1,4 +1,4 @@
-package com.customCompiler.expressions;
+package com.customCompiler.expressions.core;
 
 import com.customCompiler.MinINGParser;
 import com.customCompiler.MinINGParserBaseVisitor;

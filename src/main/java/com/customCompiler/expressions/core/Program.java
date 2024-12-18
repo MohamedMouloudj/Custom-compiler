@@ -1,6 +1,7 @@
-package com.customCompiler.expressions;
+package com.customCompiler.expressions.core;
 
 import com.customCompiler.SymbolTable;
+import com.customCompiler.expressions.Expression;
 
 import java.util.ArrayList;
 import java.util.List;
