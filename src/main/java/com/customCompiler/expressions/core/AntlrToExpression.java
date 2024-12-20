@@ -541,11 +541,6 @@ public class AntlrToExpression extends MinINGParserBaseVisitor<Expression> {
         // Visit the inner conditionExpr
         return visit(ctx.conditionExpr());
     }
-// Useless I guess
-//    @Override
-//    public Expression visitComparisonOp(MinINGParser.ComparisonOpContext ctx) {
-//        return null;
-//    }
 
     @Override
     public Expression visitStringLiteral(MinINGParser.StringLiteralContext ctx) {

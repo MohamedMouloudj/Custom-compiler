@@ -5,6 +5,7 @@ import com.customCompiler.expressions.*;
 import org.antlr.v4.runtime.tree.ParseTree;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Stack;
@@ -44,33 +45,79 @@ public class QuadrupleGenerator extends MinINGParserBaseVisitor<Expression> {
     public Expression visitConditionalStatement(MinINGParser.ConditionalStatementContext ctx) {
         Expression condition = visit(ctx.conditionExpr());
 
-        int branchIfFalseIndex = quadruples.size();
-        quadruples.addQuad("BZ", condition.toString(), null, "?");
+    }
 
-
-        visit(ctx.statement(0));
-
-        if (ctx.ELSE() != null) {
-
-            int jumpToEndIndex = quadruples.size();
-            quadruples.addQuad("BR", null, null, "?");
-
-
-            int elseStart = quadruples.size();
-            quadruples.updateQuad(branchIfFalseIndex, "BZ", condition.toString(), null, String.valueOf(elseStart));
-
-            visit(ctx.statement(1));
-
-
-            int afterElse = quadruples.size();
-            quadruples.updateQuad(jumpToEndIndex, "BR", null, null, String.valueOf(afterElse));
-        } else {
-
-            int afterIf = quadruples.size();
-            quadruples.updateQuad(branchIfFalseIndex, "BZ", condition.toString(), null, String.valueOf(afterIf));
+    @Override
+    public Expression visitComparison(MinINGParser.ComparisonContext ctx) {
+        Expression left = visit(ctx.expression(0));
+        Expression right = visit(ctx.expression(1));
+        Expression op = visit(ctx.comparisonOp());
+        Expression temp = new TempExpression();
+        if(op.toString().equals( "==")){
+            quadruples.addQuad("BE",right.toString(),left.toString(),temp.toString());
+        }else if(op.toString().equals( "!=")){
+            quadruples.addQuad("BNE",left.toString(),right.toString(),temp.toString());
+        } else if (op.toString().equals( ">")) {
+            quadruples.addQuad("BG",left.toString(),right.toString(),temp.toString());
+        } else if (op.toString().equals( "<")) {
+            quadruples.addQuad("BL",left.toString(),right.toString(),temp.toString());
+        } else if (op.toString().equals( ">=")) {
+            quadruples.addQuad("BGE",left.toString(),right.toString(),temp.toString());
+        } else if (op.toString().equals( "<=")) {
+            quadruples.addQuad("BLE",left.toString(),right.toString(),temp.toString());
         }
+        return temp;
+    }
 
-        return null;
+    @Override
+    public Expression visitParenthesisCondition(MinINGParser.ParenthesisConditionContext ctx) {
+        return super.visitParenthesisCondition(ctx);
+    }
+
+    @Override
+    public Expression visitNegation(MinINGParser.NegationContext ctx) {
+        Expression condition = visit(ctx.conditionExpr());
+        Expression temp = new TempExpression();
+        quadruples.addQuad();
+        //
+        return super.visitNegation(ctx);
+    }
+
+    @Override
+    public Expression visitOrCondition(MinINGParser.OrConditionContext ctx) {
+        Expression condition = visit(ctx.conditionExpr(0));
+        Expression temp = new TempExpression();
+        Expression condition2 = visit(ctx.conditionExpr(1));
+        quadruples.addQuad("BNZ",condition.toString(),condition2.toString(),null);
+
+
+    }
+
+    @Override
+    public Expression visitAndCondition(MinINGParser.AndConditionContext ctx) {
+        Expression condition = visit(ctx.conditionExpr(0));
+        Expression temp = new TempExpression();
+        Expression condition2 = visit(ctx.conditionExpr(1));
+        quadruples.addQuad();
+    }
+
+    @Override
+    public Expression visitComparisonOp(MinINGParser.ComparisonOpContext ctx) {
+        if(ctx.GREATER() != null) {
+            return visit(ctx.GREATER());
+        } else if (ctx.LESS() != null) {
+            return visit(ctx.LESS());
+        } else if (ctx.GREATEREQUAL() != null) {
+            return visit(ctx.GREATEREQUAL());
+        } else if (ctx.LESSEQUAL() != null) {
+            return visit(ctx.LESSEQUAL());
+        } else if (ctx.EQUAL() != null) {
+            return visit(ctx.EQUAL());
+        } else if (ctx.NOTEQUAL() != null) {
+            return visit(ctx.NOTEQUAL());
+        }else{
+            return  null;
+        }
     }
 
     @Override
@@ -78,13 +125,12 @@ public class QuadrupleGenerator extends MinINGParserBaseVisitor<Expression> {
         //(+,G,D,T)
         //5+3 => (+,5,3,T1)  (5+4-2) => (+,5,T1,T2),(-,4,2,T1)   ((5+4)-(3+4))
         Expression left = visit(ctx.expression());
-
-            System.out.println("in addition left: " + left.toString());
-            Expression temp = new TempExpression();
-            Expression right = visit(ctx.term());
-            System.out.println("right in addition: " + right.toString()  );
-            System.out.println(quadruples.addQuad("+", left.toString(), right.toString(), temp.toString()).toString());
-            return temp;
+        System.out.println("in addition left: " + left.toString());
+        Expression temp = new TempExpression();
+        Expression right = visit(ctx.term());
+        System.out.println("right in addition: " + right.toString()  );
+        System.out.println(quadruples.addQuad("+", left.toString(), right.toString(), temp.toString()).toString());
+        return temp;
 
 
     }
