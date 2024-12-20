@@ -1,8 +1,8 @@
 package com.customCompiler;
 
 
-import com.customCompiler.expressions.AntlrToProgram;
-import com.customCompiler.expressions.Program;
+import com.customCompiler.expressions.*;
+import com.customCompiler.expressions.core.*;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -33,12 +33,12 @@ public class Main {
             }else{
                 System.out.println("No error detected");
             }
-            QuadrupleGenerator generator = new QuadrupleGenerator();
-            generator.visit(antlrAST);
-            System.out.println("Quadruples:");
-            for (String quad : generator.getQuadruples()) {
-                System.out.println(quad);
-            }
+//            QuadrupleGenerator generator = new QuadrupleGenerator();
+//            generator.visit(antlrAST);
+//            System.out.println("Quadruples:");
+//            for (String quad : generator.getQuadruples()) {
+//                System.out.println(quad);
+//            }
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }

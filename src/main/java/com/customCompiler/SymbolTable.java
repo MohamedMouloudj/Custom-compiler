@@ -53,10 +53,9 @@ public class SymbolTable {
 
     // Ajouter un symbole dans la table
     public void addSymbol(String name, Symbol symbol) {
-        if (symbols.containsKey(name)) {
-            throw new RuntimeException("Symbol " + name + " is already declared.");
+        if (!symbols.containsKey(name)) {
+            symbols.put(name, encodeSymbol(symbol)); // Encode et stocke le symbole
         }
-        symbols.put(name, encodeSymbol(symbol)); // Encode et stocke le symbole
     }
 
     // Récupérer un symbole depuis la table
@@ -119,6 +118,7 @@ public class SymbolTable {
 
         String border = "+-----------------+------------+------------+------------+------------+------------+";
 
+        System.out.println("******** Symbols Table ********");
         System.out.println(border);
         System.out.println(header);
         System.out.println(border);

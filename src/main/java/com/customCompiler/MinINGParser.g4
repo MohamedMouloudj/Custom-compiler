@@ -84,6 +84,7 @@ factor
     | FLOAT             #Float
     | CHAR              #Char
     | IDF               #Variable
+    | IDF LBRACKET expression RBRACKET  #ArrayElement
     ;
 
 

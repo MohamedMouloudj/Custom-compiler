@@ -235,6 +235,13 @@ public class MinINGParserBaseVisitor<T> extends AbstractParseTreeVisitor<T> impl
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
+	@Override public T visitArrayElement(MinINGParser.ArrayElementContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
 	@Override public T visitParenthesisCondition(MinINGParser.ParenthesisConditionContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}

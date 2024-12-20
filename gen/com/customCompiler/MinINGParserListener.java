@@ -374,6 +374,18 @@ public interface MinINGParserListener extends ParseTreeListener {
 	 */
 	void exitVariable(MinINGParser.VariableContext ctx);
 	/**
+	 * Enter a parse tree produced by the {@code ArrayElement}
+	 * labeled alternative in {@link MinINGParser#factor}.
+	 * @param ctx the parse tree
+	 */
+	void enterArrayElement(MinINGParser.ArrayElementContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code ArrayElement}
+	 * labeled alternative in {@link MinINGParser#factor}.
+	 * @param ctx the parse tree
+	 */
+	void exitArrayElement(MinINGParser.ArrayElementContext ctx);
+	/**
 	 * Enter a parse tree produced by the {@code ParenthesisCondition}
 	 * labeled alternative in {@link MinINGParser#conditionExpr}.
 	 * @param ctx the parse tree

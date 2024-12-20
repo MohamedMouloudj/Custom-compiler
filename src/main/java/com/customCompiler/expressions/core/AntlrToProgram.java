@@ -1,4 +1,7 @@
-package com.customCompiler.expressions;
+package com.customCompiler.expressions.core;
+
+import com.customCompiler.MinINGParser;
+import com.customCompiler.MinINGParserBaseVisitor;
 
 import com.customCompiler.MinINGParser;
 import com.customCompiler.MinINGParserBaseVisitor;
@@ -20,9 +23,9 @@ public class AntlrToProgram extends MinINGParserBaseVisitor<Program> {
         Program program=new Program();
         AntlrToExpression expressionVisitor=new AntlrToExpression(semanticErrors, program.symbolTable);
 
-         program.addExpression(expressionVisitor.visit(ctx.varGlobal()));
-         program.addExpression(expressionVisitor.visit(ctx.declaration()));
-         program.addExpression(expressionVisitor.visit(ctx.instruction()));
+        program.addExpression(expressionVisitor.visit(ctx.varGlobal()));
+        program.addExpression(expressionVisitor.visit(ctx.declaration()));
+        program.addExpression(expressionVisitor.visit(ctx.instruction()));
 
 //        if (ctx.varGlobal() != null) {
 //            for (int i = 0; i < ctx.varGlobal().getChildCount(); i++) {

@@ -10,6 +10,8 @@ public class CompositeVariableDeclarationExpression extends Expression {
 
     public CompositeVariableDeclarationExpression(List<VariableDeclarationExpression> declarations) {
         this.declarations = declarations;
+//        System.out.println(declarations);
+//        System.out.println("returning new CompositeVariableDeclarationExpression");
     }
 
     @Override

@@ -2,12 +2,12 @@ package com.customCompiler.expressions;
 import com.customCompiler.SymbolTable;
 
 import java.util.List;
-public class ConditionExpression extends Expression {
+public class IfBlocksExpression extends Expression {
     private final Expression condition;
     private final List<Expression> ifStatements;
     private final List<Expression> elseStatements;
 
-    public ConditionExpression(Expression condition, List<Expression> ifStatements, List<Expression> elseStatements) {
+    public IfBlocksExpression(Expression condition, List<Expression> ifStatements, List<Expression> elseStatements) {
         this.condition = condition;
         this.ifStatements = ifStatements;
         this.elseStatements = elseStatements;
@@ -20,7 +20,7 @@ public class ConditionExpression extends Expression {
 
     @Override
     public ExpressionType getType(){
-        return ExpressionType.UNKNOWN;
+        return null;
     }
 
 
@@ -36,4 +36,12 @@ public class ConditionExpression extends Expression {
         return elseStatements;
     }
 
+    @Override
+    public String toString() {
+        return "IfBlocksExpression{" +
+                "condition=" + condition +
+                ", ifStatements=" + ifStatements +
+                ", elseStatements=" + elseStatements +
+                '}';
+    }
 }

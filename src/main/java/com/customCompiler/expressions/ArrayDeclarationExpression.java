@@ -23,4 +23,13 @@ public class ArrayDeclarationExpression extends Expression {
     public ExpressionType getType() {
         return type;
     }
+
+    @Override
+    public String toString() {
+        return "ArrayDeclarationExpression{" +
+                "type=" + type +
+                ", name='" + name + '\'' +
+                ", size=" + size +
+                '}';
+    }
 }

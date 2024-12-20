@@ -1,6 +1,7 @@
-package com.customCompiler.expressions;
+package com.customCompiler.expressions.core;
 
 import com.customCompiler.SymbolTable;
+import com.customCompiler.expressions.Expression;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,5 +18,7 @@ public class Program {
 
     public void addExpression(Expression e) {
         this.expressions.add(e);
+//        System.out.println(e);
+//        System.out.println("Adding exp");
     }
 }

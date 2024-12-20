@@ -1,27 +1,22 @@
 VAR_GLOBAL {
-    INTEGER X, Y, Z;
-    FLOAT  TEMPERATURE, HUMIDITY;
-    CHAR STATUS;
+    INTEGER A, B, C;
+    CHAR X[3], Y[2];
 }
 
 DECLARATION {
-    INTEGER A, B, C;
-    FLOAT Rate;
+    CONST FLOAT PI = 3.14;
+    INTEGER D, E;           // Error: Missing comma between `D` and `E`
+    CHAR Z[5]              // Error: Missing semicolon at the end of the declaration
 }
 
 INSTRUCTION {
-    X = 10;
-    Y = X + 5 * (2 - 3);
-
-    IF (X > 5) {
-        WRITE("x is greater than 5");
-    } ELSE {
-        WRITE("x is not greater than 5");
+    A = 10;
+    IF (A > B {            // Error: Missing closing parenthesis in `IF` condition
+        B = A + 1;
     }
-    FOR (I = 0: I < 10: I = 2) {
-        WRITE("Iteration: ", I);
+    FOR (I = 0 : A + 1 10) { // Error: Missing colon between `A + 1` and `10` in `FOR` loop
+        X[0] = 'a';
     }
-    STATUS = 'A';
-    Z = 2.5;
-
+    WRITE(A );            // Error: Trailing comma in the `WRITE` statement
+    C = (A + B;            // Error: Missing closing parenthesis in the expression
 }

@@ -1,9 +1,11 @@
-package com.customCompiler.expressions;
+package com.customCompiler.expressions.core;
 
 import com.customCompiler.*;
 import com.customCompiler.SymbolTable;
 import com.customCompiler.Symbol;
+import com.customCompiler.expressions.*;
 import org.antlr.v4.runtime.tree.TerminalNode;
+
 import java.util.*;
 
 
@@ -18,6 +20,25 @@ public class AntlrToExpression extends MinINGParserBaseVisitor<Expression> {
         this.semanticErrors = semanticErrors;
     }
 ////////// Declarations //////////
+
+    @Override
+    public Expression visitVariableGlobalSegment(MinINGParser.VariableGlobalSegmentContext ctx) {
+        List<Expression> declarations=new ArrayList<>();
+       for (int i=0;i<ctx.varDeclaration().size();i++) {
+           declarations.add(visit(ctx.varDeclaration(i)));
+        }
+        return new VariableGlobalExpression(declarations);
+    }
+
+    @Override
+    public Expression visitDeclarationSegment(MinINGParser.DeclarationSegmentContext ctx) {
+        List<Expression> declarations=new ArrayList<>();
+        for (int i=0;i<ctx.varDeclaration().size();i++) {
+            declarations.add(visit(ctx.varDeclaration(i)));
+        }
+        return new DeclarationExpression(declarations);
+    }
+
     @Override
     public Expression visitVariableDeclaration(MinINGParser.VariableDeclarationContext ctx) {
         Expression.ExpressionType type = Expression.ExpressionType.valueOf(ctx.TYPE().getText());
@@ -56,15 +77,20 @@ public class AntlrToExpression extends MinINGParserBaseVisitor<Expression> {
     @Override
     public Expression visitArrayDeclaration(MinINGParser.ArrayDeclarationContext ctx) {
         String type = ctx.TYPE().getText();
+
         int line = ctx.getStart().getLine();
         List<ArrayDeclarationExpression> arrayDeclarations = new ArrayList<>();
         for (MinINGParser.ArrayDeclContext idf : ctx.arrayList().arrayDecl()) {
-            String varName = idf.getText();
+            String varName = idf.IDF().getText();
             if (symbolTable.containsSymbol(varName)) {
                 semanticErrors.add("Error: Duplicate array declaration " + varName + " at " + line );
             } else {
-                symbolTable.addSymbol(varName, new Symbol(Expression.ExpressionType.valueOf(type),null, Symbol.Scope.GLOBAL,false,0));
                 int size = Integer.parseInt(idf.INT().getText());
+                ArrayList<Object> array = new ArrayList<>();
+                if(!Expression.ExpressionType.valueOf(type).equals(Expression.ExpressionType.INTEGER)&&!Expression.ExpressionType.valueOf(type).equals(Expression.ExpressionType.FLOAT)&&!Expression.ExpressionType.valueOf(type).equals(Expression.ExpressionType.CHAR)){
+                    semanticErrors.add("Error: Invalid array type at " + line);
+                }
+                symbolTable.addSymbol(varName, new Symbol(Expression.ExpressionType.valueOf(type),array, Symbol.Scope.GLOBAL,false,size));
                 if (size <= 0) {
                     semanticErrors.add("Error: Array size must be greater than 0 at " + line );
                 } else {
@@ -87,21 +113,37 @@ public class AntlrToExpression extends MinINGParserBaseVisitor<Expression> {
         Expression.ExpressionType type = Expression.ExpressionType.valueOf(ctx.TYPE().getText());
         String constantName = ctx.IDF().getText();
         Expression value;
+
         if (type == Expression.ExpressionType.INTEGER) {
             value = new IntegerExpression(Integer.parseInt(ctx.INT().getText()));
         } else if (type == Expression.ExpressionType.FLOAT) {
             value = new FloatExpression(Float.parseFloat(ctx.FLOAT().getText()));
         } else if (type == Expression.ExpressionType.CHAR) {
-            value = new CharExpression(ctx.CHAR().getText().charAt(0));
+            value = new CharExpression(ctx.CHAR().getText());
         } else {
             semanticErrors.add("Error :  Invalid constant type at line "+ ctx.getStart().getLine() );
             value = null;
         }
-        symbolTable.addSymbol(constantName, new Symbol(type,value,Symbol.Scope.GLOBAL,true,0));
+        if(symbolTable.containsSymbol(constantName)){
+            semanticErrors.add("Error : Duplicate declaration " + constantName + " at " + ctx.getStart().getLine() );
+        }else{
+            symbolTable.addSymbol(constantName, new Symbol(type,value!=null?value.evaluate(symbolTable):null,Symbol.Scope.GLOBAL,true,0));
+        }
         return new ConstantExpression(constantName,type,value);
     }
 
 ////////// Statements //////////
+
+
+    @Override
+    public Expression visitInstructionSegment(MinINGParser.InstructionSegmentContext ctx) {
+        List<Expression> instructions = new ArrayList<>();
+        for (int i=0;i<ctx.statement().size();i++){
+            instructions.add(visit(ctx.statement(i)));
+        }
+        return new InstructionExpression(instructions);
+    }
+
     /**
      * For explicit array element assignment
      * */
@@ -111,26 +153,33 @@ public class AntlrToExpression extends MinINGParserBaseVisitor<Expression> {
         Object index = visit(ctx.expression(0)); // Get the index expression
         Expression value = visit(ctx.expression(1)); // Get the value expression
         int line = ctx.getStart().getLine();
+
         // Check if the array exists and get its type and size
         if (symbolTable.containsSymbol(arrayName)) {
             Symbol arraySymbol = symbolTable.getSymbol(arrayName);
             int arraySize = arraySymbol.getSize();
             if (arraySize>0) {
                 int indexValue = (int)((IntegerExpression) index).evaluate(symbolTable);
+                System.out.println("index value array assign"+ indexValue + " array size " + arraySize);
+//                if (indexValue < arraySize) {
+//                    if (arraySymbol.getType().equals(value.getType())) {
+//                    } else {
+//                        semanticErrors.add("Error: Type mismatch in array assignment at line " + line + " column" + column);
+//                    }
+//                } else {
+//                    semanticErrors.add("Error: Array index out of bounds at " + line + " column" + column);
+//                }
 
                 // Check if the index is within bounds
                 if (indexValue < arraySize) {
                     // Check if the type of the value matches the array type
-                    if (arraySymbol.getType().equals(value.getType())) {
-                        // Perform the assignment
-                     //TODO : check if we dont set value
-//                        arraySymbol.setValue(indexValue, value);
-                    } else {
+                    if (!arraySymbol.getType().equals(value.getType())) {
                         semanticErrors.add("Error: Type mismatch in array assignment at line " + line);
                     }
                 } else {
                     semanticErrors.add("Error: Array index out of bounds at " + line);
                 }
+
             } else {
                 semanticErrors.add(arrayName + " is not an array");
             }
@@ -149,6 +198,7 @@ public class AntlrToExpression extends MinINGParserBaseVisitor<Expression> {
         String arrayName = ctx.IDF().getText();
         Object index = visit(ctx.expression()); // Get the index expression
         int line = ctx.getStart().getLine();
+
         if (symbolTable.containsSymbol(arrayName)) {
             Symbol arraySymbol = symbolTable.getSymbol(arrayName);
             int arraySize = arraySymbol.getSize();
@@ -220,6 +270,16 @@ public class AntlrToExpression extends MinINGParserBaseVisitor<Expression> {
 
     @Override
     public Expression visitConditionalStatement(MinINGParser.ConditionalStatementContext ctx) {
+//        System.out.println("\nFields:");
+//        for (Field field : ctx.conditionExpr().getClass().getDeclaredFields()) {
+//            field.setAccessible(true); // Access private fields
+//            System.out.println("  " + field.getName());
+//        }
+//
+//        System.out.println("\nMethods:");
+//        for (Method method : ctx.conditionExpr().getClass().getDeclaredMethods()) {
+//            System.out.println("  " + method.getName());
+//        }
         Expression condition = visit(ctx.conditionExpr());
         if (!Objects.equals(condition.getType(), Expression.ExpressionType.BOOLEAN)) {
             semanticErrors.add("Error: Conditional expression must be of type boolean at line " + ctx.getStart().getLine());
@@ -234,7 +294,7 @@ public class AntlrToExpression extends MinINGParserBaseVisitor<Expression> {
                 elseStatements.add(visit(statement));
             }
         }
-        return new ConditionExpression(condition,ifStatements,elseStatements);
+        return new IfBlocksExpression(condition,ifStatements,elseStatements);
 //TODO : check how to select statement of if block and else block DekuDz : nadohoum ga3
         //return null ;
     }
@@ -244,6 +304,7 @@ public class AntlrToExpression extends MinINGParserBaseVisitor<Expression> {
     public Expression visitLoopDefinition(MinINGParser.LoopDefinitionContext ctx) {
 
         int line = ctx.getStart().getLine();
+
         Expression initialization = visit(ctx.loopAssignment().expression());
         String loopVariable = ctx.loopAssignment().IDF().getText();
         if (!initialization.getType().equals(Expression.ExpressionType.INTEGER)||initialization.getType().equals(Expression.ExpressionType.FLOAT)) {
@@ -369,11 +430,12 @@ public class AntlrToExpression extends MinINGParserBaseVisitor<Expression> {
     @Override
     public Expression visitParenthesis(MinINGParser.ParenthesisContext ctx) {
         if(ctx.expression() != null) {
-            return visit(ctx.expression());
+            return new ParenthesisExpression(visit(ctx.expression()));
         }else{
             semanticErrors.add("Error: Missing or invalid expression inside parentheses at line "
                     + ctx.getStart().getLine() );
-            return null;
+
+            return new ParenthesisExpression(null);
         }
 
     }
@@ -393,7 +455,7 @@ public class AntlrToExpression extends MinINGParserBaseVisitor<Expression> {
     @Override
     public Expression visitChar(MinINGParser.CharContext ctx) {
         String valueString = ctx.CHAR().getText();
-        return new CharExpression(valueString.charAt(0));
+        return new CharExpression(valueString);
     }
 
     @Override
@@ -424,16 +486,74 @@ public class AntlrToExpression extends MinINGParserBaseVisitor<Expression> {
     }
 
     @Override
-    public Expression visitComparisonOp(MinINGParser.ComparisonOpContext ctx) {
-
-        return null;
+    public Expression visitNegation(MinINGParser.NegationContext ctx) {
+        // Visit the conditionExpr inside NOT
+        Expression expr = visit(ctx.conditionExpr());
+        return new NotLogicalExpression(expr);
     }
+
+    @Override
+    public Expression visitOrCondition(MinINGParser.OrConditionContext ctx) {
+        // Left and right OR conditions
+        Expression left = visit(ctx.conditionExpr(0));
+        Expression right = visit(ctx.conditionExpr(1));
+
+        return new OrLogicalExpression(left, right);
+    }
+
+    @Override
+    public Expression visitAndCondition(MinINGParser.AndConditionContext ctx) {
+        // Left and right AND conditions
+        Expression left = visit(ctx.conditionExpr(0));
+        Expression right = visit(ctx.conditionExpr(1));
+
+        return new AndLogicalExpression(left, right);
+    }
+
+    @Override
+    public Expression visitParenthesisCondition(MinINGParser.ParenthesisConditionContext ctx) {
+        // Visit the inner conditionExpr
+        return visit(ctx.conditionExpr());
+    }
+// Useless I guess
+//    @Override
+//    public Expression visitComparisonOp(MinINGParser.ComparisonOpContext ctx) {
+//        return null;
+//    }
 
     @Override
     public Expression visitStringLiteral(MinINGParser.StringLiteralContext ctx) {
         String value = ctx.STRING_LITERAL().getText();
         value = value.substring(1, value.length()-1);
         return new StringExpression(value);
+    }
+
+    @Override
+    public Expression visitArrayElement(MinINGParser.ArrayElementContext ctx) {
+        String arrayName = ctx.IDF().getText();
+        Object index = visit(ctx.expression());
+        int line = ctx.getStart().getLine();
+
+        if (symbolTable.containsSymbol(arrayName)) {
+            Symbol arraySymbol = symbolTable.getSymbol(arrayName);
+            int arraySize = arraySymbol.getSize();
+            if (arraySize>0) {
+                int indexValue = (int)((IntegerExpression) index).evaluate(symbolTable);
+                System.out.println("index value array element"+ indexValue);
+
+                if (indexValue < arraySize) {
+                    return new ArrayElementExpression(arrayName, indexValue, symbolTable);
+                } else {
+                    semanticErrors.add("Error: Array index out of bounds at " + line );
+                }
+            } else {
+                semanticErrors.add("Error: " + arrayName + " is not an array");
+            }
+        } else {
+            semanticErrors.add("Error: Array not declared at " + line);
+        }
+
+        return null;
     }
 
     @Override

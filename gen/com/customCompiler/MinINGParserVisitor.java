@@ -225,6 +225,13 @@ public interface MinINGParserVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitVariable(MinINGParser.VariableContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code ArrayElement}
+	 * labeled alternative in {@link MinINGParser#factor}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitArrayElement(MinINGParser.ArrayElementContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code ParenthesisCondition}
 	 * labeled alternative in {@link MinINGParser#conditionExpr}.
 	 * @param ctx the parse tree

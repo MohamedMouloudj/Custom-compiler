@@ -21,14 +21,20 @@ public abstract class Expression {
      */
     public abstract ExpressionType getType();
 
-    // Enum to represent different expression types
+    /**
+     * Enum to represent different expression types.<br>
+     * Note: BOOLEAN is used for comparison expressions. Its usage is just for compilation purpose, user cannot use it.
+     * */
     public enum ExpressionType {
         INTEGER,
         FLOAT,
         CHAR,
-        ARITHMETIC,
         BOOLEAN,
-        UNKNOWN,
+    }
+    public enum LogicalOperator{
+        AND,
+        OR,
+        NOT,
     }
 }
 
