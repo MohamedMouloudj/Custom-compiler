@@ -128,6 +128,18 @@ public interface MinINGParserVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitConditionalStatement(MinINGParser.ConditionalStatementContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link MinINGParser#ifstatements}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitIfstatements(MinINGParser.IfstatementsContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MinINGParser#elsestatments}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitElsestatments(MinINGParser.ElsestatmentsContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code LoopDefinition}
 	 * labeled alternative in {@link MinINGParser#loop}.
 	 * @param ctx the parse tree

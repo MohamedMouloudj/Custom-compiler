@@ -11,13 +11,13 @@ public class Quadruples {
         this.quadruples = new ArrayList<>();
     }
 
-    public QuadElement addQuad(Expression operator, Expression op1, Expression op2, Expression result) {
+    public QuadElement addQuad(String operator, Expression op1, Expression op2, Expression result) {
         QuadElement quad = new QuadElement(operator, op1, op2, result, quadruples.size());
         quadruples.add(quad);
         return quad;
     }
 
-    public void updateQuad(int index, Expression operator, Expression op1, Expression op2, Expression result) {
+    public void updateQuad(int index, String operator, Expression op1, Expression op2, Expression result) {
         QuadElement quad = new QuadElement(operator, op1, op2, result, index);
         quadruples.set(index, quad);
     }

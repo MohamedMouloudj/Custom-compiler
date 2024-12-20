@@ -9,7 +9,6 @@ public class isCompatibleForComparison {
     }
 
     public boolean checkCompatibilityComparision(){
-        //TODO : i change this i add if verification left != null and right != null
        if(this.left != null && this.right != null){
            if (left.getType() == right.getType()) {
                return true;

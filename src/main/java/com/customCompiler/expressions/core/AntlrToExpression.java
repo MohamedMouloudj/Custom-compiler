@@ -267,8 +267,8 @@ public class AntlrToExpression extends MinINGParserBaseVisitor<Expression> {
                 Expression expressionValue = visit(ctx.expression());
                 String expressionType = expressionValue.getType().toString();
 
-                if(!Objects.equals(variableType, expressionType)){
-                    semanticErrors.add("Error : "+ variableName + " is type " + variableType + " not "+ expressionType + " at line " + ctx.getStart().getLine() );
+                if(!Objects.equals(variableType, expressionType)&&variableType.equals(Expression.ExpressionType.INTEGER)){
+                    semanticErrors.add("Error : "+ variableName + " is of type " + variableType + " not "+ expressionType + " at line " + ctx.getStart().getLine() );
 
                 }
                 return new AssignmentExpression(variableName,expressionValue);
@@ -284,12 +284,12 @@ public class AntlrToExpression extends MinINGParserBaseVisitor<Expression> {
             semanticErrors.add("Error: Conditional expression must be of type boolean at line " + ctx.getStart().getLine());
         }
         List<Expression> ifStatements = new ArrayList<>();
-        for(MinINGParser.StatementContext statement : ctx.statement()){
+        for(MinINGParser.StatementContext statement : ctx.ifstatements().statement()){
             ifStatements.add(visit(statement));
         }
         List<Expression> elseStatements = new ArrayList<>();
         if (ctx.ELSE() != null) {
-            for (MinINGParser.StatementContext statement : ctx.statement()) {
+            for (MinINGParser.StatementContext statement : ctx.elsestatments().statement()) {
                 elseStatements.add(visit(statement));
             }
         }

@@ -208,6 +208,26 @@ public interface MinINGParserListener extends ParseTreeListener {
 	 */
 	void exitConditionalStatement(MinINGParser.ConditionalStatementContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link MinINGParser#ifstatements}.
+	 * @param ctx the parse tree
+	 */
+	void enterIfstatements(MinINGParser.IfstatementsContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MinINGParser#ifstatements}.
+	 * @param ctx the parse tree
+	 */
+	void exitIfstatements(MinINGParser.IfstatementsContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MinINGParser#elsestatments}.
+	 * @param ctx the parse tree
+	 */
+	void enterElsestatments(MinINGParser.ElsestatmentsContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MinINGParser#elsestatments}.
+	 * @param ctx the parse tree
+	 */
+	void exitElsestatments(MinINGParser.ElsestatmentsContext ctx);
+	/**
 	 * Enter a parse tree produced by the {@code LoopDefinition}
 	 * labeled alternative in {@link MinINGParser#loop}.
 	 * @param ctx the parse tree

@@ -1,15 +1,16 @@
 package com.customCompiler.quadruplet;
 
+import com.customCompiler.SymbolTable;
 import com.customCompiler.expressions.Expression;
 
-public class QuadElement {
-    private Expression operator;
+public class QuadElement extends Expression {
+    private String operator;
     private Expression operand1;
     private Expression operand2;
     private Expression result;
     private int num;
 
-    public QuadElement(Expression operator, Expression operand1, Expression operand2, Expression result, int num) {
+    public QuadElement(String operator, Expression operand1, Expression operand2, Expression result, int num) {
         this.operator = operator;
         this.operand1 = operand1;
         this.operand2 = operand2;
@@ -17,11 +18,11 @@ public class QuadElement {
         this.num = num;
     }
 
-    public Expression getOperator() {
+    public String getOperator() {
         return operator;
     }
 
-    public void setOperator(Expression operator) {
+    public void setOperator(String operator) {
         this.operator = operator;
     }
 
@@ -60,5 +61,15 @@ public class QuadElement {
     @Override
     public  String toString() {
         return num + ": (" + operator + ", " + operand1 + ", " + operand2 + ", " + result + ")";
+    }
+
+    @Override
+    public Object evaluate(SymbolTable symbolTable) {
+        return null;
+    }
+
+    @Override
+    public ExpressionType getType() {
+        return null;
     }
 }

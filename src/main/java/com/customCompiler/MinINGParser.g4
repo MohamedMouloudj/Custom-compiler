@@ -49,7 +49,14 @@ assignment
 
 // IF statement
 condition
-    : IF LPAREN conditionExpr RPAREN LBRACE statement* RBRACE ( ELSE LBRACE statement* RBRACE )?   #ConditionalStatement
+    : IF LPAREN conditionExpr RPAREN LBRACE ifstatements RBRACE ( ELSE LBRACE elsestatments RBRACE )?   #ConditionalStatement
+    ;
+
+ifstatements
+    : statement*
+    ;
+elsestatments
+    : statement*
     ;
 
 // FOR loop
@@ -100,9 +107,9 @@ factor
 conditionExpr
     : expression comparisonOp expression    #Comparison
     | NOT conditionExpr                     #Negation
-    | conditionExpr OR conditionExpr           #OrCondition
-    | conditionExpr AND conditionExpr          #AndCondition
     | LPAREN conditionExpr RPAREN           #ParenthesisCondition
+    | conditionExpr AND conditionExpr          #AndCondition
+    | conditionExpr OR conditionExpr           #OrCondition
     ;
 
 comparisonOp

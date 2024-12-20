@@ -5,21 +5,21 @@ VAR_GLOBAL {
 }
 DECLARATION {
     CONST INTEGER Y = 5;
-    CONST CHAR X = 4;
+    CONST INTEGER X = 4;
 }
 
 INSTRUCTION {
 
         Z[2]='k';
-        A =(-2.6)/3+4;
-%%        X=6;
+        A =(-2.6)-2*(5+6)/3+4;
+        X=6;
 
-%%         IF(A > 'k' && B<2){
-%%               B=9;
-%%         }
+         IF(A > 'k' && B<2){
+               B=9;
+         }
 
-%%        A=3; B=1; C=3;
-%%        IF(A == 9 && B == 1){
-%%            A=1;
-%%        }
+        A=3; B=1; C=3;
+        IF(A == 9 && B == 1){
+            A=1;
+        }
 }

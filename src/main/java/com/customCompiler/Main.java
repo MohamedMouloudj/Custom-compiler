@@ -21,7 +21,7 @@ import java.io.InputStream;
 public class Main {
     public static void main(String[] args) {
         try {
-            String inputFile="src/test/java/errorFile";
+            String inputFile="src/test/java/successFile";
             FileInputStream fileInputStream = new FileInputStream(inputFile);
 
             MinINGParser parser = getParser(fileInputStream);
