@@ -88,6 +88,7 @@ public class SymbolTable {
         symbols.put(name, encodeSymbol(symbol));
     }
 
+
     // Vérifie si un symbole existe dans la table ...boolean
     public boolean containsSymbol(String name) {
         return symbols.containsKey(name);

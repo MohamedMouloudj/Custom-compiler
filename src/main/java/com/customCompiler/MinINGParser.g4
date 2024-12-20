@@ -54,7 +54,7 @@ condition
 
 // FOR loop
 loop
-    : FOR LPAREN loopAssignment COLON expression COLON expression RPAREN LBRACE sta     tement* RBRACE #LoopDefinition
+    : FOR LPAREN loopAssignment COLON expression COLON expression RPAREN LBRACE statement* RBRACE #LoopDefinition
     ;
 loopAssignment
     : IDF RECEIVE expression

@@ -27,8 +27,8 @@ public class AntlrToExpression extends MinINGParserBaseVisitor<Expression> {
     @Override
     public Expression visitVariableGlobalSegment(MinINGParser.VariableGlobalSegmentContext ctx) {
         List<Expression> declarations=new ArrayList<>();
-       for (int i=0;i<ctx.varDeclaration().size();i++) {
-           declarations.add(visit(ctx.varDeclaration(i)));
+        for (int i=0;i<ctx.varDeclaration().size();i++) {
+            declarations.add(visit(ctx.varDeclaration(i)));
         }
         return new VariableGlobalExpression(declarations);
     }
@@ -247,32 +247,27 @@ public class AntlrToExpression extends MinINGParserBaseVisitor<Expression> {
             semanticErrors.add("Error: Variable " + variableName + " is not defined at line " + ctx.getStart().getLine() );
 
         }else{
-            String variableType  = symbolTable.getType(variableName);
+            Symbol symbol = symbolTable.getSymbol(variableName);
+            if (symbol.isConstant()) {
+                semanticErrors.add("Error: Cannot assign to constant variable " + variableName + " at line " + ctx.getStart().getLine() );
+            }else{
+                String variableType  = symbolTable.getType(variableName);
 
-            Expression expressionValue = visit(ctx.expression());
-            String expressionType = expressionValue.getType().toString();
+                Expression expressionValue = visit(ctx.expression());
+                String expressionType = expressionValue.getType().toString();
 
-            if(!Objects.equals(variableType, expressionType)){
-                semanticErrors.add("Error : "+ variableName + " is type " + variableType + " not "+ expressionType + " at line " + ctx.getStart().getLine() );
+                if(!Objects.equals(variableType, expressionType)){
+                    semanticErrors.add("Error : "+ variableName + " is type " + variableType + " not "+ expressionType + " at line " + ctx.getStart().getLine() );
 
+                }
+                return new AssignmentExpression(variableName,expressionValue);
             }
-            return new AssignmentExpression(variableName,expressionValue);
         }
         return  null;
     }
 
     @Override
     public Expression visitConditionalStatement(MinINGParser.ConditionalStatementContext ctx) {
-//        System.out.println("\nFields:");
-//        for (Field field : ctx.conditionExpr().getClass().getDeclaredFields()) {
-//            field.setAccessible(true); // Access private fields
-//            System.out.println("  " + field.getName());
-//        }
-//
-//        System.out.println("\nMethods:");
-//        for (Method method : ctx.conditionExpr().getClass().getDeclaredMethods()) {
-//            System.out.println("  " + method.getName());
-//        }
         Expression condition = visit(ctx.conditionExpr());
         if (!Objects.equals(condition.getType(), Expression.ExpressionType.BOOLEAN)) {
             semanticErrors.add("Error: Conditional expression must be of type boolean at line " + ctx.getStart().getLine());
@@ -332,22 +327,13 @@ public class AntlrToExpression extends MinINGParserBaseVisitor<Expression> {
         }else{
             semanticErrors.add("Error: Assignment is required at line "+ line);
             return null;
-            //TODO : check if return null
+
         }
 
     }
 
     @Override
     public Expression visitReadOperation(MinINGParser.ReadOperationContext ctx) {
-//        String variableName = ctx.IDF().getText();
-//        Scanner sc = new Scanner(System.in);
-//        String input = sc.nextLine();
-//        Object value = parseInput(input);
-//        symbolTable.setValue(variableName,value);
-//
-//        return new ReadExpression(variableName);
-
-        //DEPEND ON WHAT U WANT : The difference is that calling evaluate() immediately triggers the input operation and stores the value right away, while deferring evaluation allows you to construct the AST first and evaluate it later, providing more control over when side effects (like user input) occur.
 
         String variableName = ctx.IDF().getText();
         if (!symbolTable.containsSymbol(variableName)) {
@@ -381,83 +367,6 @@ public class AntlrToExpression extends MinINGParserBaseVisitor<Expression> {
         return w;
     }
 
-//    @Override
-//    public Expression visitAddition(MinINGParser.AdditionContext ctx) {
-//        Expression result = visit(ctx.term());
-//        for(int i = 0;i<ctx.expression().size();i++){
-//            Expression right = visit(ctx.expression(i));
-//            System.out.println("visit add" + result + " " + right);
-//            isCompatibleForComparison c = new isCompatibleForComparison(right,result);
-//            if(!c.checkCompatibilityArithmetic()){
-//                semanticErrors.add("Error : Addition operation between incompatible types " + right.getType() + " and " + result.getType() + " at line " + ctx.getStart().getLine() );
-//            }
-//            result = new AdditionExpression(result, right);
-//        }
-//        return result;
-//    }
-//
-//    @Override
-//    public Expression visitSubtraction(MinINGParser.SubtractionContext ctx) {
-//        System.out.println("salam");
-//        Expression result = visit(ctx.term());
-//        for(int i = 0;i<ctx.expression().size();i++){
-//            Expression right = visit(ctx.expression(i));
-//            isCompatibleForComparison c = new isCompatibleForComparison(right,result);
-//            if(!c.checkCompatibilityArithmetic()){
-//                semanticErrors.add("Error : Subtraction operation between incompatible types " + right.getType() + " and " + result.getType() + " at line " + ctx.getStart().getLine() );
-//            }
-//            result = new SubtractionExpression(result, right);
-//        }
-//        return result;
-//    }
-//
-//    @Override
-//    public Expression visitMultiplication(MinINGParser.MultiplicationContext ctx) {
-//        Expression result = visit(ctx.factor());
-//        for (int i = 0; i < ctx.expression().size(); i++) {
-//            Expression right = visit(ctx.expression(i));
-//            isCompatibleForComparison c = new isCompatibleForComparison(right,result);
-//            if(!c.checkCompatibilityArithmetic()){
-//                semanticErrors.add("Error : Multiplication operation between incompatible types " + right.getType() + " and " + result.getType() + " at line " + ctx.getStart().getLine() );
-//            }
-//            result = new MultiplicationExpression(result, right);
-//        }
-//        return result;
-//    }
-//
-//
-//    @Override
-//    public Expression visitDivision(MinINGParser.DivisionContext ctx) {
-//        Expression result = visit(ctx.factor());
-//        for (int i = 0; i < ctx.expression().size(); i++) {
-//            Expression right = visit(ctx.expression(i));
-//            isCompatibleForComparison c = new isCompatibleForComparison(right,result);
-//            if(!c.checkCompatibilityArithmetic()){
-//                semanticErrors.add("Error : Division operation between incompatible types " + result.getType() + " and " + right.getType() + " at line " + ctx.getStart().getLine() );
-//            }
-//            if(right instanceof IntegerExpression){
-//                if(((Integer)right.evaluate(symbolTable)) == 0){
-//                    semanticErrors.add("Error : Division by zero impossible at line " + ctx.getStart().getLine() );
-//                }
-//            }
-//            //TODO :
-//            result = new DivisionExpression(result, right);
-//        }
-//       return result;
-//    }
-
-//    @Override
-//    public Expression visitParenthesis(MinINGParser.ParenthesisContext ctx) {
-//        if(ctx.expression() != null) {
-//            return new ParenthesisExpression(visit(ctx.expression()));
-//        }else{
-//            semanticErrors.add("Error: Missing or invalid expression inside parentheses at line "
-//                    + ctx.getStart().getLine() );
-//
-//            return new ParenthesisExpression(null);
-//        }
-//
-//    }
 
     @Override
     public Expression visitInteger(MinINGParser.IntegerContext ctx) {
@@ -560,7 +469,6 @@ public class AntlrToExpression extends MinINGParserBaseVisitor<Expression> {
             int arraySize = arraySymbol.getSize();
             if (arraySize>0) {
                 int indexValue = (int)((IntegerExpression) index).evaluate(symbolTable);
-                System.out.println("index value array element"+ indexValue);
 
                 if (indexValue < arraySize) {
                     return new ArrayElementExpression(arrayName, indexValue, symbolTable);
@@ -592,7 +500,6 @@ public class AntlrToExpression extends MinINGParserBaseVisitor<Expression> {
             semanticErrors.add("Error : Addition operation between incompatible types " + right.getType() + " and " + left.getType() + " at line " + ctx.getStart().getLine() );
         }
         result = new SubtractionExpression(left, right);
-        System.out.println("left in Sub " + result + "Sub " + right);
 
         return result;
     }
@@ -607,7 +514,6 @@ public class AntlrToExpression extends MinINGParserBaseVisitor<Expression> {
             semanticErrors.add("Error : Substraction operation between incompatible types " + right.getType() + " and " + left.getType() + " at line " + ctx.getStart().getLine() );
         }
         result = new AdditionExpression(left, right);
-        System.out.println("left in addition " + result + "right " + right);
         return result;
     }
 
@@ -627,7 +533,6 @@ public class AntlrToExpression extends MinINGParserBaseVisitor<Expression> {
         }
 
         result = new MultiplicationExpression(result, right);
-        System.out.println("left in mul " + left + " righ in mu " + right);
         return result;
     }
 
@@ -647,8 +552,7 @@ public class AntlrToExpression extends MinINGParserBaseVisitor<Expression> {
             }
         }
         result = new DivisionExpression(left, right);
-        System.out.println("left in division " + left + " right in division " + right);
-       return result;
+        return result;
     }
 
     @Override
