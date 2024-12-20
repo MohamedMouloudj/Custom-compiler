@@ -295,8 +295,7 @@ public class AntlrToExpression extends MinINGParserBaseVisitor<Expression> {
             }
         }
         return new IfBlocksExpression(condition,ifStatements,elseStatements);
-//TODO : check how to select statement of if block and else block DekuDz : nadohoum ga3
-        //return null ;
+
     }
 
 
@@ -306,18 +305,31 @@ public class AntlrToExpression extends MinINGParserBaseVisitor<Expression> {
         int line = ctx.getStart().getLine();
 
         Expression initialization = visit(ctx.loopAssignment().expression());
+
         String loopVariable = ctx.loopAssignment().IDF().getText();
         if (!initialization.getType().equals(Expression.ExpressionType.INTEGER)||initialization.getType().equals(Expression.ExpressionType.FLOAT)) {
             semanticErrors.add("Error: Loop initialization must be an integer or float at " + line );
         }
+
+
         Expression step=visit(ctx.expression(1));
-        if (!step.getType().equals(initialization.getType())) {
-            semanticErrors.add("Error: Loop step must be of the same type as the initialization at " + line  );
+        if(step != null){
+            if (!step.getType().equals(initialization.getType())) {
+                semanticErrors.add("Error: Loop step must be of the same type as the initialization at " + line  );
+            }
+        }else{
+            semanticErrors.add("Error: Loop step must be an integer or float at " + line );
         }
+
         Expression rangeEnd = visit(ctx.expression().getLast());
-        if (!rangeEnd.getType().equals(initialization.getType())) {
-            semanticErrors.add("Error: Loop range end must be of the same type as the initialization at " + line );
+        if(rangeEnd != null){
+            if (!rangeEnd.getType().equals(initialization.getType())) {
+                semanticErrors.add("Error: Loop range end must be of the same type as the initialization at " + line );
+            }
+        }else{
+            semanticErrors.add("Error: Loop range end must be an integer or float at " + line );
         }
+
 
         List<Expression> statements = new ArrayList<>();
         for(MinINGParser.StatementContext statement : ctx.statement()){
