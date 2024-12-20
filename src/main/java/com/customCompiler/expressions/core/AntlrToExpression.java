@@ -383,10 +383,10 @@ public class AntlrToExpression extends MinINGParserBaseVisitor<Expression> {
 
     @Override
     public Expression visitAddition(MinINGParser.AdditionContext ctx) {
-        Expression result = visit(ctx.term(0));
-
-        for(int i = 1;i<ctx.term().size();i++){
-            Expression right = visit(ctx.term(i));
+        Expression result = visit(ctx.term());
+        for(int i = 1;i<ctx.expression().size();i++){
+            Expression right = visit(ctx.expression(i));
+            System.out.println("visit add" + result + " " + right);
             isCompatibleForComparison c = new isCompatibleForComparison(right,result);
             if(!c.checkCompatibilityArithmetic()){
                 semanticErrors.add("Error : Addition operation between incompatible types " + right.getType() + " and " + result.getType() + " at line " + ctx.getStart().getLine() );
@@ -398,9 +398,10 @@ public class AntlrToExpression extends MinINGParserBaseVisitor<Expression> {
 
     @Override
     public Expression visitSubtraction(MinINGParser.SubtractionContext ctx) {
-        Expression result = visit(ctx.term(0));
-        for(int i = 1;i<ctx.term().size();i++){
-            Expression right = visit(ctx.term(i));
+        System.out.println("salam");
+        Expression result = visit(ctx.term());
+        for(int i = 1;i<ctx.expression().size();i++){
+            Expression right = visit(ctx.expression(i));
             isCompatibleForComparison c = new isCompatibleForComparison(right,result);
             if(!c.checkCompatibilityArithmetic()){
                 semanticErrors.add("Error : Subtraction operation between incompatible types " + right.getType() + " and " + result.getType() + " at line " + ctx.getStart().getLine() );
@@ -412,9 +413,9 @@ public class AntlrToExpression extends MinINGParserBaseVisitor<Expression> {
 
     @Override
     public Expression visitMultiplication(MinINGParser.MultiplicationContext ctx) {
-        Expression result = visit(ctx.factor(0));
-        for (int i = 1; i < ctx.factor().size(); i++) {
-            Expression right = visit(ctx.factor(i));
+        Expression result = visit(ctx.factor());
+        for (int i = 1; i < ctx.expression().size(); i++) {
+            Expression right = visit(ctx.expression(i));
             isCompatibleForComparison c = new isCompatibleForComparison(right,result);
             if(!c.checkCompatibilityArithmetic()){
                 semanticErrors.add("Error : Multiplication operation between incompatible types " + right.getType() + " and " + result.getType() + " at line " + ctx.getStart().getLine() );
@@ -427,15 +428,16 @@ public class AntlrToExpression extends MinINGParserBaseVisitor<Expression> {
 
     @Override
     public Expression visitDivision(MinINGParser.DivisionContext ctx) {
-        List<MinINGParser.FactorContext> factors = ctx.factor(); //Car : (MUL factor)*
-        Expression left = visit(factors.get(0));
-        Expression right = visit(factors.get(1));
-        isCompatibleForComparison c = new isCompatibleForComparison(right,left);
-        if(!c.checkCompatibilityArithmetic()){
-            semanticErrors.add("Error : Division operation between incompatible types " + left.getType() + " and " + right.getType() + " at line " + ctx.getStart().getLine() );
+        Expression result = visit(ctx.factor());
+        for (int i = 1; i < ctx.expression().size(); i++) {
+            Expression right = visit(ctx.expression(i));
+            isCompatibleForComparison c = new isCompatibleForComparison(right,result);
+            if(!c.checkCompatibilityArithmetic()){
+                semanticErrors.add("Error : Division operation between incompatible types " + result.getType() + " and " + right.getType() + " at line " + ctx.getStart().getLine() );
+            }
+            result = new DivisionExpression(result, right);
         }
-        //TODO : check if right != 0 and add semantic error but how can i get value , if any idea tag me on discord DekuDz
-        return new DivisionExpression(left, right);
+       return result;
     }
 
     @Override

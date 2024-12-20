@@ -25,11 +25,11 @@ public class QuadrupleGenerator extends MinINGParserBaseVisitor<String> {
 
     @Override
     public String visitAddition(MinINGParser.AdditionContext ctx) {
-        String left = visit(ctx.term(0));
+        String left = visit(ctx.term());
         String result = left;
 
-        for (int i = 1; i < ctx.term().size(); i++) {
-            String right = visit(ctx.term(i));
+        for (int i = 1; i < ctx.expression().size(); i++) {
+            String right = visit(ctx.expression(i));
             result = newTemp();
             quadruples.add(String.format("(+, %s, %s, %s)", left, right, result));
             left = result;
@@ -39,11 +39,11 @@ public class QuadrupleGenerator extends MinINGParserBaseVisitor<String> {
 
     @Override
     public String visitSubtraction(MinINGParser.SubtractionContext ctx) {
-        String left = visit(ctx.term(0));
+        String left = visit(ctx.term());
         String result = left;
 
-        for (int i = 1; i < ctx.term().size(); i++) {
-            String right = visit(ctx.term(i));
+        for (int i = 1; i < ctx.expression().size(); i++) {
+            String right = visit(ctx.expression(i));
             result = newTemp();
             quadruples.add(String.format("(-, %s, %s, %s)", left, right, result));
             left = result;
@@ -53,11 +53,11 @@ public class QuadrupleGenerator extends MinINGParserBaseVisitor<String> {
 
     @Override
     public String visitMultiplication(MinINGParser.MultiplicationContext ctx) {
-        String left = visit(ctx.factor(0));
+        String left = visit(ctx.factor());
         String result = left;
 
-        for (int i = 1; i < ctx.factor().size(); i++) {
-            String right = visit(ctx.factor(i));
+        for (int i = 1; i < ctx.expression().size(); i++) {
+            String right = visit(ctx.expression(i));
             result = newTemp();
             quadruples.add(String.format("(*, %s, %s, %s)", left, right, result));
             left = result;
@@ -67,11 +67,11 @@ public class QuadrupleGenerator extends MinINGParserBaseVisitor<String> {
 
     @Override
     public String visitDivision(MinINGParser.DivisionContext ctx) {
-        String left = visit(ctx.factor(0));
+        String left = visit(ctx.factor());
         String result = left;
 
-        for (int i = 1; i < ctx.factor().size(); i++) {
-            String right = visit(ctx.factor(i));
+        for (int i = 1; i < ctx.expression().size(); i++) {
+            String right = visit(ctx.expression(i));
             result = newTemp();
             quadruples.add(String.format("(/, %s, %s, %s)", left, right, result));
             left = result;

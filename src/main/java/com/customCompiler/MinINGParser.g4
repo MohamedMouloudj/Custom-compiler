@@ -69,13 +69,13 @@ ioOperation
 
 // Expression
 expression
-    : term (ADD term)*  #Addition
-    | term (SUB term)*  #Subtraction
+    : term (ADD expression)*  #Addition
+    | term (SUB expression)*  #Subtraction
     ;
 
 term
-    : factor (MUL factor)*  #Multiplication
-    | factor (DIV factor)*  #Division
+    : factor (MUL expression)*  #Multiplication
+    | factor (DIV expression)*  #Division
     ;
 
 factor

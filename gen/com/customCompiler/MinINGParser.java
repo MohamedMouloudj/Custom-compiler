@@ -1499,15 +1499,18 @@ public class MinINGParser extends Parser {
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class AdditionContext extends ExpressionContext {
-		public List<TermContext> term() {
-			return getRuleContexts(TermContext.class);
-		}
-		public TermContext term(int i) {
-			return getRuleContext(TermContext.class,i);
+		public TermContext term() {
+			return getRuleContext(TermContext.class,0);
 		}
 		public List<TerminalNode> ADD() { return getTokens(MinINGParser.ADD); }
 		public TerminalNode ADD(int i) {
 			return getToken(MinINGParser.ADD, i);
+		}
+		public List<ExpressionContext> expression() {
+			return getRuleContexts(ExpressionContext.class);
+		}
+		public ExpressionContext expression(int i) {
+			return getRuleContext(ExpressionContext.class,i);
 		}
 		public AdditionContext(ExpressionContext ctx) { copyFrom(ctx); }
 		@Override
@@ -1526,15 +1529,18 @@ public class MinINGParser extends Parser {
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class SubtractionContext extends ExpressionContext {
-		public List<TermContext> term() {
-			return getRuleContexts(TermContext.class);
-		}
-		public TermContext term(int i) {
-			return getRuleContext(TermContext.class,i);
+		public TermContext term() {
+			return getRuleContext(TermContext.class,0);
 		}
 		public List<TerminalNode> SUB() { return getTokens(MinINGParser.SUB); }
 		public TerminalNode SUB(int i) {
 			return getToken(MinINGParser.SUB, i);
+		}
+		public List<ExpressionContext> expression() {
+			return getRuleContexts(ExpressionContext.class);
+		}
+		public ExpressionContext expression(int i) {
+			return getRuleContext(ExpressionContext.class,i);
 		}
 		public SubtractionContext(ExpressionContext ctx) { copyFrom(ctx); }
 		@Override
@@ -1576,7 +1582,7 @@ public class MinINGParser extends Parser {
 						setState(207);
 						match(ADD);
 						setState(208);
-						term();
+						expression();
 						}
 						} 
 					}
@@ -1602,7 +1608,7 @@ public class MinINGParser extends Parser {
 						setState(215);
 						match(SUB);
 						setState(216);
-						term();
+						expression();
 						}
 						} 
 					}
@@ -1639,15 +1645,18 @@ public class MinINGParser extends Parser {
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class MultiplicationContext extends TermContext {
-		public List<FactorContext> factor() {
-			return getRuleContexts(FactorContext.class);
-		}
-		public FactorContext factor(int i) {
-			return getRuleContext(FactorContext.class,i);
+		public FactorContext factor() {
+			return getRuleContext(FactorContext.class,0);
 		}
 		public List<TerminalNode> MUL() { return getTokens(MinINGParser.MUL); }
 		public TerminalNode MUL(int i) {
 			return getToken(MinINGParser.MUL, i);
+		}
+		public List<ExpressionContext> expression() {
+			return getRuleContexts(ExpressionContext.class);
+		}
+		public ExpressionContext expression(int i) {
+			return getRuleContext(ExpressionContext.class,i);
 		}
 		public MultiplicationContext(TermContext ctx) { copyFrom(ctx); }
 		@Override
@@ -1666,15 +1675,18 @@ public class MinINGParser extends Parser {
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class DivisionContext extends TermContext {
-		public List<FactorContext> factor() {
-			return getRuleContexts(FactorContext.class);
-		}
-		public FactorContext factor(int i) {
-			return getRuleContext(FactorContext.class,i);
+		public FactorContext factor() {
+			return getRuleContext(FactorContext.class,0);
 		}
 		public List<TerminalNode> DIV() { return getTokens(MinINGParser.DIV); }
 		public TerminalNode DIV(int i) {
 			return getToken(MinINGParser.DIV, i);
+		}
+		public List<ExpressionContext> expression() {
+			return getRuleContexts(ExpressionContext.class);
+		}
+		public ExpressionContext expression(int i) {
+			return getRuleContext(ExpressionContext.class,i);
 		}
 		public DivisionContext(TermContext ctx) { copyFrom(ctx); }
 		@Override
@@ -1716,7 +1728,7 @@ public class MinINGParser extends Parser {
 						setState(225);
 						match(MUL);
 						setState(226);
-						factor();
+						expression();
 						}
 						} 
 					}
@@ -1742,7 +1754,7 @@ public class MinINGParser extends Parser {
 						setState(233);
 						match(DIV);
 						setState(234);
-						factor();
+						expression();
 						}
 						} 
 					}
@@ -2515,54 +2527,54 @@ public class MinINGParser extends Parser {
 		"\u0000\u0000\u0000\u00cc\u00b5\u0001\u0000\u0000\u0000\u00cc\u00be\u0001"+
 		"\u0000\u0000\u0000\u00cd\u0019\u0001\u0000\u0000\u0000\u00ce\u00d3\u0003"+
 		"\u001c\u000e\u0000\u00cf\u00d0\u0005\u000f\u0000\u0000\u00d0\u00d2\u0003"+
-		"\u001c\u000e\u0000\u00d1\u00cf\u0001\u0000\u0000\u0000\u00d2\u00d5\u0001"+
-		"\u0000\u0000\u0000\u00d3\u00d1\u0001\u0000\u0000\u0000\u00d3\u00d4\u0001"+
-		"\u0000\u0000\u0000\u00d4\u00df\u0001\u0000\u0000\u0000\u00d5\u00d3\u0001"+
-		"\u0000\u0000\u0000\u00d6\u00db\u0003\u001c\u000e\u0000\u00d7\u00d8\u0005"+
-		"\u0010\u0000\u0000\u00d8\u00da\u0003\u001c\u000e\u0000\u00d9\u00d7\u0001"+
-		"\u0000\u0000\u0000\u00da\u00dd\u0001\u0000\u0000\u0000\u00db\u00d9\u0001"+
-		"\u0000\u0000\u0000\u00db\u00dc\u0001\u0000\u0000\u0000\u00dc\u00df\u0001"+
-		"\u0000\u0000\u0000\u00dd\u00db\u0001\u0000\u0000\u0000\u00de\u00ce\u0001"+
-		"\u0000\u0000\u0000\u00de\u00d6\u0001\u0000\u0000\u0000\u00df\u001b\u0001"+
-		"\u0000\u0000\u0000\u00e0\u00e5\u0003\u001e\u000f\u0000\u00e1\u00e2\u0005"+
-		"\u0011\u0000\u0000\u00e2\u00e4\u0003\u001e\u000f\u0000\u00e3\u00e1\u0001"+
-		"\u0000\u0000\u0000\u00e4\u00e7\u0001\u0000\u0000\u0000\u00e5\u00e3\u0001"+
-		"\u0000\u0000\u0000\u00e5\u00e6\u0001\u0000\u0000\u0000\u00e6\u00f1\u0001"+
-		"\u0000\u0000\u0000\u00e7\u00e5\u0001\u0000\u0000\u0000\u00e8\u00ed\u0003"+
-		"\u001e\u000f\u0000\u00e9\u00ea\u0005\u0012\u0000\u0000\u00ea\u00ec\u0003"+
-		"\u001e\u000f\u0000\u00eb\u00e9\u0001\u0000\u0000\u0000\u00ec\u00ef\u0001"+
-		"\u0000\u0000\u0000\u00ed\u00eb\u0001\u0000\u0000\u0000\u00ed\u00ee\u0001"+
-		"\u0000\u0000\u0000\u00ee\u00f1\u0001\u0000\u0000\u0000\u00ef\u00ed\u0001"+
-		"\u0000\u0000\u0000\u00f0\u00e0\u0001\u0000\u0000\u0000\u00f0\u00e8\u0001"+
-		"\u0000\u0000\u0000\u00f1\u001d\u0001\u0000\u0000\u0000\u00f2\u00f3\u0005"+
-		"\u001c\u0000\u0000\u00f3\u00f4\u0003\u001a\r\u0000\u00f4\u00f5\u0005\u001d"+
-		"\u0000\u0000\u00f5\u0100\u0001\u0000\u0000\u0000\u00f6\u0100\u0005\f\u0000"+
-		"\u0000\u00f7\u0100\u0005\r\u0000\u0000\u00f8\u0100\u0005\u000e\u0000\u0000"+
-		"\u00f9\u0100\u0005\u000b\u0000\u0000\u00fa\u00fb\u0005\u000b\u0000\u0000"+
-		"\u00fb\u00fc\u0005 \u0000\u0000\u00fc\u00fd\u0003\u001a\r\u0000\u00fd"+
-		"\u00fe\u0005!\u0000\u0000\u00fe\u0100\u0001\u0000\u0000\u0000\u00ff\u00f2"+
-		"\u0001\u0000\u0000\u0000\u00ff\u00f6\u0001\u0000\u0000\u0000\u00ff\u00f7"+
-		"\u0001\u0000\u0000\u0000\u00ff\u00f8\u0001\u0000\u0000\u0000\u00ff\u00f9"+
-		"\u0001\u0000\u0000\u0000\u00ff\u00fa\u0001\u0000\u0000\u0000\u0100\u001f"+
-		"\u0001\u0000\u0000\u0000\u0101\u0102\u0006\u0010\uffff\uffff\u0000\u0102"+
-		"\u0103\u0003\u001a\r\u0000\u0103\u0104\u0003\"\u0011\u0000\u0104\u0105"+
-		"\u0003\u001a\r\u0000\u0105\u010d\u0001\u0000\u0000\u0000\u0106\u0107\u0005"+
-		"\u0015\u0000\u0000\u0107\u010d\u0003 \u0010\u0004\u0108\u0109\u0005\u001c"+
-		"\u0000\u0000\u0109\u010a\u0003 \u0010\u0000\u010a\u010b\u0005\u001d\u0000"+
-		"\u0000\u010b\u010d\u0001\u0000\u0000\u0000\u010c\u0101\u0001\u0000\u0000"+
-		"\u0000\u010c\u0106\u0001\u0000\u0000\u0000\u010c\u0108\u0001\u0000\u0000"+
-		"\u0000\u010d\u0116\u0001\u0000\u0000\u0000\u010e\u010f\n\u0003\u0000\u0000"+
-		"\u010f\u0110\u0005\u0014\u0000\u0000\u0110\u0115\u0003 \u0010\u0004\u0111"+
-		"\u0112\n\u0002\u0000\u0000\u0112\u0113\u0005\u0013\u0000\u0000\u0113\u0115"+
-		"\u0003 \u0010\u0003\u0114\u010e\u0001\u0000\u0000\u0000\u0114\u0111\u0001"+
-		"\u0000\u0000\u0000\u0115\u0118\u0001\u0000\u0000\u0000\u0116\u0114\u0001"+
-		"\u0000\u0000\u0000\u0116\u0117\u0001\u0000\u0000\u0000\u0117!\u0001\u0000"+
-		"\u0000\u0000\u0118\u0116\u0001\u0000\u0000\u0000\u0119\u011a\u0007\u0001"+
-		"\u0000\u0000\u011a#\u0001\u0000\u0000\u0000\u011b\u011e\u0005)\u0000\u0000"+
-		"\u011c\u011e\u0003\u001a\r\u0000\u011d\u011b\u0001\u0000\u0000\u0000\u011d"+
-		"\u011c\u0001\u0000\u0000\u0000\u011e%\u0001\u0000\u0000\u0000\u001a0:"+
-		"DO]ds\u0082\u008c\u0095\u0099\u00a7\u00c5\u00c8\u00cc\u00d3\u00db\u00de"+
-		"\u00e5\u00ed\u00f0\u00ff\u010c\u0114\u0116\u011d";
+		"\u001a\r\u0000\u00d1\u00cf\u0001\u0000\u0000\u0000\u00d2\u00d5\u0001\u0000"+
+		"\u0000\u0000\u00d3\u00d1\u0001\u0000\u0000\u0000\u00d3\u00d4\u0001\u0000"+
+		"\u0000\u0000\u00d4\u00df\u0001\u0000\u0000\u0000\u00d5\u00d3\u0001\u0000"+
+		"\u0000\u0000\u00d6\u00db\u0003\u001c\u000e\u0000\u00d7\u00d8\u0005\u0010"+
+		"\u0000\u0000\u00d8\u00da\u0003\u001a\r\u0000\u00d9\u00d7\u0001\u0000\u0000"+
+		"\u0000\u00da\u00dd\u0001\u0000\u0000\u0000\u00db\u00d9\u0001\u0000\u0000"+
+		"\u0000\u00db\u00dc\u0001\u0000\u0000\u0000\u00dc\u00df\u0001\u0000\u0000"+
+		"\u0000\u00dd\u00db\u0001\u0000\u0000\u0000\u00de\u00ce\u0001\u0000\u0000"+
+		"\u0000\u00de\u00d6\u0001\u0000\u0000\u0000\u00df\u001b\u0001\u0000\u0000"+
+		"\u0000\u00e0\u00e5\u0003\u001e\u000f\u0000\u00e1\u00e2\u0005\u0011\u0000"+
+		"\u0000\u00e2\u00e4\u0003\u001a\r\u0000\u00e3\u00e1\u0001\u0000\u0000\u0000"+
+		"\u00e4\u00e7\u0001\u0000\u0000\u0000\u00e5\u00e3\u0001\u0000\u0000\u0000"+
+		"\u00e5\u00e6\u0001\u0000\u0000\u0000\u00e6\u00f1\u0001\u0000\u0000\u0000"+
+		"\u00e7\u00e5\u0001\u0000\u0000\u0000\u00e8\u00ed\u0003\u001e\u000f\u0000"+
+		"\u00e9\u00ea\u0005\u0012\u0000\u0000\u00ea\u00ec\u0003\u001a\r\u0000\u00eb"+
+		"\u00e9\u0001\u0000\u0000\u0000\u00ec\u00ef\u0001\u0000\u0000\u0000\u00ed"+
+		"\u00eb\u0001\u0000\u0000\u0000\u00ed\u00ee\u0001\u0000\u0000\u0000\u00ee"+
+		"\u00f1\u0001\u0000\u0000\u0000\u00ef\u00ed\u0001\u0000\u0000\u0000\u00f0"+
+		"\u00e0\u0001\u0000\u0000\u0000\u00f0\u00e8\u0001\u0000\u0000\u0000\u00f1"+
+		"\u001d\u0001\u0000\u0000\u0000\u00f2\u00f3\u0005\u001c\u0000\u0000\u00f3"+
+		"\u00f4\u0003\u001a\r\u0000\u00f4\u00f5\u0005\u001d\u0000\u0000\u00f5\u0100"+
+		"\u0001\u0000\u0000\u0000\u00f6\u0100\u0005\f\u0000\u0000\u00f7\u0100\u0005"+
+		"\r\u0000\u0000\u00f8\u0100\u0005\u000e\u0000\u0000\u00f9\u0100\u0005\u000b"+
+		"\u0000\u0000\u00fa\u00fb\u0005\u000b\u0000\u0000\u00fb\u00fc\u0005 \u0000"+
+		"\u0000\u00fc\u00fd\u0003\u001a\r\u0000\u00fd\u00fe\u0005!\u0000\u0000"+
+		"\u00fe\u0100\u0001\u0000\u0000\u0000\u00ff\u00f2\u0001\u0000\u0000\u0000"+
+		"\u00ff\u00f6\u0001\u0000\u0000\u0000\u00ff\u00f7\u0001\u0000\u0000\u0000"+
+		"\u00ff\u00f8\u0001\u0000\u0000\u0000\u00ff\u00f9\u0001\u0000\u0000\u0000"+
+		"\u00ff\u00fa\u0001\u0000\u0000\u0000\u0100\u001f\u0001\u0000\u0000\u0000"+
+		"\u0101\u0102\u0006\u0010\uffff\uffff\u0000\u0102\u0103\u0003\u001a\r\u0000"+
+		"\u0103\u0104\u0003\"\u0011\u0000\u0104\u0105\u0003\u001a\r\u0000\u0105"+
+		"\u010d\u0001\u0000\u0000\u0000\u0106\u0107\u0005\u0015\u0000\u0000\u0107"+
+		"\u010d\u0003 \u0010\u0004\u0108\u0109\u0005\u001c\u0000\u0000\u0109\u010a"+
+		"\u0003 \u0010\u0000\u010a\u010b\u0005\u001d\u0000\u0000\u010b\u010d\u0001"+
+		"\u0000\u0000\u0000\u010c\u0101\u0001\u0000\u0000\u0000\u010c\u0106\u0001"+
+		"\u0000\u0000\u0000\u010c\u0108\u0001\u0000\u0000\u0000\u010d\u0116\u0001"+
+		"\u0000\u0000\u0000\u010e\u010f\n\u0003\u0000\u0000\u010f\u0110\u0005\u0014"+
+		"\u0000\u0000\u0110\u0115\u0003 \u0010\u0004\u0111\u0112\n\u0002\u0000"+
+		"\u0000\u0112\u0113\u0005\u0013\u0000\u0000\u0113\u0115\u0003 \u0010\u0003"+
+		"\u0114\u010e\u0001\u0000\u0000\u0000\u0114\u0111\u0001\u0000\u0000\u0000"+
+		"\u0115\u0118\u0001\u0000\u0000\u0000\u0116\u0114\u0001\u0000\u0000\u0000"+
+		"\u0116\u0117\u0001\u0000\u0000\u0000\u0117!\u0001\u0000\u0000\u0000\u0118"+
+		"\u0116\u0001\u0000\u0000\u0000\u0119\u011a\u0007\u0001\u0000\u0000\u011a"+
+		"#\u0001\u0000\u0000\u0000\u011b\u011e\u0005)\u0000\u0000\u011c\u011e\u0003"+
+		"\u001a\r\u0000\u011d\u011b\u0001\u0000\u0000\u0000\u011d\u011c\u0001\u0000"+
+		"\u0000\u0000\u011e%\u0001\u0000\u0000\u0000\u001a0:DO]ds\u0082\u008c\u0095"+
+		"\u0099\u00a7\u00c5\u00c8\u00cc\u00d3\u00db\u00de\u00e5\u00ed\u00f0\u00ff"+
+		"\u010c\u0114\u0116\u011d";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

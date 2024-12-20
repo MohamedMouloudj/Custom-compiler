@@ -1,21 +1,16 @@
 VAR_GLOBAL {
-    INTEGER A,B,C,W;
-    CHAR Z[5],R[1],D[10];
+   INTEGER A,B,C;
+   CHAR Z[5],R[1],D[10];
 }
-
 DECLARATION {
-    FLOAT X;
     CONST INTEGER Y = 5;
-    CONST CHAR G='d';
+    CONST INTEGER X = 4;
 }
 
 INSTRUCTION {
-    A='c'; B=1+A/2; C=(-2)+5;
-    Z[0]='c';
-    IF((A == 'b' || (B <= 5 && B==3)) && B == 1 && (C ==2 || C>2)){
-        A=1;
-    }
-    FOR(I>0:1:6){
-        Z[9]=1;
+    IF (X > (A+B) ){
+        A = 1+4-5;
+    } ELSE {
+        A = 2;
     }
 }
