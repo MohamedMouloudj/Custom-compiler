@@ -42,55 +42,38 @@ public class QuadrupleGenerator extends MinINGParserBaseVisitor<Expression> {
 
     @Override
     public Expression visitConditionalStatement(MinINGParser.ConditionalStatementContext ctx) {
-        // Visit and evaluate the condition expression
-        Expression condition = visit(ctx.conditionExpr());
+        // Process compound condition with OR
+        String condExpr = ctx.conditionExpr().getText();
+        String[] conditions = condExpr.split("\\|\\|");
 
-        // Extract the left and right operands and operator from the condition
-        String[] parts = extractConditionParts(ctx.conditionExpr().getText());
-        String leftOperand = parts[0];
-        String operator = parts[1];
-        String rightOperand = parts[2];
+        // Process first condition (e.g., A > 0)
+        String[] firstCond = extractConditionParts(conditions[0]);
+        String firstTemp = newTemp();
+        quadruples.addQuad(comparators.get(firstCond[1]), firstCond[0], firstCond[2], firstTemp);
 
-        // Get the appropriate comparison operator
-        String compareOp = comparators.getOrDefault(operator, "BG");
+        // Process second condition (e.g., B < 2)
+        String[] secondCond = extractConditionParts(conditions[1]);
+        String secondTemp = newTemp();
+        quadruples.addQuad(comparators.get(secondCond[1]), secondCond[0], secondCond[2], secondTemp);
 
-        // Generate comparison quadruple directly without temporary variable
+        // Combine conditions with OR
+        String finalTemp = newTemp();
+        quadruples.addQuad("OR", firstTemp, secondTemp, finalTemp);
+
+        // Generate branch instruction
         int branchIfFalseIndex = quadruples.size();
-        quadruples.addQuad(compareOp, leftOperand, rightOperand, "?");
+        quadruples.addQuad("BZ", finalTemp, null, "?");
 
         // Visit the 'if' block
         visit(ctx.statement(0));
 
-        // Check if there's an 'else' block
-        if (ctx.statement().size() > 1) {
-            // Add jump instruction to skip else block after completing if block
-            int jumpToEndIndex = quadruples.size();
-            quadruples.addQuad("BR", null, null, "?");
-
-            // Mark the start of else block
-            int elseStart = quadruples.size();
-
-            // Update the false branch to jump to else block
-            quadruples.updateQuad(branchIfFalseIndex, compareOp, leftOperand, rightOperand, String.valueOf(elseStart));
-
-            // Visit the 'else' block
-            visit(ctx.statement(1));
-
-            // Mark the end of conditional statement
-            int afterConditional = quadruples.size();
-
-            // Update the jump after if block to skip else
-            quadruples.updateQuad(jumpToEndIndex, "BR", null, null, String.valueOf(afterConditional));
-        } else {
-            // If no else block, update false branch to jump to end
-            int afterConditional = quadruples.size();
-            quadruples.updateQuad(branchIfFalseIndex, compareOp, leftOperand, rightOperand, String.valueOf(afterConditional));
-        }
+        // Update branch instruction to point after the 'if' block
+        int afterIf = quadruples.size();
+        quadruples.updateQuad(branchIfFalseIndex, "BZ", finalTemp, null, String.valueOf(afterIf));
 
         return null;
     }
 
-    // Helper method to extract condition parts (left operand, operator, right operand)
     private String[] extractConditionParts(String condition) {
         String[] parts = new String[3];
         Pattern pattern = Pattern.compile("(.*?)(==|!=|<=|>=|<|>)(.*)");
