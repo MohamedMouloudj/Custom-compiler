@@ -42,36 +42,75 @@ public class QuadrupleGenerator extends MinINGParserBaseVisitor<Expression> {
 
     @Override
     public Expression visitConditionalStatement(MinINGParser.ConditionalStatementContext ctx) {
+        // Visit and evaluate the condition expression
         Expression condition = visit(ctx.conditionExpr());
 
+        // Extract the left and right operands and operator from the condition
+        String[] parts = extractConditionParts(ctx.conditionExpr().getText());
+        String leftOperand = parts[0];
+        String operator = parts[1];
+        String rightOperand = parts[2];
+
+        // Get the appropriate comparison operator
+        String compareOp = comparators.getOrDefault(operator, "BG");
+
+        // Generate comparison quadruple directly without temporary variable
         int branchIfFalseIndex = quadruples.size();
-        quadruples.addQuad("BZ", condition.toString(), null, "?");
+        quadruples.addQuad(compareOp, leftOperand, rightOperand, "?");
 
-
+        // Visit the 'if' block
         visit(ctx.statement(0));
 
-        if (ctx.ELSE() != null) {
-
+        // Check if there's an 'else' block
+        if (ctx.statement().size() > 1) {
+            // Add jump instruction to skip else block after completing if block
             int jumpToEndIndex = quadruples.size();
             quadruples.addQuad("BR", null, null, "?");
 
-
+            // Mark the start of else block
             int elseStart = quadruples.size();
-            quadruples.updateQuad(branchIfFalseIndex, "BZ", condition.toString(), null, String.valueOf(elseStart));
 
+            // Update the false branch to jump to else block
+            quadruples.updateQuad(branchIfFalseIndex, compareOp, leftOperand, rightOperand, String.valueOf(elseStart));
+
+            // Visit the 'else' block
             visit(ctx.statement(1));
 
+            // Mark the end of conditional statement
+            int afterConditional = quadruples.size();
 
-            int afterElse = quadruples.size();
-            quadruples.updateQuad(jumpToEndIndex, "BR", null, null, String.valueOf(afterElse));
+            // Update the jump after if block to skip else
+            quadruples.updateQuad(jumpToEndIndex, "BR", null, null, String.valueOf(afterConditional));
         } else {
-
-            int afterIf = quadruples.size();
-            quadruples.updateQuad(branchIfFalseIndex, "BZ", condition.toString(), null, String.valueOf(afterIf));
+            // If no else block, update false branch to jump to end
+            int afterConditional = quadruples.size();
+            quadruples.updateQuad(branchIfFalseIndex, compareOp, leftOperand, rightOperand, String.valueOf(afterConditional));
         }
 
         return null;
     }
+
+    // Helper method to extract condition parts (left operand, operator, right operand)
+    private String[] extractConditionParts(String condition) {
+        String[] parts = new String[3];
+        Pattern pattern = Pattern.compile("(.*?)(==|!=|<=|>=|<|>)(.*)");
+        Matcher matcher = pattern.matcher(condition.trim());
+
+        if (matcher.find()) {
+            parts[0] = matcher.group(1).trim();
+            parts[1] = matcher.group(2).trim();
+            parts[2] = matcher.group(3).trim();
+        } else {
+            // Default if no operator found
+            parts[0] = condition.trim();
+            parts[1] = ">";
+            parts[2] = "0";
+        }
+        return parts;
+    }
+
+
+
 
     @Override
     public Expression visitAddition(MinINGParser.AdditionContext ctx) {
@@ -182,6 +221,7 @@ public class QuadrupleGenerator extends MinINGParserBaseVisitor<Expression> {
         comparators.put("<", "BL");
         comparators.put("<=", "BLE");
     }
+
 
 
     @Override
