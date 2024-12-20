@@ -6,7 +6,10 @@ import com.customCompiler.Symbol;
 import com.customCompiler.expressions.*;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
+import java.math.BigDecimal;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class AntlrToExpression extends MinINGParserBaseVisitor<Expression> {
@@ -160,16 +163,6 @@ public class AntlrToExpression extends MinINGParserBaseVisitor<Expression> {
             int arraySize = arraySymbol.getSize();
             if (arraySize>0) {
                 int indexValue = (int)((IntegerExpression) index).evaluate(symbolTable);
-                System.out.println("index value array assign"+ indexValue + " array size " + arraySize);
-//                if (indexValue < arraySize) {
-//                    if (arraySymbol.getType().equals(value.getType())) {
-//                    } else {
-//                        semanticErrors.add("Error: Type mismatch in array assignment at line " + line + " column" + column);
-//                    }
-//                } else {
-//                    semanticErrors.add("Error: Array index out of bounds at " + line + " column" + column);
-//                }
-
                 // Check if the index is within bounds
                 if (indexValue < arraySize) {
                     // Check if the type of the value matches the array type
@@ -442,13 +435,20 @@ public class AntlrToExpression extends MinINGParserBaseVisitor<Expression> {
 
     @Override
     public Expression visitInteger(MinINGParser.IntegerContext ctx) {
-        int value = Integer.parseInt(ctx.INT().getText());
+        String integer = ctx.INT().getText();
+        // To remove () from signed integer
+        Pattern pattern = Pattern.compile("[+-]");
+        Matcher matcher = pattern.matcher(integer);
+        int value = Integer.parseInt(matcher.find() ? integer.substring(1,integer.length()-1) : integer);
         return new IntegerExpression(value);
     }
 
     @Override
     public Expression visitFloat(MinINGParser.FloatContext ctx) {
-        float value = Float.parseFloat(ctx.FLOAT().getText());
+        String floatString = ctx.FLOAT().getText();
+        Pattern pattern = Pattern.compile("[+-]");
+        Matcher matcher = pattern.matcher(floatString);
+        double value = new BigDecimal(matcher.find() ? floatString.substring(1,floatString.length()-1) : floatString).doubleValue();
         return new FloatExpression(value);
     }
 

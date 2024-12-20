@@ -1,22 +1,21 @@
 VAR_GLOBAL {
-    INTEGER A, B, C;
-    CHAR X[3], Y[2];
+    INTEGER A,B,C,W;
+    CHAR Z[5],R[1],D[10];
 }
 
 DECLARATION {
-    CONST FLOAT PI = 3.14;
-    INTEGER D, E;           // Error: Missing comma between `D` and `E`
-    CHAR Z[5]              // Error: Missing semicolon at the end of the declaration
+    FLOAT X;
+    CONST INTEGER Y = 5;
+    CONST CHAR G='d';
 }
 
 INSTRUCTION {
-    A = 10;
-    IF (A > B {            // Error: Missing closing parenthesis in `IF` condition
-        B = A + 1;
+    A='c'; B=1+A/2; C=(-2)+5;
+    Z[0]='c';
+    IF((A == 'b' || (B <= 5 && B==3)) && B == 1 && (C ==2 || C>2)){
+        A=1;
     }
-    FOR (I = 0 : A + 1 10) { // Error: Missing colon between `A + 1` and `10` in `FOR` loop
-        X[0] = 'a';
+    FOR(I=0:1:6){
+        Z[9]=1;
     }
-    WRITE(A );            // Error: Trailing comma in the `WRITE` statement
-    C = (A + B;            // Error: Missing closing parenthesis in the expression
 }
