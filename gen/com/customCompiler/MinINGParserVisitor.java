@@ -162,6 +162,13 @@ public interface MinINGParserVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitWriteOperation(MinINGParser.WriteOperationContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code Substraction}
+	 * labeled alternative in {@link MinINGParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitSubstraction(MinINGParser.SubstractionContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code Addition}
 	 * labeled alternative in {@link MinINGParser#expression}.
 	 * @param ctx the parse tree
@@ -169,12 +176,12 @@ public interface MinINGParserVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitAddition(MinINGParser.AdditionContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code Subtraction}
+	 * Visit a parse tree produced by the {@code SimpleTerm}
 	 * labeled alternative in {@link MinINGParser#expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitSubtraction(MinINGParser.SubtractionContext ctx);
+	T visitSimpleTerm(MinINGParser.SimpleTermContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code Multiplication}
 	 * labeled alternative in {@link MinINGParser#term}.
@@ -190,12 +197,18 @@ public interface MinINGParserVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitDivision(MinINGParser.DivisionContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code Parenthesis}
-	 * labeled alternative in {@link MinINGParser#factor}.
+	 * Visit a parse tree produced by the {@code SimpleOp}
+	 * labeled alternative in {@link MinINGParser#term}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitParenthesis(MinINGParser.ParenthesisContext ctx);
+	T visitSimpleOp(MinINGParser.SimpleOpContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MinINGParser#operation_gf}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitOperation_gf(MinINGParser.Operation_gfContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code Integer}
 	 * labeled alternative in {@link MinINGParser#factor}.
