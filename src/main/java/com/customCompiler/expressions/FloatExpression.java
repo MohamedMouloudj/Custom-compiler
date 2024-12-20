@@ -6,9 +6,9 @@ import java.util.Objects; /**
  * Represents a float expression
  */
 public class FloatExpression extends Expression {
-    private final float value;
+    private final double value;
 
-    public FloatExpression(float value) {
+    public FloatExpression(double value) {
         this.value = value;
     }
 
@@ -27,7 +27,7 @@ public class FloatExpression extends Expression {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         FloatExpression that = (FloatExpression) o;
-        return Float.compare(that.value, value) == 0;
+        return Double.compare(that.value, value) == 0;
     }
 
     @Override
