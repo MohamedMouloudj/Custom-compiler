@@ -9,6 +9,8 @@ public class CompositeArrayDeclarationExpression extends Expression {
 
     public CompositeArrayDeclarationExpression(List<ArrayDeclarationExpression> expressions) {
         this.expressions = expressions;
+//        System.out.println(expressions);
+//        System.out.println("returning new CompositeArrayDeclarationExpression");
     }
 
     @Override
@@ -22,5 +24,12 @@ public class CompositeArrayDeclarationExpression extends Expression {
     @Override
     public ExpressionType getType() {
         return expressions.isEmpty() ? null : expressions.getFirst().getType();
+    }
+
+    @Override
+    public String toString() {
+        return "CompositeArrayDeclarationExpression{" +
+                "expressions=" + expressions +
+                "}\n";
     }
 }

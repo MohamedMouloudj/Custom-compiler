@@ -1,4 +1,4 @@
-// Generated from D:/University/2024-09_Semester-5/Random-projects/Compilator-project/CustomCompiler/src/main/java/com/customCompiler/MinINGParser.g4 by ANTLR 4.13.2
+// Generated from C:/Users/Ramzi/Desktop/ProjetCompile/Custom-compiler/src/main/java/com/customCompiler/MinINGParser.g4 by ANTLR 4.13.2
 package com.customCompiler;
 
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -281,6 +281,18 @@ public class MinINGParserBaseListener implements MinINGParserListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterSubstraction(MinINGParser.SubstractionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitSubstraction(MinINGParser.SubstractionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterAddition(MinINGParser.AdditionContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -293,13 +305,13 @@ public class MinINGParserBaseListener implements MinINGParserListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterSubtraction(MinINGParser.SubtractionContext ctx) { }
+	@Override public void enterSimpleTerm(MinINGParser.SimpleTermContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitSubtraction(MinINGParser.SubtractionContext ctx) { }
+	@Override public void exitSimpleTerm(MinINGParser.SimpleTermContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -329,13 +341,25 @@ public class MinINGParserBaseListener implements MinINGParserListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterParenthesis(MinINGParser.ParenthesisContext ctx) { }
+	@Override public void enterSimpleOp(MinINGParser.SimpleOpContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitParenthesis(MinINGParser.ParenthesisContext ctx) { }
+	@Override public void exitSimpleOp(MinINGParser.SimpleOpContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterOperation_gf(MinINGParser.Operation_gfContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitOperation_gf(MinINGParser.Operation_gfContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -384,6 +408,18 @@ public class MinINGParserBaseListener implements MinINGParserListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitVariable(MinINGParser.VariableContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterArrayElement(MinINGParser.ArrayElementContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitArrayElement(MinINGParser.ArrayElementContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
