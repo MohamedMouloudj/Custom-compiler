@@ -266,53 +266,25 @@ public interface MinINGParserListener extends ParseTreeListener {
 	 */
 	void exitWriteOperation(MinINGParser.WriteOperationContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code Addition}
-	 * labeled alternative in {@link MinINGParser#expression}.
+	 * Enter a parse tree produced by {@link MinINGParser#expression}.
 	 * @param ctx the parse tree
 	 */
-	void enterAddition(MinINGParser.AdditionContext ctx);
+	void enterExpression(MinINGParser.ExpressionContext ctx);
 	/**
-	 * Exit a parse tree produced by the {@code Addition}
-	 * labeled alternative in {@link MinINGParser#expression}.
+	 * Exit a parse tree produced by {@link MinINGParser#expression}.
 	 * @param ctx the parse tree
 	 */
-	void exitAddition(MinINGParser.AdditionContext ctx);
+	void exitExpression(MinINGParser.ExpressionContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code Subtraction}
-	 * labeled alternative in {@link MinINGParser#expression}.
+	 * Enter a parse tree produced by {@link MinINGParser#term}.
 	 * @param ctx the parse tree
 	 */
-	void enterSubtraction(MinINGParser.SubtractionContext ctx);
+	void enterTerm(MinINGParser.TermContext ctx);
 	/**
-	 * Exit a parse tree produced by the {@code Subtraction}
-	 * labeled alternative in {@link MinINGParser#expression}.
+	 * Exit a parse tree produced by {@link MinINGParser#term}.
 	 * @param ctx the parse tree
 	 */
-	void exitSubtraction(MinINGParser.SubtractionContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code Multiplication}
-	 * labeled alternative in {@link MinINGParser#term}.
-	 * @param ctx the parse tree
-	 */
-	void enterMultiplication(MinINGParser.MultiplicationContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code Multiplication}
-	 * labeled alternative in {@link MinINGParser#term}.
-	 * @param ctx the parse tree
-	 */
-	void exitMultiplication(MinINGParser.MultiplicationContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code Division}
-	 * labeled alternative in {@link MinINGParser#term}.
-	 * @param ctx the parse tree
-	 */
-	void enterDivision(MinINGParser.DivisionContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code Division}
-	 * labeled alternative in {@link MinINGParser#term}.
-	 * @param ctx the parse tree
-	 */
-	void exitDivision(MinINGParser.DivisionContext ctx);
+	void exitTerm(MinINGParser.TermContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code Parenthesis}
 	 * labeled alternative in {@link MinINGParser#factor}.

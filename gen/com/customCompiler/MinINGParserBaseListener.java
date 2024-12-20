@@ -281,49 +281,25 @@ public class MinINGParserBaseListener implements MinINGParserListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterAddition(MinINGParser.AdditionContext ctx) { }
+	@Override public void enterExpression(MinINGParser.ExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitAddition(MinINGParser.AdditionContext ctx) { }
+	@Override public void exitExpression(MinINGParser.ExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterSubtraction(MinINGParser.SubtractionContext ctx) { }
+	@Override public void enterTerm(MinINGParser.TermContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitSubtraction(MinINGParser.SubtractionContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterMultiplication(MinINGParser.MultiplicationContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitMultiplication(MinINGParser.MultiplicationContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterDivision(MinINGParser.DivisionContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitDivision(MinINGParser.DivisionContext ctx) { }
+	@Override public void exitTerm(MinINGParser.TermContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

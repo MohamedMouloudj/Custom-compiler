@@ -71,13 +71,11 @@ ioOperation
 
 //Expression
 expression
-    : term (ADD expression)*  #Addition
-    | term (SUB expression)*  #Subtraction
+    : term ((ADD | SUB) term)*
     ;
 
 term
-    : factor (MUL expression)*  #Multiplication
-    | factor (DIV expression)*  #Division
+    : factor ((MUL | DIV ) factor)*
     ;
 
 factor
@@ -88,7 +86,6 @@ factor
     | IDF               #Variable
     | IDF LBRACKET expression RBRACKET  #ArrayElement
     ;
-
 
 // Condition expression
 conditionExpr

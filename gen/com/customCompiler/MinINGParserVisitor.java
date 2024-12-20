@@ -162,33 +162,17 @@ public interface MinINGParserVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitWriteOperation(MinINGParser.WriteOperationContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code Addition}
-	 * labeled alternative in {@link MinINGParser#expression}.
+	 * Visit a parse tree produced by {@link MinINGParser#expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitAddition(MinINGParser.AdditionContext ctx);
+	T visitExpression(MinINGParser.ExpressionContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code Subtraction}
-	 * labeled alternative in {@link MinINGParser#expression}.
+	 * Visit a parse tree produced by {@link MinINGParser#term}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitSubtraction(MinINGParser.SubtractionContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code Multiplication}
-	 * labeled alternative in {@link MinINGParser#term}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitMultiplication(MinINGParser.MultiplicationContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code Division}
-	 * labeled alternative in {@link MinINGParser#term}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitDivision(MinINGParser.DivisionContext ctx);
+	T visitTerm(MinINGParser.TermContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code Parenthesis}
 	 * labeled alternative in {@link MinINGParser#factor}.

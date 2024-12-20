@@ -381,70 +381,70 @@ public class AntlrToExpression extends MinINGParserBaseVisitor<Expression> {
         return w;
     }
 
-    @Override
-    public Expression visitAddition(MinINGParser.AdditionContext ctx) {
-        Expression result = visit(ctx.term());
-        for(int i = 0;i<ctx.expression().size();i++){
-            Expression right = visit(ctx.expression(i));
-            System.out.println("visit add" + result + " " + right);
-            isCompatibleForComparison c = new isCompatibleForComparison(right,result);
-            if(!c.checkCompatibilityArithmetic()){
-                semanticErrors.add("Error : Addition operation between incompatible types " + right.getType() + " and " + result.getType() + " at line " + ctx.getStart().getLine() );
-            }
-            result = new AdditionExpression(result, right);
-        }
-        return result;
-    }
-
-    @Override
-    public Expression visitSubtraction(MinINGParser.SubtractionContext ctx) {
-        System.out.println("salam");
-        Expression result = visit(ctx.term());
-        for(int i = 0;i<ctx.expression().size();i++){
-            Expression right = visit(ctx.expression(i));
-            isCompatibleForComparison c = new isCompatibleForComparison(right,result);
-            if(!c.checkCompatibilityArithmetic()){
-                semanticErrors.add("Error : Subtraction operation between incompatible types " + right.getType() + " and " + result.getType() + " at line " + ctx.getStart().getLine() );
-            }
-            result = new SubtractionExpression(result, right);
-        }
-        return result;
-    }
-
-    @Override
-    public Expression visitMultiplication(MinINGParser.MultiplicationContext ctx) {
-        Expression result = visit(ctx.factor());
-        for (int i = 0; i < ctx.expression().size(); i++) {
-            Expression right = visit(ctx.expression(i));
-            isCompatibleForComparison c = new isCompatibleForComparison(right,result);
-            if(!c.checkCompatibilityArithmetic()){
-                semanticErrors.add("Error : Multiplication operation between incompatible types " + right.getType() + " and " + result.getType() + " at line " + ctx.getStart().getLine() );
-            }
-            result = new MultiplicationExpression(result, right);
-        }
-        return result;
-    }
-
-
-    @Override
-    public Expression visitDivision(MinINGParser.DivisionContext ctx) {
-        Expression result = visit(ctx.factor());
-        for (int i = 0; i < ctx.expression().size(); i++) {
-            Expression right = visit(ctx.expression(i));
-            isCompatibleForComparison c = new isCompatibleForComparison(right,result);
-            if(!c.checkCompatibilityArithmetic()){
-                semanticErrors.add("Error : Division operation between incompatible types " + result.getType() + " and " + right.getType() + " at line " + ctx.getStart().getLine() );
-            }
-            if(right instanceof IntegerExpression){
-                if(((Integer)right.evaluate(symbolTable)) == 0){
-                    semanticErrors.add("Error : Division by zero impossible at line " + ctx.getStart().getLine() );
-                }
-            }
-            //TODO :
-            result = new DivisionExpression(result, right);
-        }
-       return result;
-    }
+//    @Override
+//    public Expression visitAddition(MinINGParser.AdditionContext ctx) {
+//        Expression result = visit(ctx.term());
+//        for(int i = 0;i<ctx.expression().size();i++){
+//            Expression right = visit(ctx.expression(i));
+//            System.out.println("visit add" + result + " " + right);
+//            isCompatibleForComparison c = new isCompatibleForComparison(right,result);
+//            if(!c.checkCompatibilityArithmetic()){
+//                semanticErrors.add("Error : Addition operation between incompatible types " + right.getType() + " and " + result.getType() + " at line " + ctx.getStart().getLine() );
+//            }
+//            result = new AdditionExpression(result, right);
+//        }
+//        return result;
+//    }
+//
+//    @Override
+//    public Expression visitSubtraction(MinINGParser.SubtractionContext ctx) {
+//        System.out.println("salam");
+//        Expression result = visit(ctx.term());
+//        for(int i = 0;i<ctx.expression().size();i++){
+//            Expression right = visit(ctx.expression(i));
+//            isCompatibleForComparison c = new isCompatibleForComparison(right,result);
+//            if(!c.checkCompatibilityArithmetic()){
+//                semanticErrors.add("Error : Subtraction operation between incompatible types " + right.getType() + " and " + result.getType() + " at line " + ctx.getStart().getLine() );
+//            }
+//            result = new SubtractionExpression(result, right);
+//        }
+//        return result;
+//    }
+//
+//    @Override
+//    public Expression visitMultiplication(MinINGParser.MultiplicationContext ctx) {
+//        Expression result = visit(ctx.factor());
+//        for (int i = 0; i < ctx.expression().size(); i++) {
+//            Expression right = visit(ctx.expression(i));
+//            isCompatibleForComparison c = new isCompatibleForComparison(right,result);
+//            if(!c.checkCompatibilityArithmetic()){
+//                semanticErrors.add("Error : Multiplication operation between incompatible types " + right.getType() + " and " + result.getType() + " at line " + ctx.getStart().getLine() );
+//            }
+//            result = new MultiplicationExpression(result, right);
+//        }
+//        return result;
+//    }
+//
+//
+//    @Override
+//    public Expression visitDivision(MinINGParser.DivisionContext ctx) {
+//        Expression result = visit(ctx.factor());
+//        for (int i = 0; i < ctx.expression().size(); i++) {
+//            Expression right = visit(ctx.expression(i));
+//            isCompatibleForComparison c = new isCompatibleForComparison(right,result);
+//            if(!c.checkCompatibilityArithmetic()){
+//                semanticErrors.add("Error : Division operation between incompatible types " + result.getType() + " and " + right.getType() + " at line " + ctx.getStart().getLine() );
+//            }
+//            if(right instanceof IntegerExpression){
+//                if(((Integer)right.evaluate(symbolTable)) == 0){
+//                    semanticErrors.add("Error : Division by zero impossible at line " + ctx.getStart().getLine() );
+//                }
+//            }
+//            //TODO :
+//            result = new DivisionExpression(result, right);
+//        }
+//       return result;
+//    }
 
     @Override
     public Expression visitParenthesis(MinINGParser.ParenthesisContext ctx) {
@@ -585,5 +585,72 @@ public class AntlrToExpression extends MinINGParserBaseVisitor<Expression> {
     @Override
     public Expression visitExpressionInWrite(MinINGParser.ExpressionInWriteContext ctx) {
         return visit(ctx.expression());
+    }
+
+    @Override
+    public Expression visitTerm(MinINGParser.TermContext ctx) {
+
+        Expression left = visit(ctx.factor(0));
+        List<Expression> expressions = new ArrayList<>();
+        Expression result = left;
+
+//        expressions.add(left);
+        for (int i = 1; i < ctx.factor().size(); i++) {
+            String operator = ctx.getChild(2 * i - 1).getText(); // Operator (+ or -)
+            Expression right = visit(ctx.factor(i));
+
+            isCompatibleForComparison c = new isCompatibleForComparison(left, right);
+            if(!c.checkCompatibilityComparision()){
+                semanticErrors.add("Error : Addition operation between incompatible types " + right.getType() + " and " + left.getType() + " at line " + ctx.getStart().getLine() );
+
+            }
+
+
+            if(operator.equals("*")){
+                return new MultiplicationExpression(left, right);
+            }else if(operator.equals("/")){
+                return new DivisionExpression(left, right);
+            }
+
+        }
+        System.out.println("result term" +result);
+        return result;
+    }
+
+    @Override
+    public Expression visitExpression(MinINGParser.ExpressionContext ctx) {
+        String operator = ctx.getChild(1).getText();
+        if(operator.equals("+")){
+            AdditionExpression add = new AdditionExpression(visit(ctx.term(0)), null);
+            if(ctx.term().size()>1){
+                add.setRight(visitExpression(visit(ctx.term(1))));
+
+            }
+        }
+        Expression left = visitTerm(ctx.term(0));
+        List<Expression> expressions = new ArrayList<>();
+        Expression result = left;
+//        expressions.add(left);
+        for (int i = 1; i < ctx.term().size(); i++) {
+            String operator = ctx.getChild(2 * i - 1).getText(); // Operator (+ or -)
+            Expression right = visitTerm(ctx.term(i));
+            System.out.println("right " + right);
+            isCompatibleForComparison c = new isCompatibleForComparison(left, right);
+            if(!c.checkCompatibilityComparision()){
+                semanticErrors.add("Error : Addition operation between incompatible types " + right.getType() + " and " + left.getType() + " at line " + ctx.getStart().getLine() );
+
+            }
+
+
+            if(operator.equals("+")){
+                result = new AdditionExpression(left, right);
+            }else if(operator.equals("-")){
+                result = new SubtractionExpression(left, right);
+            }
+
+        }
+        System.out.println("result expression " +result);
+        return result;
+
     }
 }
