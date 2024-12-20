@@ -266,37 +266,87 @@ public interface MinINGParserListener extends ParseTreeListener {
 	 */
 	void exitWriteOperation(MinINGParser.WriteOperationContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link MinINGParser#expression}.
+	 * Enter a parse tree produced by the {@code Substraction}
+	 * labeled alternative in {@link MinINGParser#expression}.
 	 * @param ctx the parse tree
 	 */
-	void enterExpression(MinINGParser.ExpressionContext ctx);
+	void enterSubstraction(MinINGParser.SubstractionContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link MinINGParser#expression}.
+	 * Exit a parse tree produced by the {@code Substraction}
+	 * labeled alternative in {@link MinINGParser#expression}.
 	 * @param ctx the parse tree
 	 */
-	void exitExpression(MinINGParser.ExpressionContext ctx);
+	void exitSubstraction(MinINGParser.SubstractionContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link MinINGParser#term}.
+	 * Enter a parse tree produced by the {@code Addition}
+	 * labeled alternative in {@link MinINGParser#expression}.
 	 * @param ctx the parse tree
 	 */
-	void enterTerm(MinINGParser.TermContext ctx);
+	void enterAddition(MinINGParser.AdditionContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link MinINGParser#term}.
+	 * Exit a parse tree produced by the {@code Addition}
+	 * labeled alternative in {@link MinINGParser#expression}.
 	 * @param ctx the parse tree
 	 */
-	void exitTerm(MinINGParser.TermContext ctx);
+	void exitAddition(MinINGParser.AdditionContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code Parenthesis}
-	 * labeled alternative in {@link MinINGParser#factor}.
+	 * Enter a parse tree produced by the {@code SimpleTerm}
+	 * labeled alternative in {@link MinINGParser#expression}.
 	 * @param ctx the parse tree
 	 */
-	void enterParenthesis(MinINGParser.ParenthesisContext ctx);
+	void enterSimpleTerm(MinINGParser.SimpleTermContext ctx);
 	/**
-	 * Exit a parse tree produced by the {@code Parenthesis}
-	 * labeled alternative in {@link MinINGParser#factor}.
+	 * Exit a parse tree produced by the {@code SimpleTerm}
+	 * labeled alternative in {@link MinINGParser#expression}.
 	 * @param ctx the parse tree
 	 */
-	void exitParenthesis(MinINGParser.ParenthesisContext ctx);
+	void exitSimpleTerm(MinINGParser.SimpleTermContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code Multiplication}
+	 * labeled alternative in {@link MinINGParser#term}.
+	 * @param ctx the parse tree
+	 */
+	void enterMultiplication(MinINGParser.MultiplicationContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code Multiplication}
+	 * labeled alternative in {@link MinINGParser#term}.
+	 * @param ctx the parse tree
+	 */
+	void exitMultiplication(MinINGParser.MultiplicationContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code Division}
+	 * labeled alternative in {@link MinINGParser#term}.
+	 * @param ctx the parse tree
+	 */
+	void enterDivision(MinINGParser.DivisionContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code Division}
+	 * labeled alternative in {@link MinINGParser#term}.
+	 * @param ctx the parse tree
+	 */
+	void exitDivision(MinINGParser.DivisionContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code SimpleOp}
+	 * labeled alternative in {@link MinINGParser#term}.
+	 * @param ctx the parse tree
+	 */
+	void enterSimpleOp(MinINGParser.SimpleOpContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code SimpleOp}
+	 * labeled alternative in {@link MinINGParser#term}.
+	 * @param ctx the parse tree
+	 */
+	void exitSimpleOp(MinINGParser.SimpleOpContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MinINGParser#operation_gf}.
+	 * @param ctx the parse tree
+	 */
+	void enterOperation_gf(MinINGParser.Operation_gfContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MinINGParser#operation_gf}.
+	 * @param ctx the parse tree
+	 */
+	void exitOperation_gf(MinINGParser.Operation_gfContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code Integer}
 	 * labeled alternative in {@link MinINGParser#factor}.

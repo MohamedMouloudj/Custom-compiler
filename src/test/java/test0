@@ -8,6 +8,9 @@ DECLARATION {
 }
 
 INSTRUCTION {
-        A = 5*3/4+6-7;
+        A=3; B=1; C=3;
+            IF(A == 9 && B == 1 || C ==2){
+                A=1;
+            }
 
 }

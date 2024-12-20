@@ -4,6 +4,7 @@ package com.customCompiler;
 import com.customCompiler.expressions.core.*;
 import com.customCompiler.quadruplet.QuadElement;
 //import com.customCompiler.quadruplet.QuadrupleGenerator;
+import com.customCompiler.quadruplet.QuadrupleGenerator;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -34,12 +35,12 @@ public class Main {
             }else{
                 System.out.println("No error detected");
             }
-//            QuadrupleGenerator generator = new QuadrupleGenerator();
-//            generator.visit(antlrAST);
-//            System.out.println("Quadruples:");
-//            for (QuadElement quad : generator.getQuadruples()) {
-//                System.out.println(quad.toString());
-//            }
+            QuadrupleGenerator generator = new QuadrupleGenerator();
+            generator.visit(antlrAST);
+            System.out.println("Quadruples:");
+            for (QuadElement quad : generator.getQuadruples()) {
+                System.out.println(quad.toString());
+            }
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }

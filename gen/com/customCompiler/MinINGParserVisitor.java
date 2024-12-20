@@ -162,24 +162,53 @@ public interface MinINGParserVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitWriteOperation(MinINGParser.WriteOperationContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link MinINGParser#expression}.
+	 * Visit a parse tree produced by the {@code Substraction}
+	 * labeled alternative in {@link MinINGParser#expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitExpression(MinINGParser.ExpressionContext ctx);
+	T visitSubstraction(MinINGParser.SubstractionContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link MinINGParser#term}.
+	 * Visit a parse tree produced by the {@code Addition}
+	 * labeled alternative in {@link MinINGParser#expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitTerm(MinINGParser.TermContext ctx);
+	T visitAddition(MinINGParser.AdditionContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code Parenthesis}
-	 * labeled alternative in {@link MinINGParser#factor}.
+	 * Visit a parse tree produced by the {@code SimpleTerm}
+	 * labeled alternative in {@link MinINGParser#expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitParenthesis(MinINGParser.ParenthesisContext ctx);
+	T visitSimpleTerm(MinINGParser.SimpleTermContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code Multiplication}
+	 * labeled alternative in {@link MinINGParser#term}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMultiplication(MinINGParser.MultiplicationContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code Division}
+	 * labeled alternative in {@link MinINGParser#term}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitDivision(MinINGParser.DivisionContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code SimpleOp}
+	 * labeled alternative in {@link MinINGParser#term}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitSimpleOp(MinINGParser.SimpleOpContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MinINGParser#operation_gf}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitOperation_gf(MinINGParser.Operation_gfContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code Integer}
 	 * labeled alternative in {@link MinINGParser#factor}.
