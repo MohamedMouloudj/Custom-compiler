@@ -118,11 +118,29 @@ public class AntlrToExpression extends MinINGParserBaseVisitor<Expression> {
         Expression value;
 
         if (type == Expression.ExpressionType.INTEGER) {
-            value = new IntegerExpression(Integer.parseInt(ctx.INT().getText()));
+            TerminalNode integerNode = ctx.INT();
+            if (integerNode == null) {
+                semanticErrors.add("Error : Invalid constant type at line "+ ctx.getStart().getLine() );
+                value = null;
+            } else {
+                value = new IntegerExpression(Integer.parseInt(integerNode.getText()));
+            }
         } else if (type == Expression.ExpressionType.FLOAT) {
-            value = new FloatExpression(Float.parseFloat(ctx.FLOAT().getText()));
+            TerminalNode floatNode = ctx.FLOAT();
+            if (floatNode == null) {
+                semanticErrors.add("Error : Invalid constant type at line "+ ctx.getStart().getLine() );
+                value = null;
+            } else {
+                value = new FloatExpression(Float.parseFloat(floatNode.getText()));
+            }
         } else if (type == Expression.ExpressionType.CHAR) {
-            value = new CharExpression(ctx.CHAR().getText());
+            TerminalNode character = ctx.CHAR();
+            if (character == null) {
+                semanticErrors.add("Error : Invalid constant type at line "+ ctx.getStart().getLine() );
+                value = null;
+            }else {
+                value = new CharExpression(character.getText());
+            }
         } else {
             semanticErrors.add("Error :  Invalid constant type at line "+ ctx.getStart().getLine() );
             value = null;
@@ -167,7 +185,7 @@ public class AntlrToExpression extends MinINGParserBaseVisitor<Expression> {
                 if (indexValue < arraySize) {
                     // Check if the type of the value matches the array type
                     if (!arraySymbol.getType().equals(value.getType())) {
-                        semanticErrors.add("Error: Type mismatch in array assignment at line " + line);
+                        semanticErrors.add("Error: Type mismatch in array element assignment at line " + line);
                     }
                 } else {
                     semanticErrors.add("Error: Array index out of bounds at " + line);
@@ -199,14 +217,7 @@ public class AntlrToExpression extends MinINGParserBaseVisitor<Expression> {
                 int indexValue = (int)((IntegerExpression) index).evaluate(symbolTable);
 
                 if (indexValue < arraySize) {
-                    // bject inputValue = readInput(); //TODO: This method should read input from the user
-
-                    // Check if the type of the input matches the array type
-                    if (arraySymbol.getType().equals(Expression.ExpressionType.INTEGER)) {
-//                        arraySymbol.setValue(indexValue, inputValue);
-                    } else {
-                        semanticErrors.add("Error: Type mismatch in array assignment " + line);
-                    }
+                    return new ReadExpression(arrayName);
                 } else {
                     semanticErrors.add("Error: Array index out of bounds " + line );
                 }
@@ -249,7 +260,7 @@ public class AntlrToExpression extends MinINGParserBaseVisitor<Expression> {
         }else{
             Symbol symbol = symbolTable.getSymbol(variableName);
             if (symbol.isConstant()) {
-                semanticErrors.add("Error: Cannot assign to constant variable " + variableName + " at line " + ctx.getStart().getLine() );
+                semanticErrors.add("Error: Cannot assign to constant " + variableName + " at line " + ctx.getStart().getLine() );
             }else{
                 String variableType  = symbolTable.getType(variableName);
 
@@ -507,14 +518,12 @@ public class AntlrToExpression extends MinINGParserBaseVisitor<Expression> {
     @Override
     public Expression visitAddition(MinINGParser.AdditionContext ctx) {
         Expression left = visit(ctx.expression());
-        Expression result = left;
         Expression right = visit(ctx.term());
         isCompatibleForComparison c = new isCompatibleForComparison(right,left);
         if(!c.checkCompatibilityArithmetic()){
             semanticErrors.add("Error : Substraction operation between incompatible types " + right.getType() + " and " + left.getType() + " at line " + ctx.getStart().getLine() );
         }
-        result = new AdditionExpression(left, right);
-        return result;
+        return new AdditionExpression(left, right);
     }
 
     @Override
@@ -525,22 +534,19 @@ public class AntlrToExpression extends MinINGParserBaseVisitor<Expression> {
     @Override
     public Expression visitMultiplication(MinINGParser.MultiplicationContext ctx) {
         Expression left = visit(ctx.term());
-        Expression result = left;
         Expression right = visit(ctx.operation_gf());
-        isCompatibleForComparison c = new isCompatibleForComparison(right,result);
+        isCompatibleForComparison c = new isCompatibleForComparison(right,left);
         if(!c.checkCompatibilityArithmetic()){
-            semanticErrors.add("Error : Multiplication operation between incompatible types " + right.getType() + " and " + result.getType() + " at line " + ctx.getStart().getLine() );
+            semanticErrors.add("Error : Multiplication operation between incompatible types " + right.getType() + " and " + left.getType() + " at line " + ctx.getStart().getLine() );
         }
 
-        result = new MultiplicationExpression(result, right);
-        return result;
+        left = new MultiplicationExpression(left, right);
+        return left;
     }
 
     @Override
     public Expression visitDivision(MinINGParser.DivisionContext ctx) {
         Expression left = visit(ctx.term());
-        Expression result = left;
-
         Expression right = visit(ctx.operation_gf());
         isCompatibleForComparison c = new isCompatibleForComparison(right,left);
         if(!c.checkCompatibilityArithmetic()){
@@ -551,8 +557,7 @@ public class AntlrToExpression extends MinINGParserBaseVisitor<Expression> {
                 semanticErrors.add("Error : Division by zero impossible at line " + ctx.getStart().getLine() );
             }
         }
-        result = new DivisionExpression(left, right);
-        return result;
+        return new DivisionExpression(left, right);
     }
 
     @Override

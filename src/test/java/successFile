@@ -9,10 +9,8 @@ DECLARATION {
 
 INSTRUCTION {
 
-        B=2;
-        A =(-2.6)-3+4;
-        X=6;
-
+        Z[0]='h';
+        A =(-2)*3+4;
          IF(A > 0 && B<2){
                B=9;
          }

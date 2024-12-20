@@ -1,0 +1,25 @@
+VAR_GLOBAL {
+   INTEGER B,C;
+   FLOAT A;
+   CHAR Z[5],R[1],D[10];
+}
+DECLARATION {
+    CONST INTEGER Y = 5;
+    CONST CHAR X = 4;
+}
+
+INSTRUCTION {
+
+        Z[2]='k';
+        A =(-2.6)/3+4;
+%%        X=6;
+
+%%         IF(A > 'k' && B<2){
+%%               B=9;
+%%         }
+
+%%        A=3; B=1; C=3;
+%%        IF(A == 9 && B == 1){
+%%            A=1;
+%%        }
+}

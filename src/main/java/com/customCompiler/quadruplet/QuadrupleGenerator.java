@@ -149,7 +149,7 @@ public class QuadrupleGenerator extends MinINGParserBaseVisitor<Expression> {
         if (ctx.operation_gf() != null){
             Expression operande1 = visitOperation_gf(ctx.operation_gf());
             Expression temp = new TempExpression();
-            QuadElement quad = quadruples.addQuad(ctx.getChild(0).getText(), operande1.toString(), null, temp.toString());
+            QuadElement quad = quadruples.addQuad(ctx.getChild(0), operande1.toString(), null, temp.toString());
             return temp;
         } else if (ctx.expression() != null){
             return visit(ctx.expression());

@@ -1,13 +1,15 @@
 package com.customCompiler.quadruplet;
 
+import com.customCompiler.expressions.Expression;
+
 public class QuadElement {
-    private String operator;
-    private String operand1;
-    private String operand2;
-    private String result;
+    private Expression operator;
+    private Expression operand1;
+    private Expression operand2;
+    private Expression result;
     private int num;
 
-    public QuadElement(String operator, String operand1, String operand2, String result, int num) {
+    public QuadElement(Expression operator, Expression operand1, Expression operand2, Expression result, int num) {
         this.operator = operator;
         this.operand1 = operand1;
         this.operand2 = operand2;
@@ -15,35 +17,35 @@ public class QuadElement {
         this.num = num;
     }
 
-    public String getOperator() {
+    public Expression getOperator() {
         return operator;
     }
 
-    public void setOperator(String operator) {
+    public void setOperator(Expression operator) {
         this.operator = operator;
     }
 
-    public String getOperand1() {
+    public Expression getOperand1() {
         return operand1;
     }
 
-    public void setOperand1(String operand1) {
+    public void setOperand1(Expression operand1) {
         this.operand1 = operand1;
     }
 
-    public String getOperand2() {
+    public Expression getOperand2() {
         return operand2;
     }
 
-    public void setOperand2(String operand2) {
+    public void setOperand2(Expression operand2) {
         this.operand2 = operand2;
     }
 
-    public String getResult() {
+    public Expression getResult() {
         return result;
     }
 
-    public void setResult(String result) {
+    public void setResult(Expression result) {
         this.result = result;
     }
 
@@ -56,7 +58,7 @@ public class QuadElement {
     }
 
     @Override
-    public String toString() {
+    public  String toString() {
         return num + ": (" + operator + ", " + operand1 + ", " + operand2 + ", " + result + ")";
     }
 }

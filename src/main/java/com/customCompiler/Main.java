@@ -21,7 +21,7 @@ import java.io.InputStream;
 public class Main {
     public static void main(String[] args) {
         try {
-            String inputFile="src/test/java/test0";
+            String inputFile="src/test/java/errorFile";
             FileInputStream fileInputStream = new FileInputStream(inputFile);
 
             MinINGParser parser = getParser(fileInputStream);
@@ -35,6 +35,7 @@ public class Main {
                 for (String error : programVisitor.semanticErrors) {
                     System.err.println(error);
                 }
+                return;
             }else{
                 System.out.println("No error detected");
             }

@@ -1,5 +1,7 @@
 package com.customCompiler.quadruplet;
 
+import com.customCompiler.expressions.Expression;
+
 import java.util.ArrayList;
 
 public class Quadruples {
@@ -9,13 +11,13 @@ public class Quadruples {
         this.quadruples = new ArrayList<>();
     }
 
-    public QuadElement addQuad(String operator, String op1, String op2, String result) {
+    public QuadElement addQuad(Expression operator, Expression op1, Expression op2, Expression result) {
         QuadElement quad = new QuadElement(operator, op1, op2, result, quadruples.size());
         quadruples.add(quad);
         return quad;
     }
 
-    public void updateQuad(int index, String operator, String op1, String op2, String result) {
+    public void updateQuad(int index, Expression operator, Expression op1, Expression op2, Expression result) {
         QuadElement quad = new QuadElement(operator, op1, op2, result, index);
         quadruples.set(index, quad);
     }
