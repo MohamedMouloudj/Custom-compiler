@@ -8,9 +8,5 @@ DECLARATION {
 }
 
 INSTRUCTION {
-    IF (X > (A+B) ){
-        A = 1+4-5;
-    } ELSE {
-        A = 2;
-    }
+        A = 5*3/4+6-7;
 }

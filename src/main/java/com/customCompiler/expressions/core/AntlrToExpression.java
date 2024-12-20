@@ -384,7 +384,7 @@ public class AntlrToExpression extends MinINGParserBaseVisitor<Expression> {
     @Override
     public Expression visitAddition(MinINGParser.AdditionContext ctx) {
         Expression result = visit(ctx.term());
-        for(int i = 1;i<ctx.expression().size();i++){
+        for(int i = 0;i<ctx.expression().size();i++){
             Expression right = visit(ctx.expression(i));
             System.out.println("visit add" + result + " " + right);
             isCompatibleForComparison c = new isCompatibleForComparison(right,result);
@@ -400,7 +400,7 @@ public class AntlrToExpression extends MinINGParserBaseVisitor<Expression> {
     public Expression visitSubtraction(MinINGParser.SubtractionContext ctx) {
         System.out.println("salam");
         Expression result = visit(ctx.term());
-        for(int i = 1;i<ctx.expression().size();i++){
+        for(int i = 0;i<ctx.expression().size();i++){
             Expression right = visit(ctx.expression(i));
             isCompatibleForComparison c = new isCompatibleForComparison(right,result);
             if(!c.checkCompatibilityArithmetic()){
@@ -414,7 +414,7 @@ public class AntlrToExpression extends MinINGParserBaseVisitor<Expression> {
     @Override
     public Expression visitMultiplication(MinINGParser.MultiplicationContext ctx) {
         Expression result = visit(ctx.factor());
-        for (int i = 1; i < ctx.expression().size(); i++) {
+        for (int i = 0; i < ctx.expression().size(); i++) {
             Expression right = visit(ctx.expression(i));
             isCompatibleForComparison c = new isCompatibleForComparison(right,result);
             if(!c.checkCompatibilityArithmetic()){
@@ -429,12 +429,18 @@ public class AntlrToExpression extends MinINGParserBaseVisitor<Expression> {
     @Override
     public Expression visitDivision(MinINGParser.DivisionContext ctx) {
         Expression result = visit(ctx.factor());
-        for (int i = 1; i < ctx.expression().size(); i++) {
+        for (int i = 0; i < ctx.expression().size(); i++) {
             Expression right = visit(ctx.expression(i));
             isCompatibleForComparison c = new isCompatibleForComparison(right,result);
             if(!c.checkCompatibilityArithmetic()){
                 semanticErrors.add("Error : Division operation between incompatible types " + result.getType() + " and " + right.getType() + " at line " + ctx.getStart().getLine() );
             }
+            if(right instanceof IntegerExpression){
+                if(((Integer)right.evaluate(symbolTable)) == 0){
+                    semanticErrors.add("Error : Division by zero impossible at line " + ctx.getStart().getLine() );
+                }
+            }
+            //TODO :
             result = new DivisionExpression(result, right);
         }
        return result;
