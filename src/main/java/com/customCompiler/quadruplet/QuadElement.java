@@ -60,7 +60,16 @@ public class QuadElement extends Expression {
 
     @Override
     public  String toString() {
-        return num + ": (" + operator + ", " + operand1 + ", " + operand2 + ", " + result + ")";
+        if (operator==null){
+            return num + ": (" + operand1 + ", " + operand2 + ", " + result + ")";
+        }
+        boolean isBranchOp=QuadrupleGenerator.getComparators().values().stream().anyMatch(operator::equals);
+        if (!isBranchOp){
+            switch (operator){
+                case "BR", "BZ", "BNZ" ->isBranchOp=true;
+            }
+        }
+        return num + ": (" + operator + ", " +(isBranchOp?"@":"")+ operand1 + ", " + operand2 + ", " + result + ")";
     }
 
     @Override

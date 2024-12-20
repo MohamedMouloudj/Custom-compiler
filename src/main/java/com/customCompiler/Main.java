@@ -39,23 +39,16 @@ public class Main {
             }else{
                 System.out.println("No error detected");
             }
-            QuadrupleGenerator generator = new QuadrupleGenerator();
-            generator.visit(antlrAST);
-            System.out.println("Quadruples:");
-            for (QuadElement quad : generator.getQuadruples()) {
+            QuadrupleGenerator quadsGenerator = new QuadrupleGenerator();
+            quadsGenerator.visit(antlrAST);
+            quadsGenerator.needsExtraQuadruple(program.symbolTable);
+            System.out.println("********** Quadruples **********");
+            for (QuadElement quad : quadsGenerator.getQuadruples()) {
                 System.out.println(quad.toString());
             }
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
-//        if (args.length != 1) { // check if the user has provided the file name
-//            System.err.println("Bad usage: no file input is provided");
-//            return;
-//        } else {
-//
-//        }
-
-
     }
 
     /**

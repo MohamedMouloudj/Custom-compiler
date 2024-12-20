@@ -11,7 +11,7 @@ public class LeafExpression extends Expression {
 
     @Override
     public Object evaluate(SymbolTable symbolTable) {
-        return null;
+        return expression;
     }
 
     @Override

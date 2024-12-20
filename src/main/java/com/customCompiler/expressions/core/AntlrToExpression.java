@@ -123,7 +123,10 @@ public class AntlrToExpression extends MinINGParserBaseVisitor<Expression> {
                 semanticErrors.add("Error : Invalid constant type at line "+ ctx.getStart().getLine() );
                 value = null;
             } else {
-                value = new IntegerExpression(Integer.parseInt(integerNode.getText()));
+                String integer = integerNode.getText();
+                Pattern pattern = Pattern.compile("[+-]");
+                Matcher matcher = pattern.matcher(integer);
+                value = new IntegerExpression(Integer.parseInt(matcher.find() ? integer.substring(1,integer.length()-1) : integer));
             }
         } else if (type == Expression.ExpressionType.FLOAT) {
             TerminalNode floatNode = ctx.FLOAT();
@@ -131,7 +134,10 @@ public class AntlrToExpression extends MinINGParserBaseVisitor<Expression> {
                 semanticErrors.add("Error : Invalid constant type at line "+ ctx.getStart().getLine() );
                 value = null;
             } else {
-                value = new FloatExpression(Float.parseFloat(floatNode.getText()));
+                String floatString = floatNode.getText();
+                Pattern pattern = Pattern.compile("[+-]");
+                Matcher matcher = pattern.matcher(floatString);
+                value = new FloatExpression(new BigDecimal(matcher.find() ? floatString.substring(1,floatString.length()-1) : floatString).doubleValue());
             }
         } else if (type == Expression.ExpressionType.CHAR) {
             TerminalNode character = ctx.CHAR();
@@ -303,17 +309,20 @@ public class AntlrToExpression extends MinINGParserBaseVisitor<Expression> {
 
         int line = ctx.getStart().getLine();
         if(ctx.loopAssignment().RECEIVE() != null) {
-            Expression initialization = visit(ctx.loopAssignment().expression());
-
             String loopVariable = ctx.loopAssignment().IDF().getText();
-            if (!initialization.getType().equals(Expression.ExpressionType.INTEGER)||initialization.getType().equals(Expression.ExpressionType.FLOAT)) {
+
+            if (!symbolTable.containsSymbol(loopVariable)) {
+                semanticErrors.add("Error: Loop variable " + loopVariable + " not declared at " + line );
+            }
+
+            Expression initialization = visit(ctx.loopAssignment().expression());
+            if (!initialization.getType().equals(Expression.ExpressionType.INTEGER)&&!initialization.getType().equals(Expression.ExpressionType.FLOAT)) {
                 semanticErrors.add("Error: Loop initialization must be an integer or float at " + line );
             }
 
-
             Expression step=visit(ctx.expression(1));
             if(step != null){
-                if (!step.getType().equals(initialization.getType())) {
+                if (initialization.getType().equals(Expression.ExpressionType.INTEGER)&&!step.getType().equals(initialization.getType())) {
                     semanticErrors.add("Error: Loop step must be of the same type as the initialization at " + line  );
                 }
             }else{
@@ -322,13 +331,12 @@ public class AntlrToExpression extends MinINGParserBaseVisitor<Expression> {
 
             Expression rangeEnd = visit(ctx.expression().getLast());
             if(rangeEnd != null){
-                if (!rangeEnd.getType().equals(initialization.getType())) {
-                    semanticErrors.add("Error: Loop range end must be of the same type as the initialization at " + line );
+                if (initialization.getType().equals(Expression.ExpressionType.INTEGER)&&!rangeEnd.getType().equals(initialization.getType())) {
+                    semanticErrors.add("Error: Loop stop condition must be of the same type as the initialization at " + line );
                 }
             }else{
-                semanticErrors.add("Error: Loop range end must be an integer or float at " + line );
+                semanticErrors.add("Error: Loop stop condition must be an integer or float at " + line );
             }
-
 
             List<Expression> statements = new ArrayList<>();
             for(MinINGParser.StatementContext statement : ctx.statement()){
