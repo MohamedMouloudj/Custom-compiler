@@ -18,7 +18,7 @@ import java.io.InputStream;
 public class Main {
     public static void main(String[] args) {
         try {
-            String inputFile="src/test/java/test0";
+            String inputFile="C:/Users/schak/OneDrive/Desktop/compiler/Custom-compiler/src/test/java/test0";
             FileInputStream fileInputStream = new FileInputStream(inputFile);
 
             MinINGParser parser = getParser(fileInputStream);

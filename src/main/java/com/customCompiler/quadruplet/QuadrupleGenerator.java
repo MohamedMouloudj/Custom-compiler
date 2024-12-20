@@ -43,7 +43,55 @@ public class QuadrupleGenerator extends MinINGParserBaseVisitor<Expression> {
 
     @Override
     public Expression visitConditionalStatement(MinINGParser.ConditionalStatementContext ctx) {
-        Expression condition = visit(ctx.conditionExpr());
+        // Process compound condition with OR
+        String condExpr = ctx.conditionExpr().getText();
+        String[] conditions = condExpr.split("\\|\\|");
+
+
+        // Process first condition (e.g., A > 0)
+        String[] firstCond = extractConditionParts(conditions[0]);
+        String firstTemp = newTemp();
+        quadruples.addQuad(comparators.get(firstCond[1]), firstCond[0], firstCond[2], firstTemp);
+
+        // Process second condition (e.g., B < 2)
+        String[] secondCond = extractConditionParts(conditions[1]);
+        String secondTemp = newTemp();
+        quadruples.addQuad(comparators.get(secondCond[1]), secondCond[0], secondCond[2], secondTemp);
+
+        // Combine conditions with OR
+        String finalTemp = newTemp();
+        quadruples.addQuad("OR", firstTemp, secondTemp, finalTemp);
+
+        // Generate branch instruction
+        int branchIfFalseIndex = quadruples.size();
+        quadruples.addQuad("BZ", finalTemp, null, "?");
+
+        // Visit the 'if' block
+        visit(ctx.statement(0));
+
+        // Update branch instruction to point after the 'if' block
+        int afterIf = quadruples.size();
+        quadruples.updateQuad(branchIfFalseIndex, "BZ", finalTemp, null, String.valueOf(afterIf));
+
+        return null;
+    }
+
+    private String[] extractConditionParts(String condition) {
+        String[] parts = new String[3];
+        Pattern pattern = Pattern.compile("(.*?)(==|!=|<=|>=|<|>)(.*)");
+        Matcher matcher = pattern.matcher(condition.trim());
+
+        if (matcher.find()) {
+            parts[0] = matcher.group(1).trim();
+            parts[1] = matcher.group(2).trim();
+            parts[2] = matcher.group(3).trim();
+        } else {
+            // Default if no operator found
+            parts[0] = condition.trim();
+            parts[1] = ">";
+            parts[2] = "0";
+        }
+        return parts;
 
     }
 
@@ -118,7 +166,11 @@ public class QuadrupleGenerator extends MinINGParserBaseVisitor<Expression> {
         }else{
             return  null;
         }
+
     }
+
+
+
 
     @Override
     public Expression visitAddition(MinINGParser.AdditionContext ctx) {
@@ -228,6 +280,13 @@ public class QuadrupleGenerator extends MinINGParserBaseVisitor<Expression> {
     }
 
 
+
+
+    @Override
+    public Expression visitParenthesis(MinINGParser.ParenthesisContext ctx) {
+        //(5+6+(5+6)) => (+,5,6,T1),(+,6,T1,T2),(+,5,T2,T3)
+        return visit(ctx.expression());
+    }
 
 
     @Override
