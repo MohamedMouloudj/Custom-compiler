@@ -1,8 +1,10 @@
 package com.customCompiler;
 
 
-import com.customCompiler.expressions.AntlrToProgram;
-import com.customCompiler.expressions.Program;
+import com.customCompiler.expressions.core.*;
+import com.customCompiler.quadruplet.QuadElement;
+//import com.customCompiler.quadruplet.QuadrupleGenerator;
+import com.customCompiler.quadruplet.QuadrupleGenerator;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -16,7 +18,7 @@ import java.io.InputStream;
 public class Main {
     public static void main(String[] args) {
         try {
-            String inputFile="D:/University/2024-09_Semester-5/Compilator-project/CustomCompiler/src/test/java/test0";
+            String inputFile="src/test/java/test0";
             FileInputStream fileInputStream = new FileInputStream(inputFile);
 
             MinINGParser parser = getParser(fileInputStream);
@@ -24,18 +26,20 @@ public class Main {
             ParseTree antlrAST = parser.prog();
             AntlrToProgram programVisitor = new AntlrToProgram();
             Program program = programVisitor.visit(antlrAST);
-
+            program.symbolTable.displayTable();
             if (!programVisitor.semanticErrors.isEmpty()) {
                 System.out.println("********** Errors **********");
                 for (String error : programVisitor.semanticErrors) {
                     System.err.println(error);
                 }
+            }else{
+                System.out.println("No error detected");
             }
             QuadrupleGenerator generator = new QuadrupleGenerator();
             generator.visit(antlrAST);
             System.out.println("Quadruples:");
-            for (String quad : generator.getQuadruples()) {
-                System.out.println(quad);
+            for (QuadElement quad : generator.getQuadruples()) {
+                System.out.println(quad.toString());
             }
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);

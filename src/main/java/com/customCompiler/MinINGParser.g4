@@ -67,23 +67,32 @@ ioOperation
     | WRITE LPAREN (stringOrExpression (COMMA stringOrExpression)*)? RPAREN SEMI    #WriteOperation
     ;
 
-// Expression
-expression
-    : term (ADD term)*  #Addition
-    | term (SUB term)*  #Subtraction
-    ;
 
+
+//Expression
+expression
+        : expression ADD term   #Addition
+        | expression SUB term   #Substraction
+        | term                  #SimpleTerm
+        ;
 term
-    : factor (MUL factor)*  #Multiplication
-    | factor (DIV factor)*  #Division
+    : term MUL operation_gf #Multiplication
+    |term DIV operation_gf #Division
+    |operation_gf           #SimpleOp
+    ;
+operation_gf
+    :LPAREN expression RPAREN
+    | SUB operation_gf
+    | ADD operation_gf
+    | factor
     ;
 
 factor
-    : LPAREN expression RPAREN  #Parenthesis
-    | INT               #Integer
+    : INT               #Integer
     | FLOAT             #Float
     | CHAR              #Char
     | IDF               #Variable
+    | IDF LBRACKET expression RBRACKET  #ArrayElement
     ;
 
 

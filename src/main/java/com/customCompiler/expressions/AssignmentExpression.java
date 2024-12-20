@@ -9,6 +9,9 @@ public class AssignmentExpression extends Expression {
     public AssignmentExpression(String variableName, Expression value) {
         this.variableName = variableName;
         this.value = value;
+//        System.out.println("returning new AssignmentExpression");
+//        System.out.println(variableName);
+//        System.out.println(value);
     }
 
     @Override
@@ -20,5 +23,13 @@ public class AssignmentExpression extends Expression {
     @Override
     public ExpressionType getType(){
         return value.getType();
+    }
+
+    @Override
+    public String toString() {
+        return "AssignmentExpression{" +
+                "variableName='" + variableName + '\'' +
+                ", value=" + value +
+                '}';
     }
 }
