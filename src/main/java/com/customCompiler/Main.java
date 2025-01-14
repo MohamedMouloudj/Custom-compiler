@@ -21,14 +21,14 @@ import java.io.InputStream;
 public class Main {
     public static void main(String[] args) {
         try {
-            String inputFile="src/test/java/successFile";
+            String inputFile="src/test/java/errorFile";
             FileInputStream fileInputStream = new FileInputStream(inputFile);
 
             MinINGParser parser = getParser(fileInputStream);
             // To tell ANTLR to build a parse tree. It parses from the start symbol "prog" (Axiom)
-            ParseTree antlrAST = parser.prog();
+            ParseTree antlrST = parser.prog();
             AntlrToProgram programVisitor = new AntlrToProgram();
-            Program program = programVisitor.visit(antlrAST);
+            Program program = programVisitor.visit(antlrST);
             program.symbolTable.displayTable();
             if (!programVisitor.semanticErrors.isEmpty()) {
                 System.out.println("********** Errors **********");
@@ -40,7 +40,7 @@ public class Main {
                 System.out.println("No error detected");
             }
             QuadrupleGenerator quadsGenerator = new QuadrupleGenerator();
-            quadsGenerator.visit(antlrAST);
+            quadsGenerator.visit(antlrST);
             quadsGenerator.needsExtraQuadruple(program.symbolTable);
             System.out.println("********** Quadruples **********");
             for (QuadElement quad : quadsGenerator.getQuadruples()) {

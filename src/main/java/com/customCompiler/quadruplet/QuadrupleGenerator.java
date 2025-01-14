@@ -4,13 +4,10 @@ import com.customCompiler.*;
 import com.customCompiler.expressions.*;
 import org.antlr.v4.runtime.tree.ParseTree;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Stack;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+
 
 public class QuadrupleGenerator extends MinINGParserBaseVisitor<Expression> {
     private final Quadruples quadruples;
@@ -95,9 +92,9 @@ public class QuadrupleGenerator extends MinINGParserBaseVisitor<Expression> {
         String comparator = ctx.getChild(1).getText();
         TempExpression compTemp = new TempExpression();
         quadruples.addQuad(getReverse(comparator),null ,left , right);
-        quadruples.addQuad("=", new LeafExpression("0"), null, compTemp);
-        quadruples.addQuad("BR", null, null, null);
         quadruples.addQuad("=", new LeafExpression("1"), null, compTemp);
+        quadruples.addQuad("BR", null, null, null);
+        quadruples.addQuad("=", new LeafExpression("0"), null, compTemp);
         quadruples.updateQuad(quadruples.size()-2,"BR",new LeafExpression(Integer.toString(quadruples.size())),null,null);
         quadruples.updateQuad(quadruples.size()-4,getReverse(comparator),new LeafExpression(Integer.toString(quadruples.size()-1)),left,right);
         return compTemp;
@@ -242,8 +239,8 @@ public class QuadrupleGenerator extends MinINGParserBaseVisitor<Expression> {
     public Expression visitLoopDefinition(MinINGParser.LoopDefinitionContext ctx) {
         Expression initValue = visit(ctx.loopAssignment().expression());
         quadruples.addQuad("=", initValue, null, new LeafExpression(ctx.loopAssignment().IDF().getText()));
-        Expression stopCondition = visit(ctx.expression(0));
-        Expression step = visit(ctx.expression(1));
+        Expression stopCondition = visit(ctx.expression(1));
+        Expression step = visit(ctx.expression(0));
         QuadElement condition=quadruples.addQuad(comparators.get(">="), null, new LeafExpression(ctx.loopAssignment().IDF().getText()), stopCondition);
         for (MinINGParser.StatementContext statement : ctx.statement()) {
             visit(statement);
@@ -278,5 +275,76 @@ public class QuadrupleGenerator extends MinINGParserBaseVisitor<Expression> {
         return new LeafExpression(variableName);
     }
 
+    @Override
+    public Expression visitArrayElement(MinINGParser.ArrayElementContext ctx) {
+        String arrayName = ctx.IDF().getText();
+        Object index = visit(ctx.expression());
+        return new LeafExpression(arrayName+"["+index+"]");
+    }
+
+    @Override
+    public Expression visitConstDeclaration(MinINGParser.ConstDeclarationContext ctx) {
+        String constName = ctx.IDF().getText();
+        Expression constValue = null;
+        if (ctx.INT() != null) {
+            constValue = new LeafExpression(ctx.INT().getText());
+        } else if (ctx.FLOAT() != null) {
+            constValue = new LeafExpression(ctx.FLOAT().getText());
+        } else if (ctx.CHAR() != null) {
+            constValue = new LeafExpression(ctx.CHAR().getText());
+        }
+        quadruples.addQuad("=", constValue, null, new LeafExpression(constName));
+        return null;
+    }
+
+
+    @Override
+    public Expression visitReadOperation(MinINGParser.ReadOperationContext ctx) {
+        String variableName = ctx.IDF().getText();
+        quadruples.addQuad("READ", null, null, new LeafExpression(variableName));
+        return null;
+    }
+
+    @Override
+    public Expression visitReadArrayOperation(MinINGParser.ReadArrayOperationContext ctx) {
+        String arrayName = ctx.IDF().getText();
+        Object index = visit(ctx.expression());
+        quadruples.addQuad("READ", null, null, new LeafExpression(arrayName+"["+index+"]"));
+        return null;
+    }
+
+    @Override
+    public Expression visitWriteOperation(MinINGParser.WriteOperationContext ctx) {
+        StringBuilder value = new StringBuilder("\"\"");
+        for (MinINGParser.StringOrExpressionContext StringOrExpressionContext : ctx.stringOrExpression()) {
+            Expression stringLiteral = visit(StringOrExpressionContext);
+            // If the string literal is not a string, i.e. it is a variable
+            if (!stringLiteral.toString().startsWith("\"")) {
+                value.append(stringLiteral.toString());
+            } else {
+                // If the string literal is a string
+                value = new StringBuilder(stringLiteral.toString());
+            }
+        }
+        quadruples.addQuad("WRITE", new LeafExpression(value.toString()), null, null);
+        return null;
+    }
+
+    @Override
+    public Expression visitStringLiteral(MinINGParser.StringLiteralContext ctx) {
+        String value = ctx.STRING_LITERAL().getText();
+        return new LeafExpression(value);
+    }
+
+    @Override
+    public Expression visitArrayDeclaration(MinINGParser.ArrayDeclarationContext ctx) {
+        for (MinINGParser.ArrayDeclContext idf : ctx.arrayList().arrayDecl()) {
+            String arrayName = idf.IDF().getText();
+            int size = Integer.parseInt(idf.INT().getText());
+            quadruples.addQuad("BOUNDS", new LeafExpression(Integer.toString(size)), null, null);
+            quadruples.addQuad("ADEC",new LeafExpression(arrayName),null ,null);
+        }
+        return null;
+    }
 }
 

@@ -268,10 +268,10 @@ public class AntlrToExpression extends MinINGParserBaseVisitor<Expression> {
             if (symbol.isConstant()) {
                 semanticErrors.add("Error: Cannot assign to constant " + variableName + " at line " + ctx.getStart().getLine() );
             }else{
-                String variableType  = symbolTable.getType(variableName);
+                Expression.ExpressionType variableType  = Expression.ExpressionType.valueOf(symbolTable.getType(variableName));
 
                 Expression expressionValue = visit(ctx.expression());
-                String expressionType = expressionValue.getType().toString();
+                Expression.ExpressionType expressionType = expressionValue.getType();
 
                 if(!Objects.equals(variableType, expressionType)&&variableType.equals(Expression.ExpressionType.INTEGER)){
                     semanticErrors.add("Error : "+ variableName + " is of type " + variableType + " not "+ expressionType + " at line " + ctx.getStart().getLine() );
@@ -316,11 +316,13 @@ public class AntlrToExpression extends MinINGParserBaseVisitor<Expression> {
             }
 
             Expression initialization = visit(ctx.loopAssignment().expression());
-            if (!initialization.getType().equals(Expression.ExpressionType.INTEGER)&&!initialization.getType().equals(Expression.ExpressionType.FLOAT)) {
-                semanticErrors.add("Error: Loop initialization must be an integer or float at " + line );
+            Expression.ExpressionType type =symbolTable.getSymbol(loopVariable).getType();
+
+            if (!type.equals(Expression.ExpressionType.FLOAT) && !initialization.getType().equals(Expression.ExpressionType.INTEGER)) {
+                semanticErrors.add("Error: Loop initialization must be "+type+" at " + line );
             }
 
-            Expression step=visit(ctx.expression(1));
+            Expression step=visit(ctx.expression(0));
             if(step != null){
                 if (initialization.getType().equals(Expression.ExpressionType.INTEGER)&&!step.getType().equals(initialization.getType())) {
                     semanticErrors.add("Error: Loop step must be of the same type as the initialization at " + line  );

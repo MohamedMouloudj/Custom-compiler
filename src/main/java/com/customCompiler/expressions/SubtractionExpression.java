@@ -25,7 +25,7 @@ public class SubtractionExpression extends BinaryExpression {
     @Override
     public ExpressionType getType() {
         // Determine type based on operands
-        if (left.getType().equals(ExpressionType.FLOAT.toString()) || right.getType().equals(ExpressionType.FLOAT.toString())) {
+        if (left.getType().equals(ExpressionType.FLOAT) || right.getType().equals(ExpressionType.FLOAT)) {
             return ExpressionType.FLOAT;
         }
         return ExpressionType.INTEGER;
